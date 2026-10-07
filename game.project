@@ -1,0 +1,84 @@
+[bootstrap]
+main_collection = /app/collections/bootstrap/main.collectionc
+render = /render/starbreaker.renderc
+
+[script]
+shared_state = 1
+
+[engine]
+run_while_iconified = 1
+fixed_update_frequency = 120
+
+[display]
+width = 960
+height = 540
+fullscreen = 0
+high_dpi = 0
+vsync = 0
+update_frequency = 60
+display_profiles = /resources/starbreaker_display_profiles.display_profilesc
+dynamic_orientation = 1
+samples = 4
+
+[project]
+title = Starbreaker - Defold sample game for Poki
+version = 0.1
+developer = Defold Foundation
+publisher = Defold Foundation
+dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.3.0.zip
+dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/21.zip
+dependencies#2 = https://github.com/Insality/defold-lang/archive/refs/tags/5.zip
+dependencies#3 = https://github.com/Insality/defold-saver/archive/refs/tags/8.zip
+dependencies#4 = https://github.com/defold/extension-poki-sdk/archive/refs/tags/4.1.0.zip
+dependencies#5 = https://github.com/potatojam/defold-ads-wrapper/archive/refs/tags/1.4.1.zip
+dependencies#6 = https://github.com/britzl/monarch/archive/refs/tags/6.0.2.zip
+dependencies#7 = https://github.com/potatojam/defold-html-loader/archive/refs/tags/1.1.0.zip
+
+[library]
+include_dirs = poki-sdk
+
+[native_extension]
+app_manifest = /starbreaker.appmanifest
+
+[html5]
+heap_size = 64
+wasm_streaming = 1
+scale_mode = stretch
+show_fullscreen_button = 0
+show_made_with_defold = 0
+show_console_banner = 0
+
+[input]
+game_binding = /input/game.input_bindingc
+
+[render]
+clear_color_red = 0.0196
+clear_color_green = 0.0275
+clear_color_blue = 0.098
+clear_color_alpha = 1.0
+
+[graphics]
+texture_profiles = /resources/starbreaker_texture_profiles.texture_profiles
+
+[collection_proxy]
+max_count = 16
+
+[liveupdate]
+settings = /liveupdate.settings
+
+[font]
+runtime_generation = 1
+
+[physics]
+type = 3D
+world_count = 10
+gravity_x = 0
+gravity_y = 0
+gravity_z = 0
+use_fixed_timestep = 1
+allow_dynamic_transforms = 1
+max_collision_object_count = 256
+max_collisions = 128
+trigger_overlap_capacity = 128
+max_fixed_timesteps = 8
+

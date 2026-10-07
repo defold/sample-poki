@@ -1,0 +1,2 @@
+components { id: "screen_proxy" component: "/monarch/screen_proxy.script" properties { id: "screen_proxy" value: "#pause_popup" type: PROPERTY_TYPE_URL } properties { id: "screen_id" value: "pause_popup" type: PROPERTY_TYPE_HASH } properties { id: "popup" value: "true" type: PROPERTY_TYPE_BOOLEAN } }
+embedded_components { id: "pause_popup" type: "collectionproxy" data: "collection: \"/game/collections/screens/popups/pause.collection\"\n" "" }

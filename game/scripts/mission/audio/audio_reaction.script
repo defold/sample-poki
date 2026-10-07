@@ -1,0 +1,47 @@
+local feedback_events = require("game.modules.mission.presentation.feedback_events")
+local client = require("common.audio.client")
+
+local function play(id, speed, gain)
+	client.play(id, { speed = speed or 1, gain = gain or 1 })
+end
+
+local function on_player_shot(_, data)
+	play("laser", data.speed, 0.82)
+end
+local function on_target_hit() play("hit", 1, 0.72) end
+local function on_target_destroyed(_, data)
+	play(data.is_gold and "gold" or "explosion", data.is_gold and 0.92 or 1,
+		data.source == "collision" and 0.75 or 1)
+end
+local function on_ammo_collected() play("upgrade", 1.05, 0.72) end
+local function on_target_collided() play("explosion", 0.92, 0.74) end
+local function on_ship_hit(_, data)
+	play("hit", 0.88, 0.82)
+	play("player_hit", 1, 1)
+end
+local function on_engine_changed(self, data)
+	local is_playing = data.is_playing == true
+	if self.is_engine_playing == is_playing then return end
+	self.is_engine_playing = is_playing
+	if is_playing then client.play("engine") else client.stop("engine") end
+end
+
+local HANDLERS = {
+	[feedback_events.player_shot] = on_player_shot,
+	[feedback_events.target_hit] = on_target_hit,
+	[feedback_events.target_destroyed] = on_target_destroyed,
+	[feedback_events.ammo_collected] = on_ammo_collected,
+	[feedback_events.target_collided] = on_target_collided,
+	[feedback_events.ship_hit] = on_ship_hit,
+	[feedback_events.engine_changed] = on_engine_changed,
+}
+
+function init(self)
+	self.is_engine_playing = false
+	for event, handler in pairs(HANDLERS) do event:subscribe(handler, self) end
+end
+
+function final(self)
+	for event, handler in pairs(HANDLERS) do event:unsubscribe(handler, self) end
+	client.stop("engine")
+end

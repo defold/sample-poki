@@ -1,0 +1,18 @@
+mesh: "/assets/models/craft_speederB.glb"
+name: "{{NAME}}"
+materials {
+  name: "metal"
+  material: "/render/enemy_metal.material"
+}
+materials {
+  name: "metalRed"
+  material: "/render/enemy_accent.material"
+}
+materials {
+  name: "dark"
+  material: "/render/enemy_dark.material"
+}
+materials {
+  name: "metalDark"
+  material: "/render/enemy_mid.material"
+}

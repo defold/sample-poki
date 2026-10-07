@@ -1,0 +1,170 @@
+local addresses = require("common.addresses")
+local math_utils = require("common.math_utils")
+local LANDSCAPE_POSITION = vmath.vector3(0, 7.8, 12.0)
+local LANDSCAPE_TARGET = vmath.vector3(0, 0, -14.0)
+local PORTRAIT_POSITION = vmath.vector3(0, 10.5, 14.4)
+local PORTRAIT_TARGET = vmath.vector3(0, 0, -21.0)
+local FORWARD = vmath.vector3(0, 0, -1)
+local PLAYER_URL = "/player"
+local CAMERA_URL = "#camera"
+local HUD_URL = addresses.GAMEPLAY_HUD
+local RENDER_URL = "@render:"
+local LANDSCAPE_FOLLOW = 0.48
+local PORTRAIT_FOLLOW = 0.75
+local FOLLOW_RESPONSE = 10
+local BANK_RESPONSE = 8
+local MAX_BANK = math.rad(1.0) -- rotation of camera when ship turns right/left
+local BANK_SPEED = 8
+
+-- Project the bullet endpoint onto the GUI so the aim marker aligns with the shot at any aspect ratio, including during camera movement and shake.
+local AIM_LINE_Y = 0.04
+-- Aim depth matches the far combat plane and projectile range.
+local AIM_PLANE_Z = -60.0
+local feedback_events = require("game.modules.mission.presentation.feedback_events")
+local view_config = require("game.modules.mission.presentation.view_config")
+
+local function reset_movement(self)
+	self.previous_player_x = go.get_position(PLAYER_URL).x
+	self.follow_x = self.base_x + self.previous_player_x * self.follow
+	self.bank = 0
+	self.camera_position.x = self.follow_x
+	self.camera_position.y = self.base_y
+	self.camera_position.z = self.base_z
+	go.set_position(self.camera_position)
+	go.set_rotation(self.base_rotation)
+	go.set(CAMERA_URL, "fov", math.rad(self.base_fov))
+end
+
+local function apply_impulse(self, magnitude, fov, duration, should_force)
+	local remaining = self.impulse_duration > 0
+		and (self.impulse_remaining / self.impulse_duration) or 0
+	if not should_force and self.is_impulse_forced and self.impulse_remaining > 0 then return end
+	if should_force or magnitude >= self.impulse_magnitude * remaining then
+		self.impulse_duration = duration
+		self.impulse_remaining = duration
+		self.impulse_magnitude = magnitude
+		self.impulse_fov = fov
+		self.impulse_time = 0
+		self.is_impulse_forced = should_force
+	end
+end
+
+local function on_target_hit(self, data)
+	if data.should_shake_camera then
+		apply_impulse(self, view_config.CAMERA_HIT_MAGNITUDE, 0, view_config.CAMERA_HIT_DURATION)
+	end
+end
+local function on_target_destroyed(self, data)
+	apply_impulse(self,
+		data.is_gold and view_config.CAMERA_GOLD_MAGNITUDE or view_config.CAMERA_DESTROY_MAGNITUDE,
+		data.is_gold and view_config.CAMERA_GOLD_FOV or view_config.CAMERA_DESTROY_FOV,
+		data.is_gold and view_config.CAMERA_GOLD_DURATION or view_config.CAMERA_DESTROY_DURATION)
+	go.update_world_transform(".")
+	local screen_position = camera.world_to_screen(data.position, CAMERA_URL)
+	screen_position.z = 0
+	msg.post(HUD_URL, "credit_bonus", {
+		screen_position = screen_position,
+		amount = math_utils.non_negative_integer(data.credit_bonus),
+	})
+end
+local function on_ship_hit(self, data)
+	apply_impulse(self, view_config.CAMERA_PLAYER_HIT_MAGNITUDE, 0,
+		view_config.CAMERA_PLAYER_HIT_DURATION, true)
+end
+local function on_run_reset(self)
+	self.impulse_remaining = 0
+	self.is_impulse_forced = false
+	reset_movement(self)
+end
+
+local function update_aim_reticle(self)
+	local player_position = go.get_position(PLAYER_URL)
+	self.aim_world.x = player_position.x
+	self.aim_world.y = AIM_LINE_Y
+	self.aim_world.z = AIM_PLANE_Z
+	local screen_position = camera.world_to_screen(self.aim_world, CAMERA_URL)
+	-- Place the reticle on the HUD draw plane after screen projection.
+	screen_position.z = 0
+	feedback_events.aim_position:trigger(screen_position)
+end
+
+local function configure(self, width, height)
+	local is_portrait = height > width
+	local layout = is_portrait and "portrait" or "landscape"
+	if self.layout == layout then return end
+	local position = is_portrait and PORTRAIT_POSITION or LANDSCAPE_POSITION
+	local target = is_portrait and PORTRAIT_TARGET or LANDSCAPE_TARGET
+	self.base_x = position.x
+	self.base_y = position.y
+	self.base_z = position.z
+	self.base_fov = is_portrait and 65 or 56
+	self.follow = is_portrait and PORTRAIT_FOLLOW or LANDSCAPE_FOLLOW
+	self.base_rotation = vmath.quat_from_to(FORWARD, vmath.normalize(target - position))
+	self.layout = layout
+	reset_movement(self)
+end
+
+function init(self)
+	feedback_events.target_hit:subscribe(on_target_hit, self)
+	feedback_events.target_destroyed:subscribe(on_target_destroyed, self)
+	feedback_events.ship_hit:subscribe(on_ship_hit, self)
+	feedback_events.run_reset:subscribe(on_run_reset, self)
+    self.camera_position = vmath.vector3()
+	self.aim_world = vmath.vector3(0, AIM_LINE_Y, AIM_PLANE_Z)
+	self.impulse_remaining = 0
+	self.impulse_duration = 0
+	self.impulse_magnitude = 0
+	self.impulse_fov = 0
+	self.impulse_time = 0
+	self.is_impulse_forced = false
+    self.width, self.height = window.get_size()
+    configure(self, self.width, self.height)
+	self.camera_url = msg.url(CAMERA_URL)
+	msg.post(RENDER_URL, "set_world_camera", { camera = self.camera_url })
+end
+
+function final(self)
+	feedback_events.target_hit:unsubscribe(on_target_hit, self)
+	feedback_events.target_destroyed:unsubscribe(on_target_destroyed, self)
+	feedback_events.ship_hit:unsubscribe(on_ship_hit, self)
+	feedback_events.run_reset:unsubscribe(on_run_reset, self)
+	msg.post(RENDER_URL, "clear_world_camera", { camera = self.camera_url })
+end
+
+-- Follow after Defold has advanced the ship's property animations.
+function late_update(self, dt)
+	local player_x = go.get_position(PLAYER_URL).x
+	local speed_x = dt > 0 and (player_x - self.previous_player_x) / dt or 0
+	self.previous_player_x = player_x
+	local target_x = self.base_x + player_x * self.follow
+	local target_bank = -math_utils.clamp(speed_x / BANK_SPEED, -1, 1) * MAX_BANK
+	-- With exponential easing, the response does not depend on the frame rate.
+	self.follow_x = vmath.lerp(1 - math.exp(-FOLLOW_RESPONSE * dt), self.follow_x, target_x)
+	self.bank = vmath.lerp(1 - math.exp(-BANK_RESPONSE * dt), self.bank, target_bank)
+	local shake_x, shake_y = 0, 0
+	local fov = self.base_fov
+	if self.impulse_remaining > 0 then
+		self.impulse_remaining = math.max(0, self.impulse_remaining - dt)
+		self.impulse_time = self.impulse_time + dt
+		local strength = self.impulse_remaining / self.impulse_duration
+		local envelope = strength * strength
+		shake_x = math.sin(self.impulse_time * 38 + 0.7) * self.impulse_magnitude * envelope
+		shake_y = math.sin(self.impulse_time * 29 + 1.9) * self.impulse_magnitude * 0.42 * envelope
+		fov = fov + self.impulse_fov * strength
+	end
+	self.camera_position.x = self.follow_x + shake_x
+	self.camera_position.y = self.base_y + shake_y
+	self.camera_position.z = self.base_z
+	go.set_position(self.camera_position)
+	go.set_rotation(self.base_rotation * vmath.quat_rotation_z(self.bank))
+	go.set("#camera", "fov", math.rad(fov))
+	go.update_world_transform(".")
+	update_aim_reticle(self)
+end
+
+function on_message(self, message_id, message)
+    if message_id == hash("viewport_resized") then
+        self.width, self.height = message.width, message.height
+        configure(self, self.width, self.height)
+    end
+end

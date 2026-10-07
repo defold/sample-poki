@@ -1,0 +1,6 @@
+mesh: "/builtins/assets/gltf/sphere.gltf"
+name: "{{NAME}}"
+materials {
+  name: "default"
+  material: "/render/planet.material"
+}

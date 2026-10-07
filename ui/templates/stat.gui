@@ -1,0 +1,83 @@
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  size {
+    x: 216.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  id: "stat"
+  visible: false
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 5.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  texture: "ui/ship_E"
+  id: "icon"
+  pivot: PIVOT_W
+  parent: "stat"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 80.0
+  }
+  scale {
+    x: 0.72
+    y: 0.72
+  }
+  size {
+    x: 120.0
+    y: 25.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "HULL"
+  font: "body"
+  id: "label"
+  parent: "stat"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 210.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  size {
+    x: 95.0
+    y: 25.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "100/100"
+  font: "body"
+  id: "value"
+  pivot: PIVOT_E
+  parent: "stat"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

@@ -1,0 +1,6 @@
+mesh: "/builtins/assets/gltf/quad.gltf"
+name: "{{NAME}}"
+materials {
+  name: "default"
+  material: "/render/background.material"
+}

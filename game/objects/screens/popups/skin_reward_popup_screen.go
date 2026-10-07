@@ -1,0 +1,2 @@
+components { id: "screen_proxy" component: "/monarch/screen_proxy.script" properties { id: "screen_proxy" value: "#skin_reward_popup" type: PROPERTY_TYPE_URL } properties { id: "screen_id" value: "skin_reward_popup" type: PROPERTY_TYPE_HASH } properties { id: "popup" value: "true" type: PROPERTY_TYPE_BOOLEAN } }
+embedded_components { id: "skin_reward_popup" type: "collectionproxy" data: "collection: \"/game/collections/screens/popups/skin_reward.collection\"\n" "" }

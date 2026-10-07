@@ -1,0 +1,61 @@
+local feedback_events = require("game.modules.mission.presentation.feedback_events")
+
+local function play(self, data)
+	local url = data.vfx_url
+	if not url then return end
+	local key = tostring(url)
+	local effect = self.playing[key] or { url = msg.url(url), plays = 0 }
+	self.playing[key] = effect
+	effect.plays = effect.plays + 1
+	local active_emitters = {}
+	local active_count = 0
+	local is_finished = false
+	particlefx.play(url, function(_, _, emitter, state)
+		if is_finished or effect.is_cancelled then return end
+		if state == particlefx.EMITTER_STATE_PRESPAWN then
+			if not active_emitters[emitter] then
+				active_emitters[emitter] = true
+				active_count = active_count + 1
+			end
+		elseif state == particlefx.EMITTER_STATE_SLEEPING and active_emitters[emitter] then
+			active_emitters[emitter] = nil
+			active_count = active_count - 1
+			if active_count == 0 then
+				is_finished = true
+				effect.plays = effect.plays - 1
+				if effect.plays == 0 and self.playing[key] == effect then
+					self.playing[key] = nil
+				end
+				if data.on_complete then data.on_complete() end
+			end
+		end
+	end)
+end
+
+local function clear(self)
+	for key, effect in pairs(self.playing) do
+		effect.is_cancelled = true
+		if go.exists(effect.url) then
+			particlefx.stop(effect.url, { clear = true })
+		end
+		self.playing[key] = nil
+	end
+end
+
+local HANDLERS = {
+	[feedback_events.target_hit] = play,
+	[feedback_events.target_destroyed] = play,
+	[feedback_events.target_collided] = play,
+	[feedback_events.ship_hit] = play,
+	[feedback_events.run_reset] = clear,
+}
+
+function init(self)
+	self.playing = {}
+	for event, handler in pairs(HANDLERS) do event:subscribe(handler, self) end
+end
+
+function final(self)
+	for event, handler in pairs(HANDLERS) do event:unsubscribe(handler, self) end
+	clear(self)
+end

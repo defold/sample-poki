@@ -1,0 +1,6 @@
+[liveupdate]
+mode = Zip
+zip-filepath = ./build/liveupdate
+save-zip-in-bundle-folder = 1
+zip-filename = deferred_liveupdate
+zip-compression-level = 9

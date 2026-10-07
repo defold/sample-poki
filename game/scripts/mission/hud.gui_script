@@ -1,0 +1,383 @@
+local ad_state = require("common.ad_state")
+local addresses = require("common.addresses")
+local player_input = require("game.modules.player.player_input")
+-- In-game HUD GUI handling
+
+local druid = require("druid.druid")
+local monarch = require("monarch.monarch")
+local screen_transitions = require("ui.screen_transitions")
+local lang = require("lang.lang")
+local button = require("ui.templates.button")
+local meter = require("game.modules.ui.mission.meter")
+local objective_panel = require("game.modules.ui.mission.objective_panel")
+local colors = require("ui.colors")
+local actions = require("common.input.actions")
+local screen_input = require("ui.screen_input")
+local touch_controls = require("ui.touch_controls")
+local feedback_events = require("game.modules.mission.presentation.feedback_events")
+
+local APP_URL = addresses.APP_CONTROLLER
+local GAMEPLAY_URL = addresses.GAMEPLAY_CONTROLLER
+local PHASE_PREPLAY, PHASE_PLAYING, PHASE_RESULT = "PREPLAY", "PLAYING", "RESULT"
+
+local function on_ship_hit(self, data)
+	local flash = gui.get_node("damage_flash")
+	gui.cancel_animations(flash, "color.w")
+	gui.set_color(flash, vmath.vector4(1, 0.05, 0.02, 0.42))
+	gui.animate(flash, "color.w", 0, gui.EASING_OUTQUAD, 0.24)
+	self.meters.health:flash()
+end
+
+local function on_run_reset(self)
+	local flash = gui.get_node("damage_flash")
+	gui.cancel_animations(flash, "color.w")
+	gui.set_color(flash, vmath.vector4(1, 0.05, 0.02, 0))
+end
+
+local function refresh_pause_prompt(self)
+	local is_available = (self.phase == PHASE_PLAYING or self.phase == PHASE_PREPLAY)
+		and not self.is_external_paused
+	self.pause_button:set_enabled(is_available):set_visible(true)
+		:set_input_prompt("cancel", self.input_mode, true)
+end
+
+local function refresh_input_prompts(self)
+	local is_preplay = self.phase == PHASE_PREPLAY
+	local is_mobile = self.is_device_mobile == true or self.is_touch_detected == true
+	gui.set_enabled(gui.get_node("hint_panel"), is_preplay and not is_mobile)
+	local are_overlay_labels_visible = is_preplay and is_mobile and self.is_touch_overlay_visible == true
+	gui.set_enabled(gui.get_node("stick_hint"), are_overlay_labels_visible)
+	gui.set_enabled(gui.get_node("fire_hint"), are_overlay_labels_visible)
+end
+
+local function refresh_controls(self)
+	refresh_input_prompts(self)
+	refresh_pause_prompt(self)
+end
+
+local function refresh_phase(self)
+	self.objective_panel:refresh()
+	refresh_controls(self)
+	for _, widget in pairs(self.meters) do widget:set_result(self.result_status) end
+end
+
+local function refresh_text(self)
+	self.brand_text:translate("brand")
+	self.mission_text:translate("mission_format", self.level)
+	self.steer_label:translate("hint_move")
+	self.fire_label:translate("hint_fire")
+	self.stick_hint:translate("hint_move")
+	self.fire_hint:translate("hint_fire")
+	refresh_phase(self)
+end
+
+local function sync_virtual(self)
+	-- Showing the touch controls must not count as a new fire press.
+	msg.post(GAMEPLAY_URL, "virtual_controls", { visible = self.is_touch_overlay_visible == true })
+	player_input.virtual_steer(self.axis or 0, false)
+	if not self.is_fire_held then player_input.virtual_fire(false) end
+end
+
+local function on_ad_changed(self)
+	touch_controls.release(self)
+	sync_virtual(self)
+end
+
+local function toggle_touch_overlay(self)
+	touch_controls.toggle_force(self)
+	sync_virtual(self)
+	refresh_controls(self)
+end
+
+local function set_input_mode(self, mode)
+	if self.input_mode == mode then return end
+	-- Apply the input mode received from the app. Reporting it back would cause a message loop.
+	screen_input.restore(self, { input_mode = mode })
+	refresh_controls(self)
+end
+
+local function pause(self)
+	if self.phase == PHASE_PLAYING or self.phase == PHASE_PREPLAY then
+		msg.post(APP_URL, "pause_requested", { source = "hud" })
+	end
+end
+
+local TUTORIAL_COLORS = {
+	ammo = vmath.vector4(0.15, 0.85, 0.96, 1),
+	health = vmath.vector4(1, 0.22, 0.12, 1),
+	gold = vmath.vector4(1, 0.72, 0.08, 1),
+	enemy = vmath.vector4(1, 0.38, 0.10, 1),
+}
+
+local function refresh_tutorial(self)
+	local glow = gui.get_node("tutorial_glow")
+	gui.cancel_animations(glow, gui.PROP_COLOR)
+	gui.set_enabled(gui.get_node("tutorial_root"), self.tutorial_id ~= nil)
+	if not self.tutorial_id then return end
+	self.tutorial_title:translate("tutorial_" .. self.tutorial_id .. "_title")
+	self.tutorial_body:translate("tutorial_" .. self.tutorial_id .. "_body")
+	gui.set_pivot(gui.get_node("tutorial_title"), gui.PIVOT_W)
+	gui.set_pivot(gui.get_node("tutorial_body"), gui.PIVOT_W)
+	gui.set_alpha(gui.get_node("tutorial_root"), 1)
+	gui.set_color(glow, TUTORIAL_COLORS[self.tutorial_id] or TUTORIAL_COLORS.ammo)
+	gui.animate(glow, gui.PROP_COLOR, vmath.vector4(1, 1, 1, 0.38),
+		gui.EASING_INOUTSINE, 0.22, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+end
+
+local function restore_layout(self)
+	refresh_tutorial(self)
+	for _, widget in pairs(self.meters) do widget:sync_layout() end
+	self.objective_panel:sync_layout()
+	touch_controls.on_layout(self)
+	refresh_text(self)
+end
+
+local function show_credit_bonus(self, amount, position)
+	local popup = self.credit_popups[self.next_credit_popup]
+	self.next_credit_popup = self.next_credit_popup % #self.credit_popups + 1
+	gui.cancel_animations(popup, gui.PROP_POSITION)
+	gui.cancel_animations(popup, gui.PROP_COLOR)
+	gui.set_enabled(popup, true)
+	gui.set_text(popup, lang.txp("bonus_credits", amount))
+	gui.set_color(popup, colors.bonus)
+	gui.set_screen_position(popup, position)
+	gui.animate(popup, gui.PROP_COLOR, colors.bonus_fade, gui.EASING_INQUAD, 0.5, 0.1)
+	gui.animate(popup, gui.PROP_POSITION, gui.get_position(popup) + vmath.vector3(0, 58, 0),
+		gui.EASING_OUTQUAD, 0.6, 0, function() gui.set_enabled(popup, false) end)
+end
+
+local function reset_session(self, data, should_notify_gameplay)
+	-- A new run reuses this HUD, so we clear transient input and feedback state.
+	screen_input.init(self, data)
+	self.phase, self.level = PHASE_PREPLAY, 1
+	self.is_external_paused = false
+	gui.set_visible(gui.get_node("pause_dim"), false)
+	self.result_status = nil
+	for _, widget in pairs(self.meters) do widget:reset() end
+	self.objective_panel:reset()
+	self.tutorial_id = nil
+	self.next_credit_popup = 1
+	for _, popup in ipairs(self.credit_popups) do
+		gui.cancel_animations(popup, gui.PROP_POSITION)
+		gui.cancel_animations(popup, gui.PROP_COLOR)
+		gui.set_enabled(popup, false)
+	end
+	local rescue = gui.get_node("rescue_feedback")
+	gui.cancel_animations(rescue, gui.PROP_COLOR)
+	gui.set_enabled(rescue, false)
+	if self.stick_base then touch_controls.release(self) end
+	touch_controls.init(self)
+	if data and data.device_category then
+		touch_controls.set_device_category(self, data.device_category)
+	end
+	on_run_reset(self)
+	restore_layout(self)
+	if should_notify_gameplay then sync_virtual(self) end
+end
+
+local function set_aim_position(self, screen_position)
+	gui.set_screen_position(self.target_node, screen_position)
+end
+
+function init(self)
+	feedback_events.ship_hit:subscribe(on_ship_hit, self)
+	feedback_events.run_reset:subscribe(on_run_reset, self)
+	self.druid = druid.new(self)
+	self.motion = screen_transitions.new("gameplay",
+		function(is_visible, is_finished)
+			-- Input focus follows the screen transition, not just GUI visibility.
+			if is_visible and not is_finished then
+				gui.set_enabled(gui.get_node("root"), true)
+				msg.post(".", "acquire_input_focus")
+			elseif not is_visible then
+				if is_finished then gui.set_enabled(gui.get_node("root"), false)
+				else msg.post(".", "release_input_focus") end
+			end
+		end)
+	self.tutorial_title = self.druid:new_lang_text("tutorial_title")
+	self.tutorial_body = self.druid:new_lang_text("tutorial_body")
+	self.brand_text = self.druid:new_lang_text("brand", "brand")
+	self.mission_text = self.druid:new_lang_text("mission")
+	self.meters = {
+		health = self.druid:new_widget(meter, nil, nil, "health", "hud_hull"),
+		ammo = self.druid:new_widget(meter, nil, nil, "ammo", "hud_ammo"),
+	}
+	self.objective_panel = self.druid:new_widget(objective_panel)
+	self.steer_label = self.druid:new_lang_text("hint_steer_label", "hint_move")
+	self.fire_label = self.druid:new_lang_text("hint_fire_label", "hint_fire")
+	self.stick_hint = self.druid:new_lang_text("stick_hint", "hint_move")
+	self.fire_hint = self.druid:new_lang_text("fire_hint", "hint_fire")
+	self.pause_button = self.druid:new_widget(button, "pause_hit", nil, pause)
+	self.pause_button:set_key_trigger(actions.cancel)
+	self.target_node = gui.get_node("target")
+	feedback_events.aim_position:subscribe(set_aim_position, self)
+	self.credit_popups = { gui.get_node("credit_bonus_1"), gui.get_node("credit_bonus_2"),
+		gui.get_node("credit_bonus_3"), gui.get_node("credit_bonus_4") }
+	reset_session(self, {})
+	ad_state.changed:subscribe(on_ad_changed, self)
+	gui.set_enabled(gui.get_node("root"), false)
+end
+function final(self)
+	ad_state.changed:unsubscribe(on_ad_changed, self)
+	feedback_events.aim_position:unsubscribe(set_aim_position, self)
+	feedback_events.ship_hit:unsubscribe(on_ship_hit, self)
+	feedback_events.run_reset:unsubscribe(on_run_reset, self)
+	self.motion:final(); self.druid:final()
+end
+function update(self, dt)
+	local released = touch_controls.finish_frame(self)
+	if released.steer_released then player_input.virtual_steer(0, false) end
+	if released.fire_released then player_input.virtual_fire(false) end
+
+	self.druid:update(dt)
+end
+
+local function apply_hud_state(self, message)
+	if message.level and message.level ~= self.level then
+		self.level = message.level
+		self.mission_text:translate("mission_format", self.level)
+	end
+	for kind, widget in pairs(self.meters) do
+		widget:set_counts(message[kind], message["max_" .. kind])
+	end
+	self.objective_panel:set_state(message)
+end
+
+local function apply_phase(self, message)
+	self.phase = message.phase or self.phase
+	if self.phase == PHASE_RESULT then
+		-- Release held touch controls before the result popup takes focus.
+		touch_controls.release(self)
+		sync_virtual(self)
+	end
+	self.result_status = self.phase == PHASE_RESULT and message.status or nil
+	self.objective_panel:set_phase(self.phase, self.result_status)
+	refresh_phase(self)
+end
+
+local function show_rescue_feedback(self, kind)
+	local node = gui.get_node("rescue_feedback")
+	gui.cancel_animations(node, gui.PROP_COLOR)
+	gui.set_text(node, lang.txt(kind == "ammo" and "rewarded_rescue_ammo" or "rewarded_rescue_health"))
+	gui.set_enabled(node, true)
+	gui.set_color(node, colors.success)
+end
+
+local function hide_rescue_feedback()
+	local node = gui.get_node("rescue_feedback")
+	gui.animate(node, gui.PROP_COLOR, colors.success_transparent,
+		gui.EASING_INQUAD, 0.45, 0.65, function() gui.set_enabled(node, false) end)
+end
+
+function on_message(self, message_id, message, sender)
+	-- The world is paused (timestep 0) after leaving a mission.
+	-- Complete the HUD transition immediately so Monarch can unload the collection while gameplay stays frozen.
+	if self.phase == PHASE_RESULT and (message_id == monarch.TRANSITION_SHOW_OUT
+		or message_id == monarch.TRANSITION_BACK_OUT) then
+		gui.set_enabled(gui.get_node("root"), false)
+		msg.post(sender, monarch.TRANSITION_DONE, { transition = message_id })
+		return
+	end
+
+	monarch.on_message(message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+
+	if message_id == hash("cancel_ui_input") then
+		self.pause_button:cancel_press()
+		touch_controls.release(self)
+		sync_virtual(self)
+	elseif message_id == hash("layout_changed") then
+		self.motion:resize()
+		restore_layout(self)
+	elseif message_id == hash("viewport_resized") then
+		self.motion:resize()
+	elseif message_id == hash("hud_session") then
+		reset_session(self, message, true)
+	elseif message_id == hash("show_tutorial") then
+		self.tutorial_id = message.id
+		refresh_tutorial(self)
+	elseif message_id == hash("hide_tutorial") then
+		self.tutorial_id = nil
+		refresh_tutorial(self)
+	elseif message_id == hash("hud_state") then
+		apply_hud_state(self, message)
+	elseif message_id == hash("phase") then
+		apply_phase(self, message)
+	elseif message_id == hash("input_mode") then
+		set_input_mode(self, message.mode)
+	elseif message_id == hash("pause_visibility") then
+		self.is_external_paused = message.paused == true
+		gui.set_visible(gui.get_node("pause_dim"), self.is_external_paused)
+		if self.is_external_paused then
+			touch_controls.release(self)
+			sync_virtual(self)
+		end
+		refresh_pause_prompt(self)
+	elseif message_id == hash("credit_bonus")then
+		show_credit_bonus(self, math.floor(message.amount or 0), message.screen_position)
+	elseif message_id == hash("rescue_feedback") then
+		show_rescue_feedback(self, message.kind)
+	elseif message_id == hash("rescue_feedback_done") then
+		hide_rescue_feedback()
+	elseif message_id == hash("language_changed") then
+		refresh_text(self); refresh_tutorial(self)
+	elseif message_id == hash("device_category") then
+		touch_controls.set_device_category(self, message.category)
+		sync_virtual(self)
+		refresh_controls(self)
+	elseif message_id == hash("toggle_touch_controls") then
+		toggle_touch_overlay(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	if screen_input.is_ad_busy() then return true end
+	if not self.motion.is_visible then
+		return false
+	end
+
+	if action_id == actions.touch_multi and touch_controls.note_touch(self) then
+		sync_virtual(self)
+		refresh_controls(self)
+	end
+
+	if screen_input.handle_common_input(self, action_id, action, {
+		blocked = self.motion:is_input_blocked(),
+		reset_while_blocked = true,
+		on_reset = toggle_touch_overlay,
+	}) then
+		return true
+	end
+
+	local button_input = screen_input.route(self, action_id, action, {
+		on_mode = refresh_controls,
+	})
+
+	-- Mouse movement has no action id but still drives hover and the virtual stick.
+	-- A release must still reach held touch controls when Druid consumes it, or they can stay pressed.
+	local is_druid_consumed = self.druid:on_input(action_id, button_input)
+	if screen_input.is_ad_busy() or (is_druid_consumed and action.pressed and not action.released) then
+		return true
+	end
+
+	local controls =
+		touch_controls.on_input(self, action_id, action)
+	if controls.steer_changed then
+		player_input.virtual_steer(self.axis or 0, controls.steer_started == true)
+	end
+	if controls.fire_changed then
+		player_input.virtual_fire(self.is_fire_held == true, controls.fire_started == true)
+	end
+
+	if controls.consumed or self.is_touch_overlay_visible and actions.is_pointer(action_id) then
+		return true
+	end
+	-- A mouse drag can end over Pause, where Druid consumes the release.
+	-- Pass that release to gameplay so mouse firing stops.
+	if is_druid_consumed then
+		return not (action.released and actions.is_pointer(action_id))
+	end
+
+	return (action_id == actions.cancel)
+		and (self.phase == PHASE_PLAYING or self.phase == PHASE_PREPLAY)
+end

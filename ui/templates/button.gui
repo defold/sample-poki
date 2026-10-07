@@ -1,0 +1,101 @@
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  size {
+    x: 300.0
+    y: 75.0
+  }
+  type: TYPE_BOX
+  id: "button"
+  visible: false
+  inherit_alpha: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2400.0
+    y: 600.0
+  }
+  color {
+    x: 0.15
+    y: 0.85
+    z: 0.96
+  }
+  type: TYPE_BOX
+  texture: "ui/button_released"
+  id: "background"
+  parent: "button"
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  type: TYPE_BOX
+  id: "content"
+  parent: "button"
+  visible: false
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -112.0
+    y: 4.0
+  }
+  size {
+    x: 32.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  texture: "ui/video"
+  id: "icon_left"
+  parent: "content"
+  enabled: false
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 112.0
+    y: 4.0
+  }
+  size {
+    x: 32.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_space"
+  id: "icon_right"
+  parent: "content"
+  enabled: false
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 220.0
+    y: 48.0
+  }
+  type: TYPE_TEXT
+  text: "BUTTON"
+  font: "body"
+  id: "text"
+  line_break: true
+  parent: "content"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

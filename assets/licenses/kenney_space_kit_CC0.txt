@@ -1,0 +1,6 @@
+Kenney Space Kit 1.0
+
+Source: https://kenney.nl/assets/space-kit
+Author: Kenney (https://kenney.nl)
+License: Creative Commons CC0 1.0
+License URL: https://creativecommons.org/publicdomain/zero/1.0/

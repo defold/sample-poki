@@ -1,0 +1,196 @@
+emitters {
+  id: "emitter3"
+  mode: PLAY_MODE_ONCE
+  duration: 0.1
+  space: EMISSION_SPACE_EMITTER
+  tile_source: "/assets/atlases/vfx.atlas"
+  animation: "light_01"
+  material: "/render/particle_billboard.material"
+  blend_mode: BLEND_MODE_ADD
+  max_particle_count: 1
+  type: EMITTER_TYPE_CIRCLE
+  properties {
+    key: EMITTER_KEY_SPAWN_RATE
+    points {
+      y: 100.0
+    }
+  }
+  properties {
+    key: EMITTER_KEY_SIZE_X
+    points {
+      y: 0.01
+    }
+  }
+  properties {
+    key: EMITTER_KEY_SIZE_Y
+    points {
+      y: 0.1
+    }
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_LIFE_TIME
+    points {
+      y: 20.0
+    }
+    spread: 0.1
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_SIZE
+    points {
+      y: 5.0
+    }
+    spread: 2.0
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_RED
+    points {
+      y: 0.2
+    }
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_GREEN
+    points {
+      y: 0.7
+    }
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_BLUE
+    points {
+      y: 1.0
+    }
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_ALPHA
+    points {
+      y: 1.0
+    }
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_ROTATION
+    points {
+      y: 0.0
+    }
+    spread: 180.0
+  }
+  properties {
+    key: EMITTER_KEY_PARTICLE_ANGULAR_VELOCITY
+    points {
+      y: 0.0
+    }
+    spread: 180.0
+  }
+  particle_properties {
+    key: PARTICLE_KEY_SCALE
+    points {
+      y: 0.504101
+    }
+    points {
+      x: 0.080381
+      y: 0.361319
+      t_x: 0.993876
+      t_y: -0.110501
+    }
+    points {
+      x: 0.152364
+      y: 0.503052
+      t_x: 0.997928
+      t_y: -0.064336
+    }
+    points {
+      x: 0.232816
+      y: 0.354944
+      t_x: 0.889241
+      t_y: -0.457439
+    }
+    points {
+      x: 0.328511
+      y: 0.502073
+      t_x: 0.958641
+      t_y: -0.284618
+    }
+    points {
+      x: 0.387791
+      y: 0.354542
+      t_x: 0.838683
+      t_y: -0.54462
+    }
+    points {
+      x: 0.499577
+      y: 0.499127
+      t_x: 0.950896
+      t_y: -0.309511
+    }
+    points {
+      x: 0.564785
+      y: 0.35412
+      t_x: 0.699846
+      t_y: -0.714293
+    }
+    points {
+      x: 0.687579
+      y: 0.50005
+      t_x: 0.943843
+      t_y: -0.330395
+    }
+    points {
+      x: 0.747707
+      y: 0.361286
+      t_x: 0.428974
+      t_y: -0.903317
+    }
+    points {
+      x: 0.873042
+      y: 0.497205
+      t_x: 0.882598
+      t_y: -0.470128
+    }
+    points {
+      x: 1.0
+      y: 0.364318
+    }
+  }
+  particle_properties {
+    key: PARTICLE_KEY_RED
+    points {
+      y: 1.0
+    }
+  }
+  particle_properties {
+    key: PARTICLE_KEY_GREEN
+    points {
+      y: 1.0
+    }
+  }
+  particle_properties {
+    key: PARTICLE_KEY_BLUE
+    points {
+      y: 1.0
+    }
+  }
+  particle_properties {
+    key: PARTICLE_KEY_ALPHA
+    points {
+      y: 1.030565
+      t_x: 0.9634677
+      t_y: -0.26782453
+    }
+    points {
+      x: 0.845062
+      y: 0.262759
+      t_x: 0.5694311
+      t_y: -0.82203907
+    }
+    points {
+      x: 1.0
+      y: 0.0072254334
+      t_x: 0.96338344
+      t_y: -0.26812753
+    }
+  }
+  particle_properties {
+    key: PARTICLE_KEY_ANGULAR_VELOCITY
+    points {
+      y: 1.0
+    }
+  }
+}

@@ -1,0 +1,37 @@
+emitters {
+  id: "stars"
+  mode: PLAY_MODE_LOOP
+  duration: 5.0
+  start_offset: 5.0
+  space: EMISSION_SPACE_WORLD
+  position { z: -90.0 }
+  rotation { x: 0.70710678 w: 0.70710678 }
+  tile_source: "/assets/atlases/vfx.atlas"
+  animation: "star"
+  material: "/render/particle_billboard.material"
+  blend_mode: BLEND_MODE_ADD
+  max_particle_count: 36
+  type: EMITTER_TYPE_BOX
+  properties { key: EMITTER_KEY_SPAWN_RATE points { y: 7.2 } }
+  properties { key: EMITTER_KEY_SIZE_X points { y: 36.0 } }
+  properties { key: EMITTER_KEY_SIZE_Y points { y: 1.0 } }
+  properties { key: EMITTER_KEY_SIZE_Z points { y: 30.0 } }
+  properties { key: EMITTER_KEY_PARTICLE_LIFE_TIME points { y: 5.0 } }
+  properties { key: EMITTER_KEY_PARTICLE_SPEED points { y: 32.0 } }
+  properties { key: EMITTER_KEY_PARTICLE_SIZE points { y: 0.65 } spread: 0.18 }
+  properties { key: EMITTER_KEY_PARTICLE_RED points { y: 0.72 } }
+  properties { key: EMITTER_KEY_PARTICLE_GREEN points { y: 0.86 } }
+  properties { key: EMITTER_KEY_PARTICLE_BLUE points { y: 1.0 } }
+  properties { key: EMITTER_KEY_PARTICLE_ALPHA points { y: 0.82 } spread: 0.10 }
+  particle_properties { key: PARTICLE_KEY_SCALE points { y: 1.0 } }
+  particle_properties { key: PARTICLE_KEY_RED points { y: 1.0 } }
+  particle_properties { key: PARTICLE_KEY_GREEN points { y: 1.0 } }
+  particle_properties { key: PARTICLE_KEY_BLUE points { y: 1.0 } }
+  particle_properties {
+    key: PARTICLE_KEY_ALPHA
+    points { y: 0.0 }
+    points { x: 0.08 y: 1.0 }
+    points { x: 0.90 y: 1.0 }
+    points { x: 1.0 y: 0.0 }
+  }
+}

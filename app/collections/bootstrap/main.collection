@@ -1,0 +1,69 @@
+name: "main"
+instances {
+  id: "game"
+  prototype: "/game/objects/bootstrap/entry.go"
+}
+instances {
+  id: "game_sounds"
+  prototype: "/game/objects/audio/sounds.go"
+}
+instances {
+  id: "game_music"
+  prototype: "/game/objects/audio/music.go"
+}
+instances {
+  id: "game_fonts"
+  prototype: "/game/objects/fonts/fonts.go"
+}
+instances {
+  id: "game_deferred_assets"
+  prototype: "/game/objects/deferred_assets/deferred_assets.go"
+}
+instances {
+  id: "screens"
+  prototype: "/app/objects/screens.go"
+  children: "credits_popup_screen"
+  children: "gameplay_screen"
+  children: "mothership_screen"
+  children: "pause_popup_screen"
+  children: "result_popup_screen"
+  children: "reward_confirm_popup_screen"
+  children: "skin_reward_popup_screen"
+}
+instances {
+  id: "gameplay_screen"
+  prototype: "/game/objects/screens/gameplay_screen.go"
+}
+instances {
+  id: "mothership_screen"
+  prototype: "/game/objects/screens/mothership_screen.go"
+}
+instances {
+  id: "result_popup_screen"
+  prototype: "/game/objects/screens/popups/result_popup_screen.go"
+}
+instances {
+  id: "reward_confirm_popup_screen"
+  prototype: "/game/objects/screens/popups/reward_confirm_popup_screen.go"
+}
+instances {
+  id: "pause_popup_screen"
+  prototype: "/game/objects/screens/popups/pause_popup_screen.go"
+}
+instances {
+  id: "credits_popup_screen"
+  prototype: "/game/objects/screens/popups/credits_popup_screen.go"
+}
+instances {
+  id: "skin_reward_popup_screen"
+  prototype: "/game/objects/screens/popups/skin_reward_popup_screen.go"
+}
+collection_instances {
+  id: "app"
+  collection: "/app/collections/core/app.collection"
+}
+collection_instances {
+  id: "learn"
+  collection: "/learn/learn.collection"
+}
+scale_along_z: 1

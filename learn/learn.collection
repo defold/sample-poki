@@ -1,0 +1,4 @@
+name: "learn"
+scale_along_z: 1
+instances { id: "guide" prototype: "/learn/poki_guide.go" }
+instances { id: "popup_screen" prototype: "/learn/popup_screen.go" }

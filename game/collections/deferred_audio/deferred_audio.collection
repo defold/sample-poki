@@ -1,0 +1,6 @@
+name: "deferred_audio"
+scale_along_z: 1
+instances {
+  id: "audio"
+  prototype: "/game/objects/deferred_audio/audio.go"
+}

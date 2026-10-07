@@ -1,0 +1,25 @@
+#version 140
+
+in highp vec4 position;
+in mediump vec3 normal;
+in lowp vec4 color;
+
+uniform model_vp
+{
+    // Use per-draw transforms to bypass the suspected mobile instancing issue.
+    highp mat4 mtx_worldview;
+    highp mat4 mtx_proj;
+    highp mat4 mtx_normal;
+};
+
+out mediump vec3 var_normal;
+out lowp vec4 var_color;
+
+void main()
+{
+    highp vec4 view_position = mtx_worldview * vec4(position.xyz, 1.0);
+    // CONSTANT_TYPE_NORMAL already includes the view transform.
+    var_normal = normalize(mat3(mtx_normal) * normal);
+    var_color = color;
+    gl_Position = mtx_proj * view_position;
+}

@@ -1,0 +1,110 @@
+local CLEAR_COLOR = hash("clear_color")
+local SET_WORLD_CAMERA = hash("set_world_camera")
+local CLEAR_WORLD_CAMERA = hash("clear_world_camera")
+local CAMERA = { use_frustum = true }
+local DRAW = {}
+local IDENTITY = vmath.matrix4()
+
+local function resize(self)
+	local width = render.get_window_width()
+	local height = render.get_window_height()
+	if width == self.width and height == self.height then
+		return
+	end
+	self.width = width
+	self.height = height
+	self.ready = self.width > 0 and self.height > 0
+	if self.ready then
+		self.gui_projection = vmath.matrix4_orthographic(0, self.width, 0, self.height, -1, 1)
+	end
+end
+
+local function find_world_camera()
+	local cameras = camera.get_cameras()
+	for index = #cameras, 1, -1 do
+		local url = cameras[index]
+		if camera.get_enabled(url) then
+			return url
+		end
+	end
+end
+
+function init(self)
+	self.predicates = {
+		background = render.predicate({ "background" }),
+		model = render.predicate({ "model" }),
+		particle = render.predicate({ "particle" }),
+		tile = render.predicate({ "tile" }),
+		gui = render.predicate({ "gui" }),
+		debug_text = render.predicate({ "debug_text" }),
+	}
+	self.clear = {
+		[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(0.0196, 0.0275, 0.098, 1),
+		[graphics.BUFFER_TYPE_DEPTH_BIT] = 1,
+		[graphics.BUFFER_TYPE_STENCIL_BIT] = 0,
+	}
+	self.world_camera = find_world_camera()
+	self.width = -1
+	self.height = -1
+	resize(self)
+end
+
+function update(self)
+	resize(self)
+	if not self.ready then
+		return
+	end
+
+	local p = self.predicates
+	render.set_depth_mask(true)
+	render.set_stencil_mask(0xff)
+	render.clear(self.clear)
+	render.set_viewport(0, 0, self.width, self.height)
+
+	if self.world_camera then
+		render.set_camera(self.world_camera, CAMERA)
+		render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+		render.disable_state(graphics.STATE_DEPTH_TEST)
+		render.disable_state(graphics.STATE_CULL_FACE)
+		render.draw(p.background, DRAW)
+
+		render.enable_state(graphics.STATE_DEPTH_TEST)
+		render.enable_state(graphics.STATE_CULL_FACE)
+		render.draw(p.model, DRAW)
+		render.set_depth_mask(false)
+		render.disable_state(graphics.STATE_CULL_FACE)
+
+		render.enable_state(graphics.STATE_BLEND)
+		render.draw(p.tile, DRAW)
+		render.draw(p.particle, DRAW)
+		render.disable_state(graphics.STATE_DEPTH_TEST)
+		render.draw_debug3d()
+
+		render.set_camera()
+	end
+
+	-- The world path establishes these states before GUI in normal play.
+	-- Set them explicitly so persistent overlays also draw during screen changes with no registered world camera.
+	render.set_depth_mask(false)
+	render.disable_state(graphics.STATE_DEPTH_TEST)
+	render.disable_state(graphics.STATE_CULL_FACE)
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_blend_func(graphics.BLEND_FACTOR_ONE, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+	render.set_view(IDENTITY)
+	render.set_projection(self.gui_projection)
+	render.enable_state(graphics.STATE_STENCIL_TEST)
+	render.draw(p.gui)
+	render.draw(p.debug_text)
+	render.disable_state(graphics.STATE_STENCIL_TEST)
+	render.disable_state(graphics.STATE_BLEND)
+end
+
+function on_message(self, message_id, message)
+	if message_id == CLEAR_COLOR and message.color then
+		self.clear[graphics.BUFFER_TYPE_COLOR0_BIT] = message.color
+	elseif message_id == SET_WORLD_CAMERA and message.camera then
+		self.world_camera = message.camera
+	elseif message_id == CLEAR_WORLD_CAMERA and self.world_camera == message.camera then
+		self.world_camera = nil
+	end
+end

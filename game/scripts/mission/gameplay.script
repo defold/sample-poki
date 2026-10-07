@@ -1,0 +1,195 @@
+local addresses = require("common.addresses")
+local monarch = require("monarch.monarch")
+local mission_state = require("game.modules.rules.mission_state")
+local combat_runtime = require("game.modules.mission.combat_runtime")
+local player_input = require("game.modules.player.player_input")
+local player_movement = require("game.modules.player.player_movement")
+local run_flow = require("game.modules.mission.run_flow")
+local feedback_events = require("game.modules.mission.presentation.feedback_events")
+local world_visuals = require("game.modules.world.world_visuals")
+local view_config = require("game.modules.mission.presentation.view_config")
+local client = require("common.audio.client")
+local ad_state = require("common.ad_state")
+
+local APP_URL = addresses.APP_CONTROLLER
+local HUD_URL = addresses.GAMEPLAY_HUD
+local SCREEN_GAMEPLAY = addresses.SCREEN_GAMEPLAY
+
+local function set_ambient_effects(is_playing)
+	msg.post("/ambient_vfx#autoplay_particlefx", "set_playing",
+		{ playing = is_playing == true })
+end
+
+local function publish_state(self)
+	local boss_health, boss_max_health
+	for _, actor in ipairs(self.actors) do
+		if actor.kind == "boss" and actor.is_active and actor.is_alive then
+			boss_health, boss_max_health = actor.hp, actor.max_hp
+			break
+		end
+	end
+	msg.post(HUD_URL, "hud_state", {
+		level = self.state.level_id,
+		health = self.state.health,
+		max_health = self.state.max_health,
+		ammo = self.state.ammo,
+		max_ammo = self.state.max_ammo,
+		objectives = mission_state.objective_counters(self.state),
+		boss_health = boss_health,
+		boss_max_health = boss_max_health,
+	})
+end
+
+local function set_engine_playing(self, is_playing)
+	set_ambient_effects(is_playing)
+	if self.is_engine_audio_playing == is_playing then return end
+	self.is_engine_audio_playing = is_playing
+	feedback_events.engine_changed:trigger({ is_playing = is_playing })
+end
+
+local TRIGGER_EVENT = hash("trigger_event")
+
+local function on_physics_event(self, events)
+	for _, event in ipairs(events) do
+		if event.type == TRIGGER_EVENT and event.enter then
+			combat_runtime.on_trigger_enter(self, event.a, event.b)
+		end
+	end
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.bank = nil
+	player_input.init_pointer_guards(self)
+	self.is_engine_audio_playing = false
+	local screen_data = monarch.data(SCREEN_GAMEPLAY)
+	msg.post(HUD_URL, "hud_session", {
+		input_mode = screen_data and screen_data.input_mode or "",
+		device_category = screen_data and screen_data.device_category or "desktop",
+	})
+	local run = screen_data and screen_data.run or run_flow.default_run()
+	world_visuals.new("#planet_factory")
+	combat_runtime.init_objects(self)
+	physics.set_event_listener(on_physics_event)
+	-- Let mission modules publish HUD updates and toggle engine effects through the controller.
+	self.publish_hud_state = publish_state
+	self.set_engine_playing = set_engine_playing
+	player_input.init(self, screen_data)
+	run_flow.reset_run(self, run)
+	msg.post("/player#autoplay_particlefx", "set_playing", { playing = true })
+	-- Other collection components subscribe during their own init().
+	msg.post("#", "announce_ready")
+end
+
+function final(self)
+	player_input.detach(self)
+	physics.set_event_listener(nil)
+	combat_runtime.clear_objects(self)
+end
+
+function fixed_update(self, dt)
+	if self.phase ~= view_config.PHASE_PLAYING or not self.is_playing or player_input.is_blocked(self) then
+		return
+	end
+
+	mission_state.tick(self.state, dt)
+	combat_runtime.activate_due_spawns(self)
+	combat_runtime.activate_due_pickups(self)
+	player_movement.update_movement(self, dt)
+	combat_runtime.update_actors(self)
+	combat_runtime.update_fire(self, dt)
+	run_flow.finish_if_needed(self)
+end
+
+function late_update(self, dt)
+	player_input.finish_frame(self)
+end
+
+function on_input(self, action_id, action)
+	if ad_state.is_busy() then
+		player_input.reset_controls(self)
+		return true
+	end
+	if action and action.pressed then
+		client.gesture()
+	end
+	local result = player_input.process(self, action_id, action)
+	if result == "reset_save" then
+		msg.post(HUD_URL, "toggle_touch_controls")
+		return true
+	elseif result == "pause" then
+		msg.post(APP_URL, "pause_requested")
+		return true
+	elseif result == "pause_locked" then
+		msg.post(APP_URL, "pause_requested", { source = "gameplay_locked" })
+		return true
+	elseif result == "pass" then
+		return false
+	elseif result == "fire" then
+		combat_runtime.try_fire(self)
+		return true
+	end
+	return true
+end
+
+local HANDLERS = {
+	[hash("announce_ready")] = function(self)
+		self.is_feedback_ready = true
+		feedback_events.run_reset:trigger({ ship_id = self.run.ship_stats.id or "scout" })
+		feedback_events.engine_changed:trigger({ is_playing = self.is_engine_audio_playing })
+		self:publish_hud_state()
+		msg.post(APP_URL, "screen_ready", {
+			screen = "gameplay",
+			run_id = self.run.run_id,
+		})
+	end,
+	[hash("device_category")] = function(self, message)
+		self.device_category = message.category
+		msg.post(HUD_URL, "device_category", { category = message.category })
+	end,
+	[hash("input_mode")] = function(self, message)
+		self.input_mode = message.mode or self.input_mode
+	end,
+	[hash("virtual_controls")] = function(self, message)
+		self.is_virtual_controls_visible = message.visible == true
+		if self.is_virtual_controls_visible then
+			self.is_pointer_down = false
+			self.is_pointer_steering = false
+			player_input.sample_fire(self, "pointer", false)
+		else
+			self.virtual_axis = 0
+			player_input.sample_fire(self, "virtual", false)
+		end
+	end,
+	[hash("refresh_playback")] = function(self)
+		-- Use the current playback flags because state may have changed since this message was posted.
+		self:set_engine_playing(self.is_playing)
+		msg.post(HUD_URL, "phase", { phase = self.phase, level = self.state.level_id })
+		self:publish_hud_state()
+	end,
+	[hash("apply_rescue")] = function(self, message)
+		run_flow.apply_rescue(self, message)
+	end,
+	[hash("reset_run")] = function(self, message)
+		run_flow.reset_run(self, {
+			run_id = message.run_id,
+			level_id = message.level_id,
+			seed = message.seed,
+			ship_stats = {
+				id = "scout",
+				health = message.health,
+				ammo = message.ammo,
+				damage = message.damage,
+				fire_cooldown = message.fire_cooldown,
+				move_speed = message.move_speed,
+			},
+		})
+	end,
+}
+
+function on_message(self, message_id, message)
+	local handler = HANDLERS[message_id]
+	if handler then
+		handler(self, message)
+	end
+end

@@ -1,0 +1,6 @@
+mesh: "/assets/models/projectile.gltf"
+name: "{{NAME}}"
+materials {
+  name: "projectile"
+  material: "/render/projectile_unlit.material"
+}

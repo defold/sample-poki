@@ -1,0 +1,44 @@
+-- Keep downloaded collections loaded and select the fallback font for the current language.
+local languages = require("game.modules.content.languages")
+local lang = require("lang.lang")
+local FONTS = {
+	fa = hash("/assets/fonts/NotoSansArabic-Regular.ttf"),
+	cyrillic = hash("/assets/fonts/NotoSans-Cyrillic.ttf"),
+	cjk = hash("/assets/fonts/NotoSansCJK.ttf"),
+}
+
+local function sync(self)
+	local wanted = languages.font_asset_id(self.language)
+	if wanted and not self.ready[wanted] then wanted = nil end
+	if self.attached == wanted then return end
+	local text = {}
+	for _, value in pairs(languages.translations(self.language) or {}) do text[#text + 1] = value end
+	for _, name in ipairs({ "title", "body" }) do
+		local resource = gui.get_font_resource(hash(name))
+		if self.attached then font.remove_font(resource, FONTS[self.attached]) end
+		if wanted then
+			font.add_font(resource, FONTS[wanted])
+			font.prewarm_text(resource, table.concat(text, " "), function() end)
+		end
+	end
+	self.attached = wanted
+end
+
+function init(self)
+	self.ready = {}
+	self.language = lang.get_lang() or "en"
+end
+
+function final(self)
+	self.language = "en"
+	sync(self)
+end
+
+function on_message(self, id, message)
+	if id == hash("language_changed") then
+		self.language = message.language
+	elseif id == hash("font_pack_ready") then
+		self.ready[message.pack] = true
+	else return end
+	sync(self)
+end

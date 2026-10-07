@@ -1,0 +1,19 @@
+name: "gameplay"
+scale_along_z: 1
+instances {
+  id: "sky"
+  prototype: "/game/objects/world/sky.go"
+}
+instances {
+  id: "ambient_vfx"
+  prototype: "/game/objects/world/ambient_vfx.go"
+}
+instances {
+  id: "player"
+  prototype: "/game/objects/player/player.go"
+  position { z: 2 }
+  scale3 { x: 1.55 y: 1.55 z: 1.55 }
+}
+instances { id: "camera" prototype: "/game/objects/mission/camera/camera.go" }
+instances { id: "controller" prototype: "/game/objects/mission/controller.go" }
+instances { id: "ui" prototype: "/game/objects/mission/ui.go" }

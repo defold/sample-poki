@@ -1,0 +1,71 @@
+local addresses = require("common.addresses")
+-- Mothership screen preview and lifecycle handling
+local monarch = require("monarch.monarch")
+local ship_visual = require("game.modules.player.ship_visual")
+
+local APP_URL = addresses.APP_CONTROLLER
+local GUI_URL = "/ui#mothership"
+local PREVIEW_URL = "/preview"
+local SCREEN_MOTHERSHIP = addresses.SCREEN_MOTHERSHIP
+local PREVIEW_SCALE = { scout = 1.0, interceptor = 0.92, comet = 1.08 }
+
+local function apply_preview_layout(self, width, height)
+	local is_portrait = height > width
+	-- Center the landscape preview vertically in the left-hand area.
+	self.preview_position.x = is_portrait and 0 or -7.3
+	self.preview_position.y = is_portrait and 1.4 or 0
+	self.preview_position.z = 0
+	go.set_position(self.preview_position, PREVIEW_URL)
+	local scale = is_portrait and (height < 650 and 1.28 or 1.85)
+		or 1.55
+	if not is_portrait then scale = scale * 1.08 end
+	-- Account for the different sizes of the ship models.
+	scale = scale * (PREVIEW_SCALE[self.preview_ship] or 1)
+	go.set_scale(vmath.vector3(scale, scale, scale), PREVIEW_URL)
+end
+
+local function select_preview(self, ship_id, skin_id)
+	self.preview_ship = ship_id or self.preview_ship or "scout"
+	self.preview_skin = skin_id or self.preview_skin or "standard"
+	ship_visual.apply(PREVIEW_URL, self.preview_ship, self.preview_skin)
+	-- Clear gameplay damage effects from the ship preview.
+	ship_visual.reset_damage(PREVIEW_URL)
+	apply_preview_layout(self, self.width, self.height)
+end
+
+function init(self)
+	self.preview_position = vmath.vector3()
+	self.preview_ship = "scout"
+	self.preview_skin = "standard"
+	self.rotation = 0
+	self.width, self.height = window.get_size()
+	apply_preview_layout(self, self.width, self.height)
+	-- Monarch passes the profile selected for this screen through its data payload.
+	local data = monarch.data(SCREEN_MOTHERSHIP) or {}
+	local profile = data.profile or {}
+	select_preview(self, profile.equipped_ship, profile.equipped_skin)
+	msg.post(GUI_URL, "mothership_state", data)
+	msg.post(GUI_URL, "viewport_resized", { width = self.width, height = self.height })
+	-- Report readiness after this object's init has finished.
+	msg.post("#", "announce_ready")
+end
+
+function update(self, dt)
+	self.rotation = (self.rotation + dt * 0.42) % (math.pi * 2)
+	go.set_rotation(vmath.quat_rotation_y(self.rotation), PREVIEW_URL)
+end
+
+function on_message(self, message_id, message)
+	if message_id == hash("announce_ready") then
+		msg.post(APP_URL, "screen_ready", { screen = "mothership", phase = "MOTHERSHIP" })
+	elseif message_id == hash("preview_selection") then
+		-- The GUI chooses the ship and this script updates its 3D preview.
+		select_preview(self, message.ship_id, message.skin_id)
+	elseif message_id == hash("viewport_resized") then
+		self.width, self.height = message.width, message.height
+		apply_preview_layout(self, self.width, self.height)
+		-- Resize the preview camera and GUI along with the model layout.
+		msg.post("/camera#camera_controller", message_id, message)
+		msg.post(GUI_URL, "viewport_resized", message)
+	end
+end

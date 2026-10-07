@@ -1,0 +1,95 @@
+local addresses = require("common.addresses")
+local monarch = require("monarch.monarch")
+local button = require("ui.templates.button")
+local colors = require("ui.colors")
+local actions = require("common.input.actions")
+local popup = require("ui.popup")
+local screen_input = require("ui.screen_input")
+
+local APP_URL = addresses.APP_CONTROLLER
+local SCREEN = addresses.SCREEN_RESULT_POPUP
+
+local function refresh(self)
+	local is_successful = self.status == "complete"
+	self.title_text:translate(self.title_key or (is_successful and "result_complete" or "result_fail"))
+	gui.set_color(gui.get_node("title"), is_successful and colors.success or colors.fail)
+	local detail = is_successful and "result_complete_detail"
+		or self.status == "fail_ammo" and "result_fail_ammo"
+		or self.status == "fail_objective" and "result_fail_objective" or "result_fail_health"
+	self.detail_text:translate(self.detail_key or detail)
+	self.continue_button:set_lang(is_successful and "result_continue" or "result_retry")
+		:set_key_trigger(actions.cancel)
+		:set_input_prompt("cancel", self.input_mode)
+		:set_color(colors.primary)
+	self.reward_button:set_lang("rewarded_revive"):set_input_prompt("rewarded", self.input_mode)
+		:set_color(colors.rewarded):set_left_icon(hash("video"))
+	self.reward_button:set_visible(self.is_rescue_available):set_enabled(self.is_rescue_available)
+end
+
+local function apply_data(self, data)
+	self.status, self.run_id = data.status or "fail_health", data.run_id
+	self.is_rescue_available, self.rescue_kind = data.rescue_available == true, data.rescue_kind or ""
+	self.title_key, self.detail_key = data.title_key, data.detail_key
+end
+
+local function continue(self)
+	self.continue_button:set_enabled(false)
+	self.reward_button:set_enabled(false)
+	msg.post(APP_URL, "result_continue", { source = "result_popup" })
+end
+
+local function reward(self)
+	if not self.is_rescue_available then return end
+	self.continue_button:cancel_press()
+	msg.post(APP_URL, "rewarded_offer_opened", {
+		run_id = self.run_id, kind = self.rescue_kind, source = "result_popup",
+	})
+end
+
+function init(self)
+	local data = popup.setup(self, {
+		screen = SCREEN, name = "result_popup",
+		title = "title", detail = "detail", blocker = "blocker/fill",
+		refresh = refresh, on_reset = function() msg.post(addresses.APP_CONTROLLER, "reset_save_requested") end,
+	})
+	apply_data(self, data)
+	self.confetti = gui.get_node("confetti")
+	self.continue_button = self.druid:new_widget(button, "continue_button", nil, continue)
+	self.reward_button = self.druid:new_widget(button, "reward_button", nil, reward)
+	self.reward_button:set_key_trigger(actions.rewarded)
+	popup.watch_focus(self, SCREEN, { self.continue_button, self.reward_button }, function(self, current)
+		apply_data(self, current)
+		self.continue_button:set_enabled(true)
+	end)
+	-- Start once per opening, never on focus regained from another popup.
+	monarch.on_transition(SCREEN, function(id, message, sender)
+		if id == monarch.TRANSITION_SHOW_IN then
+			local current = monarch.data(SCREEN) or {}
+			screen_input.restore(self, current)
+			apply_data(self, current)
+			self.continue_button:set_enabled(true)
+			refresh(self)
+			gui.stop_particlefx(self.confetti, { clear = true })
+			if self.status == "complete" then gui.play_particlefx(self.confetti) end
+		elseif id == monarch.TRANSITION_SHOW_OUT or id == monarch.TRANSITION_BACK_OUT then
+			gui.stop_particlefx(self.confetti, { clear = true })
+		end
+		self.motion:handle(id, message, sender)
+	end)
+	refresh(self)
+	popup.acquire()
+end
+
+final = popup.final
+update = popup.update
+function on_message(self, id, message, sender)
+	popup.on_message(self, id, message, sender)
+	if (id == hash("rewarded_failed") or id == hash("result_continue_failed")) and self.druid then
+		self.continue_button:set_enabled(true)
+		self.reward_button:set_enabled(self.is_rescue_available)
+		refresh(self)
+	end
+	-- Layout changes reset the rescue button's visibility.
+	if id == hash("layout_changed") and self.druid and self.title_text then refresh(self) end
+end
+on_input = popup.on_input

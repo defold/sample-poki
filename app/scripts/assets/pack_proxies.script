@@ -1,0 +1,12 @@
+-- Configure owner on the game object.
+-- All pack proxies share this script.
+go.property("owner", msg.url())
+
+function on_message(self, id, message, sender)
+	if id == hash("load_pack") then
+		msg.post(message.proxy, "async_load")
+	elseif id == hash("proxy_loaded") then
+		msg.post(sender, "enable")
+		msg.post(self.owner, "pack_loaded", { proxy = sender })
+	end
+end

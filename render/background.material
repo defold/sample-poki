@@ -1,0 +1,7 @@
+name: "background"
+tags: "background"
+vertex_program: "/render/background.vp"
+fragment_program: "/render/background.fp"
+vertex_space: VERTEX_SPACE_LOCAL
+vertex_constants { name: "mtx_worldview" type: CONSTANT_TYPE_WORLDVIEW }
+vertex_constants { name: "mtx_proj" type: CONSTANT_TYPE_PROJECTION }

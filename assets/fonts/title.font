@@ -1,0 +1,7 @@
+font: "/assets/fonts/Oxanium-SemiBold.ttf"
+material: "/builtins/fonts/font-df.material"
+size: 38
+outline_alpha: 0.65
+outline_width: 1.2
+output_format: TYPE_DISTANCE_FIELD
+characters: " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\303\201\303\202\303\203\303\204\303\207\303\210\303\211\303\212\303\215\303\216\303\221\303\223\303\226\303\231\303\232\303\234\303\241\303\250\303\251\303\263\303\272\303\274\304\204\304\205\304\206\304\207\304\230\304\231\305\201\305\202\305\203\305\204\305\232\305\233\305\271\305\272\305\273\305\274\342\200\224"

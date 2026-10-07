@@ -1,0 +1,66 @@
+platforms:
+    arm64-ios:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    armv7-android:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    arm64-android:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    arm64-osx:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    x86_64-osx:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    x86_64-linux:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    arm64-linux:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    x86-win32:
+        context:
+            excludeLibs: [physics, libbox2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    x86_64-win32:
+        context:
+            excludeLibs: [physics, libbox2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    wasm-web:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    wasm_pthread-web:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    armv7-ios:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]
+    x86_64-ios:
+        context:
+            excludeLibs: [physics, box2d_defold, script_box2d_defold, record, vpx, decoder_wav, image, font]
+            excludeSymbols: [ScriptBox2DExt, AudioDecoderWav, ResourceTypeWav, ScriptImageExt]
+            libs: [physics_3d, record_null, image_null, font_skribidi, harfbuzz, sheenbidi, unibreak, skribidi]

@@ -1,0 +1,228 @@
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  size {
+    x: 420.0
+    y: 56.0
+  }
+  type: TYPE_BOX
+  id: "row"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 420.0
+    y: 56.0
+  }
+  color {
+    x: 0.04
+    y: 0.11
+    z: 0.24
+  }
+  type: TYPE_BOX
+  id: "panel"
+  parent: "row"
+  inherit_alpha: true
+  alpha: 0.96
+  visible: false
+}
+nodes {
+  position {
+    y: 1.0
+  }
+  scale {
+    x: 0.15
+    y: 0.15
+  }
+  size {
+    x: 2800.0
+    y: 400.0
+  }
+  color {
+    x: 0.04
+    y: 0.11
+    z: 0.24
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "background"
+  parent: "panel"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+  alpha: 0.96
+}
+nodes {
+  position {
+    x: -190.0
+    y: 11.0
+  }
+  size {
+    x: 175.0
+    y: 30.0
+  }
+  color {
+    x: 0.96
+    y: 0.98
+  }
+  type: TYPE_TEXT
+  text: "DAMAGE"
+  font: "body"
+  id: "name"
+  pivot: PIVOT_W
+  parent: "row"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -190.0
+    y: -13.0
+  }
+  size {
+    x: 165.0
+    y: 25.0
+  }
+  color {
+    x: 0.52
+    y: 0.72
+    z: 0.88
+  }
+  type: TYPE_TEXT
+  text: "LV 0"
+  font: "body"
+  id: "level"
+  pivot: PIVOT_W
+  parent: "row"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 140.0
+  }
+  size {
+    x: 110.0
+    y: 30.0
+  }
+  color {
+    y: 0.78
+    z: 0.2
+  }
+  type: TYPE_TEXT
+  text: "80"
+  font: "body"
+  id: "price"
+  pivot: PIVOT_E
+  parent: "row"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 180.0
+  }
+  type: TYPE_TEMPLATE
+  id: "plus"
+  parent: "row"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  id: "plus/button"
+  parent: "plus"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 350.0
+    y: 350.0
+  }
+  type: TYPE_BOX
+  id: "plus/background"
+  parent: "plus/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "plus/content"
+  parent: "plus/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "plus/icon_left"
+  parent: "plus/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -12.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  id: "plus/icon_right"
+  parent: "plus/content"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+nodes {
+  size {
+    x: 40.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "+"
+  font: "body"
+  id: "plus/text"
+  parent: "plus/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 10
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+layers {
+  name: "button_bg"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "button_text"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

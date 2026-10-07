@@ -1,0 +1,20 @@
+function init(self)
+	self.is_playing = false
+	particlefx.stop("#particlefx", { clear = true })
+end
+
+function final(self)
+	particlefx.stop("#particlefx", { clear = true })
+end
+
+function on_message(self, message_id, message)
+	if message_id ~= hash("set_playing") then return end
+	local is_playing = message.playing == true
+	if is_playing == self.is_playing then return end
+	self.is_playing = is_playing
+	if is_playing then
+		particlefx.play("#particlefx")
+	else
+		particlefx.stop("#particlefx", { clear = true })
+	end
+end

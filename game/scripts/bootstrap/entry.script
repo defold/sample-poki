@@ -1,0 +1,6 @@
+-- Attach the game to the reusable app host.
+local entry = require("game.modules.bootstrap.entry")
+
+function init(self)
+	entry.init(self)
+end

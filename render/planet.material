@@ -1,0 +1,23 @@
+name: "planet"
+tags: "model"
+vertex_program: "/render/planet.vp"
+fragment_program: "/render/planet.fp"
+vertex_space: VERTEX_SPACE_LOCAL
+vertex_constants { name: "mtx_view" type: CONSTANT_TYPE_VIEW }
+vertex_constants { name: "mtx_proj" type: CONSTANT_TYPE_PROJECTION }
+attributes {
+  name: "planet_tint"
+  semantic_type: SEMANTIC_TYPE_COLOR
+  coordinate_space: COORDINATE_SPACE_LOCAL
+  vector_type: VECTOR_TYPE_VEC4
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  double_values { v: 0.20 v: 0.58 v: 0.96 v: 1.0 }
+}
+attributes {
+  name: "planet_bands"
+  semantic_type: SEMANTIC_TYPE_NONE
+  coordinate_space: COORDINATE_SPACE_LOCAL
+  vector_type: VECTOR_TYPE_VEC4
+  step_function: VERTEX_STEP_FUNCTION_INSTANCE
+  double_values { v: 4.0 v: 0.28 v: 0.0 v: 1.4 }
+}

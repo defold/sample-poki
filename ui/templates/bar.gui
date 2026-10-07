@@ -1,0 +1,59 @@
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  size {
+    x: 216.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  id: "bar"
+  pivot: PIVOT_W
+  visible: false
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 216.0
+    y: 32.0
+  }
+  color {
+    x: 0.015
+    y: 0.025
+    z: 0.065
+  }
+  type: TYPE_BOX
+  texture: "ui/bar_red"
+  id: "back"
+  pivot: PIVOT_W
+  parent: "bar"
+  slice9 {
+    x: 16.0
+    y: 16.0
+    z: 16.0
+    w: 16.0
+  }
+  alpha: 0.92
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 216.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  texture: "ui/bar_red"
+  id: "fill"
+  pivot: PIVOT_W
+  parent: "back"
+  slice9 {
+    x: 16.0
+    y: 16.0
+    z: 16.0
+    w: 16.0
+  }
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

@@ -1,0 +1,10 @@
+mesh: "/assets/models/barrel.glb"
+name: "{{NAME}}"
+materials {
+  name: "metal"
+  material: "/render/model_metal.material"
+}
+materials {
+  name: "metalRed"
+  material: "/render/model_accent.material"
+}

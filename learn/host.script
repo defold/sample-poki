@@ -1,0 +1,36 @@
+local app_context = require("common.app_context")
+local flow = require("learn.flow")
+local monarch = require("monarch.monarch")
+
+local function context_changed(self, snapshot)
+	flow.on_snapshot(self, snapshot)
+	msg.post("#learn", "tips_chrome", {
+		blocked = snapshot.is_blocked or snapshot.is_ad_busy,
+		category = snapshot.device_category, mode = snapshot.input_mode,
+	})
+end
+
+function init(self)
+	app_context.changed:subscribe(context_changed, self)
+	monarch.add_listener(msg.url())
+	-- The screen proxies register during init.
+	-- Send new `context` message to change context after all inits are called.
+	msg.post("#", "context")
+end
+
+function final(self)
+	app_context.changed:unsubscribe(context_changed, self)
+	monarch.remove_listener(msg.url())
+end
+
+function on_message(self, id, message)
+	if id == hash("context") then context_changed(self, app_context.get())
+	elseif id == hash("toggle") then flow.toggle(self)
+	elseif id == hash("hide") then flow.hide(self)
+	elseif id == monarch.SCREEN_TRANSITION_IN_FINISHED and message.screen == hash("learn_popup") then
+		flow.set_popup_ready(self, true)
+	elseif id == monarch.SCREEN_TRANSITION_OUT_FINISHED and message.screen == hash("learn_popup") then
+		flow.set_popup_ready(self, false)
+		self.is_open = false
+	end
+end

@@ -1,0 +1,624 @@
+script: "/game/scripts/screens/popups/reward_confirm.gui_script"
+fonts {
+  name: "title"
+  font: "/assets/fonts/title.font"
+}
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "C_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "blocker"
+  parent: "C_Anchor"
+  inherit_alpha: true
+  template: "/ui/templates/popup_dim.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "blocker/fill"
+  parent: "blocker"
+  layer: "button_bg"
+  overridden_fields: 20
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "popup_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "C_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 420.0
+    y: 300.0
+  }
+  color {
+    x: 0.035
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "panel"
+  parent: "popup_motion"
+  layer: "button_bg"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "panel_background"
+  parent: "panel"
+  inherit_alpha: true
+  template: "/ui/templates/popup_panel.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "panel_background/fill"
+  parent: "panel_background"
+  layer: "button_bg"
+  overridden_fields: 20
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 102.5
+  }
+  size {
+    x: 380.0
+    y: 38.0
+  }
+  color {
+    x: 0.25
+    y: 0.82
+  }
+  type: TYPE_TEXT
+  text: "REVIVE THIS RUN?"
+  font: "title"
+  id: "title"
+  parent: "panel"
+  layer: "text_title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 48.5
+  }
+  size {
+    x: 370.0
+    y: 48.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "WATCH A VIDEO TO CONTINUE"
+  font: "body"
+  id: "detail"
+  line_break: true
+  parent: "panel"
+  layer: "text_body"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -95.5
+  }
+  type: TYPE_TEMPLATE
+  id: "watch_button"
+  parent: "panel"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 290.0
+    y: 64.0
+  }
+  type: TYPE_BOX
+  id: "watch_button/button"
+  parent: "watch_button"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2320.0
+    y: 512.0
+  }
+  color {
+    x: 0.64
+    y: 0.32
+    z: 0.92
+  }
+  type: TYPE_BOX
+  id: "watch_button/background"
+  parent: "watch_button/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  overridden_fields: 5
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "watch_button/content"
+  parent: "watch_button/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -117.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "watch_button/icon_left"
+  parent: "watch_button/content"
+  overridden_fields: 1
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 117.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "watch_button/icon_right"
+  parent: "watch_button/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 186.0
+    y: 52.0
+  }
+  type: TYPE_TEXT
+  text: "WATCH VIDEO"
+  id: "watch_button/text"
+  parent: "watch_button/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -15.5
+  }
+  type: TYPE_TEMPLATE
+  id: "cancel_button"
+  parent: "panel"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 290.0
+    y: 64.0
+  }
+  type: TYPE_BOX
+  id: "cancel_button/button"
+  parent: "cancel_button"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2320.0
+    y: 512.0
+  }
+  color {
+    x: 0.22
+    y: 0.29
+    z: 0.42
+  }
+  type: TYPE_BOX
+  id: "cancel_button/background"
+  parent: "cancel_button/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  overridden_fields: 5
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "cancel_button/content"
+  parent: "cancel_button/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -97.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "cancel_button/icon_left"
+  parent: "cancel_button/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 97.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_escape"
+  id: "cancel_button/icon_right"
+  parent: "cancel_button/content"
+  overridden_fields: 1
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -12.0
+  }
+  size {
+    x: 178.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "NOT NOW"
+  id: "cancel_button/text"
+  parent: "cancel_button/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+layers {
+  name: "button_bg"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "button_text"
+}
+layers {
+  name: "text_body"
+}
+layers {
+  name: "text_title"
+}
+material: "/builtins/materials/gui.material"
+layouts {
+  name: "Landscape"
+  nodes {
+    type: TYPE_BOX
+    id: "popup_motion"
+    parent: "C_Anchor"
+    overridden_fields: 3
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "watch_button/content"
+    parent: "watch_button/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "cancel_button/content"
+    parent: "cancel_button/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+}
+layouts {
+  name: "Portrait"
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "C_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "blocker/fill"
+    parent: "blocker"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "popup_motion"
+    parent: "C_Anchor"
+    overridden_fields: 3
+  }
+  nodes {
+    size {
+      x: 430.0
+      y: 330.0
+    }
+    type: TYPE_BOX
+    id: "panel"
+    parent: "popup_motion"
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "watch_button/content"
+    parent: "watch_button/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "cancel_button/content"
+    parent: "cancel_button/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "N_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "S_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+    }
+    type: TYPE_BOX
+    id: "W_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+    }
+    type: TYPE_BOX
+    id: "E_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+}
+adjust_reference: ADJUST_REFERENCE_PARENT
+max_nodes: 64
