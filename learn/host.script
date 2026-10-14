@@ -1,5 +1,6 @@
 local app_context = require("common.app_context")
 local flow = require("learn.flow")
+local tips = require("learn.tips")
 local monarch = require("monarch.monarch")
 
 local function context_changed(self, snapshot)
@@ -7,6 +8,7 @@ local function context_changed(self, snapshot)
 	msg.post("#learn", "tips_chrome", {
 		blocked = snapshot.is_blocked or snapshot.is_ad_busy,
 		category = snapshot.device_category, mode = snapshot.input_mode,
+		tip_id = tips.context(snapshot) or "",
 	})
 end
 

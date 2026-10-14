@@ -3,6 +3,25 @@
 -- Defold Foundation 2026
 local M = {}
 
+local CONTEXT_LABELS = {
+	first_contact = "Start",
+	gameplay = "Gameplay",
+	pause = "Pause",
+	resume = "Resume",
+	focus = "Focus",
+	mothership = "Shop",
+	ads = "Ad",
+	result = "Result",
+	fail = "Retry",
+}
+
+---Read the short label shown beside the persistent Poki guide button.
+---@param id string|nil
+---@return string|nil
+function M.label(id)
+	return CONTEXT_LABELS[id]
+end
+
 M.TIPS = {
 	first_contact = {
 		{
@@ -77,7 +96,7 @@ M.TIPS = {
 		},
 		{
 			title = "Orientations",
-			body = "A device orientation may be changed. Use Defold `Landscape` and `Portrait` layouts instead of stretching the screen.\n\nKeep the game rules the same unless your design truly needs a different mode for vertical or horizontal layout. Usually only the camera framing and UI should change.\n\nCheck that players can read the text, see meter values, and identify buttons in both orientations.",
+			body = "Use Defold GUI Layouts to adapt your GUI for portrait and landscape orientations instead of stretching the same layout. This sample uses GUI layouts named `Portrait` and `Landscape`. Adjust camera framing separately.\n\nKeep the game rules the same in both orientations unless your design needs a different mode.\n\nCheck that players can read text, see meter values, and identify buttons in both orientations.",
 		},
 		{
 			title = "Poki Pill",
@@ -94,6 +113,14 @@ M.TIPS = {
 		{
 			title = "Pausing game",
 			body = "Pause the game before a pause popup, focus loss, an ad break, or a result screen. If the player cannot control the game, stop the simulation unless automatic progress is part of the design, as in idle games.\n\nAn ad is especially important: stop gameplay before requesting it and do not send lifecycle or measurement events during the ad.",
+		},
+		{
+			title = "Poki Game Events",
+			body = "Use `measure(category, what, action)` to track meaningful player progress and interactions. In this sample, call `poki_service.measure`.\n\nFor example: `measure(\"level\", \"mission_01\", \"start\")`. Reuse that mission ID for `complete` or `fail`. Send one final outcome per attempt."
+		},
+		{
+			title = "Events Analytics",
+			body = "For offers and buttons, send `visible` when shown and `interact` when selected. Compare progress and usage in Poki for Developers to find drop-off and unclear features. Ad playback is tracked automatically. Do not send measurements during ads.",
 		},
 		{
 			title = "Web build",
@@ -181,7 +208,7 @@ M.TIPS = {
 		},
 		{
 			title = "Commercial break",
-			body = "Offer a commercial break at a natural return to play, such as Continue or Retry between missions or Resume from a pause. Keep gameplay stopped until the break finishes; Poki decides whether an ad is shown.\n\nThis sample starts offering commercial breaks from mission 5, so earlier missions have no commercial breaks. If no ad is shown, continue normally.",
+			body = "Signal commercial-break opportunities at natural returns to play, including early missions. This sample calls `commercial_break` on Continue from the shop and Resume after active gameplay, without a mission threshold.\n\nPoki decides whether an ad is shown. Keep gameplay paused until the callback, then continue normally even if no ad appears.\n\nSkip the initial entry into the game, and return to play after a rewarded ad without immediately requesting another break.",
 		},
 		{
 			title = "Saving",

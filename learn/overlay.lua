@@ -1,14 +1,17 @@
 -- Persistent Poki-logo toggle for the sample learn popup.
 -- Lives on the overlay GO and sends toggle messages to app.
 local M = {}
+local tips = require("learn.tips")
 
 local APP_URL = "main:/learn/guide#learn_host"
 local LAYOUT_PORTRAIT = hash("Portrait")
-local BUTTON_DESKTOP = vmath.vector3(-44, 44, 0)
+local BUTTON_DESKTOP = vmath.vector3(-44, 60, 0)
 local BUTTON_MOBILE_LANDSCAPE = vmath.vector3(-44, 220, 0)
 local BUTTON_MOBILE_PORTRAIT = vmath.vector3(-44, 280, 0)
 local PROMPT_KEYBOARD = hash("keyboard_p")
 local PROMPT_GAMEPAD = hash("xbox_button_color_x")
+local LOGO_SIZE = vmath.vector3(56, 56, 0)
+local PULSE_SIZE = vmath.vector3(62, 62, 0)
 
 local function node(id)
 	return gui.get_node(id)
@@ -35,14 +38,38 @@ end
 ---@param self table
 function M.refresh(self)
 	layout_button(self)
-	local is_visible = self.is_blocked ~= true
-	gui.set_enabled(node("poki_learn"), is_visible)
+	local is_visible = self.is_blocked ~= true and tips.label(self.learn_topic) ~= nil
+	local logo = node("poki_learn")
+	gui.set_enabled(logo, is_visible)
+	local label = tips.label(self.learn_topic) or ""
+	gui.set_text(node("poki_learn_context"), label)
+	-- Short topics keep their badge within the icon's width, clear of shop controls.
+	gui.set_size(node("poki_learn_badge"), vmath.vector3(math.max(56, #label * 8 + 16), 24, 0))
+	if not is_visible then
+		gui.cancel_animations(logo, "size")
+		gui.set_size(logo, LOGO_SIZE)
+	elseif self.learn_notified_topic ~= self.learn_topic then
+		self.learn_notified_topic = self.learn_topic
+		-- Size leaves Druid's press/hover scale and the label untouched.
+		gui.cancel_animations(logo, "size")
+		gui.set_size(logo, LOGO_SIZE)
+		gui.animate(logo, "size", PULSE_SIZE, gui.EASING_INOUTSINE, 0.22, 0, nil,
+			gui.PLAYBACK_ONCE_PINGPONG)
+	end
 	local should_show_prompt = is_visible and self.is_learn_mobile ~= true
 	local prompt = node("poki_learn_prompt")
 	gui.set_enabled(prompt, should_show_prompt)
 	if should_show_prompt then
 		gui.play_flipbook(prompt, prompt_animation(self.learn_prompt_mode))
 	end
+end
+
+---Set a Developer Tips topic
+---@param self table
+---@param topic string|nil
+function M.set_context(self, topic)
+	self.learn_topic = topic
+	M.refresh(self)
 end
 
 ---Update the overlay for a new device category.

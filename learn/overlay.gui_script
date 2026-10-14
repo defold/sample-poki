@@ -28,16 +28,22 @@ local function pointer_hits_logo(action)
 	end
 	local logo = node("poki_learn")
 	local prompt = node("poki_learn_prompt")
+	local label = node("poki_learn_badge")
+	if not gui.is_enabled(logo) then return nil end
+	local function hits(x, y)
+		return gui.pick_node(logo, x, y) or gui.pick_node(label, x, y)
+			or (gui.is_enabled(prompt) and gui.pick_node(prompt, x, y))
+	end
 	if action.touch then
 		for index = 1, #action.touch do
 			local touch = action.touch[index]
-			if gui.pick_node(logo, touch.x, touch.y) or gui.pick_node(prompt, touch.x, touch.y) then
+			if hits(touch.x, touch.y) then
 				return touch
 			end
 		end
 		return nil
 	end
-	if gui.pick_node(logo, action.x, action.y) or gui.pick_node(prompt, action.x, action.y) then
+	if hits(action.x, action.y) then
 		return action
 	end
 	return nil
@@ -92,6 +98,7 @@ function on_message(self, message_id, message, sender)
 		claim_input()
 	elseif message_id == hash("tips_chrome") then
 		self.is_blocked = message.blocked == true
+		learn.set_context(self, message.tip_id)
 		if message.category then
 			learn.set_device(self, message.category)
 		end

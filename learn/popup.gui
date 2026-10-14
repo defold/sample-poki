@@ -1,11 +1,11 @@
 script: "/learn/popup.gui_script"
 fonts {
   name: "title"
-  font: "/assets/fonts/title.font"
+  font: "/learn/guide_title.font"
 }
 fonts {
   name: "body"
-  font: "/assets/fonts/body.font"
+  font: "/learn/guide_body.font"
 }
 textures {
   name: "ui"
@@ -112,9 +112,13 @@ nodes {
     x: -414.0
     y: 210.0
   }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
   size {
-    x: 70.0
-    y: 22.0
+    x: 140.0
+    y: 44.0
   }
   color {
     y: 0.78
@@ -135,12 +139,12 @@ nodes {
     y: 210.0
   }
   scale {
-    x: 0.8
-    y: 0.8
+    x: 0.4
+    y: 0.4
   }
   size {
-    x: 600.0
-    y: 40.0
+    x: 1200.0
+    y: 80.0
   }
   color {
     x: 0.145
@@ -367,12 +371,12 @@ nodes {
     y: 35.0
   }
   scale {
-    x: 1.0
-    y: 1.0
+    x: 0.5
+    y: 0.5
   }
   size {
-    x: 828.0
-    y: 300.0
+    x: 1656.0
+    y: 600.0
   }
   type: TYPE_TEXT
   text: "Game loop first. No splash, no menu."
@@ -679,8 +683,8 @@ layouts {
       y: 342.0
     }
     size {
-      x: 565.0
-      y: 40.0
+      x: 1130.0
+      y: 80.0
     }
     type: TYPE_TEXT
     id: "text_title"
@@ -694,12 +698,12 @@ layouts {
       y: 51.0
     }
     scale {
-      x: 1.1
-      y: 1.1
+      x: 0.55
+      y: 0.55
     }
     size {
-      x: 410.0
-      y: 490.0
+      x: 820.0
+      y: 980.0
     }
     type: TYPE_TEXT
     id: "text_detail"
