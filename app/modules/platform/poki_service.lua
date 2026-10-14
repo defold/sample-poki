@@ -1,5 +1,5 @@
 -- Tracks Poki gameplay sessions and ad requests.
--- Converts Poki SDK and Ads Wrapper responses into the same result format.
+-- Uses Poki for gameplay lifecycle and Ads Wrapper for ad requests.
 local M = {}
 
 local ad_state = require("common.ad_state")
@@ -92,11 +92,11 @@ local function init_ads()
 end
 
 local function wrapper_outcome(response)
-	if response and response.result == events.SUCCESS then return M.RESULT_SUCCESS end
 	if response and (response.result == events.ABORT
-		or (response.result == events.ERROR and response.code == events.C_SKIPPED)) then
+		or response.code == events.C_SKIPPED) then
 		return M.RESULT_CANCEL
 	end
+	if response and response.result == events.SUCCESS then return M.RESULT_SUCCESS end
 	return M.RESULT_ERROR
 end
 
@@ -195,36 +195,16 @@ local function begin_ad(kind, placement, params, callback)
 	local function on_finish(response)
 		finish_ad(ad_id, kind, placement, callback, wrapper_outcome(response), response)
 	end
-	if kind == M.AD_REWARDED then
-		local sdk = platform_sdk()
-		if config.is_debug then
-			print("[poki_service] rewarded_request placement=" .. placement
-				.. " size=" .. tostring(params.size))
-		end
-		if not sdk or type(sdk.rewarded_break) ~= "function" then
-			finish_ad(ad_id, kind, placement, callback, M.RESULT_ERROR, "rewarded_unavailable")
-			return true
-		end
-		sdk.rewarded_break(params.size, function(_, status)
-			if sdk.REWARDED_BREAK_START and status == sdk.REWARDED_BREAK_START then
-				on_start()
-			elseif sdk.REWARDED_BREAK_SUCCESS and status == sdk.REWARDED_BREAK_SUCCESS then
-				finish_ad(ad_id, kind, placement, callback, M.RESULT_SUCCESS, status)
-			else
-				finish_ad(ad_id, kind, placement, callback, M.RESULT_ERROR, status)
-			end
-		end)
-		return true
-	end
 	if not config.is_ads_available then
 		on_finish({ message = "ads_unavailable" })
 		return true
 	end
-	local is_accepted, error_message = ads_wrapper.show_interstitial(on_finish, {
+	local show_ad = kind == M.AD_REWARDED and ads_wrapper.show_rewarded or ads_wrapper.show_interstitial
+	local request_id, error_message = show_ad(on_finish, {
 		size = params.size, start_callback = on_start,
 	})
 
-	if is_accepted == false then
+	if not request_id then
 		on_finish({
 			message = error_message,
 		})
