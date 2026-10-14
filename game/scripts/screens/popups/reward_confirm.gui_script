@@ -1,0 +1,31 @@
+local addresses = require("common.addresses")
+local popup = require("ui.popup")
+
+function init(self)
+	-- Both hosts use this GUI, with separate Monarch identities and back stacks.
+	local screen = msg.url().socket
+	local is_skin = screen == addresses.SCREEN_SKIN_REWARD_POPUP
+	assert(is_skin or screen == addresses.SCREEN_REWARD_CONFIRM_POPUP, "unknown rewarded popup host")
+	popup.bind_watch_cancel(self, {
+		screen = screen, name = screen,
+		title = "title", detail = "detail", blocker = "blocker/fill",
+		refresh = popup.create_rewarded_refresh(
+			is_skin and "skin_rewarded_confirm_title" or "rewarded_confirm_title",
+			is_skin and "skin_rewarded_confirm_detail" or "rewarded_confirm_detail"),
+		watch = "watch_button", cancel = "cancel_button",
+		on_confirm = function(self)
+			msg.post(addresses.APP_CONTROLLER, is_skin and "skin_rewarded_confirm" or "rewarded_confirm", self.offer)
+		end,
+		on_cancel = function(self)
+			msg.post(addresses.APP_CONTROLLER, is_skin and "skin_rewarded_cancel" or "rewarded_cancel", self.offer)
+		end,
+		read = function(self, data)
+			self.offer = is_skin and { id = data.id } or { run_id = data.run_id, kind = data.kind }
+		end,
+	})
+end
+
+final = popup.final
+update = popup.update
+on_message = popup.on_message
+on_input = popup.on_input

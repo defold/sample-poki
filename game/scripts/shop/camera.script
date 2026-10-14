@@ -1,0 +1,33 @@
+local FORWARD = vmath.vector3(0, 0, -1)
+local LANDSCAPE_POSITION = vmath.vector3(0, 3.4, 9.2)
+local LANDSCAPE_TARGET = vmath.vector3(-2.4, 0.0, 0)
+local PORTRAIT_POSITION = vmath.vector3(0, 4.0, 10.5)
+local PORTRAIT_TARGET = vmath.vector3(0, 0.0, 0)
+local RENDER_URL = "@render:"
+
+local function configure(width, height)
+	local is_portrait = height > width
+	local position = is_portrait and PORTRAIT_POSITION or LANDSCAPE_POSITION
+	local target = is_portrait and PORTRAIT_TARGET or LANDSCAPE_TARGET
+	go.set_position(position)
+	go.set_rotation(vmath.quat_from_to(FORWARD, vmath.normalize(target - position)))
+	go.set("#camera", "fov", math.rad(is_portrait and 58 or 52))
+end
+
+function init(self)
+	self.width, self.height = window.get_size()
+	configure(self.width, self.height)
+	self.camera_url = msg.url("#camera")
+	msg.post(RENDER_URL, "set_world_camera", { camera = self.camera_url })
+end
+
+function final(self)
+	msg.post(RENDER_URL, "clear_world_camera", { camera = self.camera_url })
+end
+
+function on_message(self, message_id, message)
+	if message_id == hash("viewport_resized") then
+		self.width, self.height = message.width, message.height
+		configure(self.width, self.height)
+	end
+end

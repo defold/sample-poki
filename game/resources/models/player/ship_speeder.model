@@ -1,0 +1,18 @@
+mesh: "/assets/models/craft_speederA.glb"
+name: "{{NAME}}"
+materials {
+  name: "metal"
+  material: "/render/model_metal.material"
+}
+materials {
+  name: "metalRed"
+  material: "/render/model_accent.material"
+}
+materials {
+  name: "dark"
+  material: "/render/model_dark.material"
+}
+materials {
+  name: "metalDark"
+  material: "/render/model_mid.material"
+}

@@ -1,0 +1,150 @@
+-- Popup used for Learning guide tips.
+
+local tips = require("learn.tips")
+local popup = require("ui.popup")
+local button_widget = require("ui.templates.button")
+local selector_widget = require("ui.templates.selector")
+local actions = require("common.input.actions")
+local audio_client = require("common.audio.client")
+local colors = require("ui.colors")
+local screen_input = require("ui.screen_input")
+local axis = require("common.input.axis")
+
+local HOST_URL = "main:/learn/guide#learn_host"
+local APP_URL = "main:/app/controller#app"
+local CANCEL, LEARN = actions.cancel, hash("learn_tips")
+local ACTION_LEFT, ACTION_RIGHT = actions.menu_left, actions.menu_right
+
+local function apply_card(self)
+	self.tip = tips.card(self.tip_id, self.tip_page) or tips.card("first_contact", 1)
+end
+
+local function refresh(self)
+	apply_card(self)
+	local data = self.tip or {}
+	local count = tips.count(self.tip_id)
+	local page = self.tip_page or 1
+	self.title_text:set_text(data.title or "")
+	self.detail_text:set_text(data.body or "")
+	local paging = count > 1
+	if self.selector then
+		gui.set_enabled(self.selector.root, paging)
+		self.selector.action:set_text(page .. " / " .. count):set_color(colors.shop)
+		self.selector.prev:set_enabled(paging):set_color(colors.shop)
+			:set_key_trigger(paging and ACTION_LEFT or nil)
+		self.selector.next:set_enabled(paging):set_color(colors.shop)
+			:set_key_trigger(paging and ACTION_RIGHT or nil)
+		self.selector.action:set_enabled(paging)
+	end
+	if self.got_it then
+		self.got_it:set_text(data.got_it or "CLOSE IT")
+		self.got_it:set_color(colors.primary)
+		self.got_it:set_input_prompt("cancel", self.input_mode)
+	end
+end
+
+local function apply_payload(self, message)
+	message = message or {}
+	local next_id = message.tip_id or self.tip_id
+	if next_id ~= self.tip_id then
+		self.tip_page = 1
+	elseif message.tip_page then
+		self.tip_page = message.tip_page
+	end
+	self.tip_id = next_id
+	if message.input_mode then
+		self.input_mode = message.input_mode
+	end
+	apply_card(self)
+end
+
+local function set_controls(self, is_enabled)
+	if self.got_it then
+		self.got_it:set_enabled(is_enabled)
+	end
+	if self.selector then
+		self.selector.prev:set_enabled(is_enabled)
+		self.selector.next:set_enabled(is_enabled)
+		self.selector.action:set_enabled(is_enabled)
+	end
+end
+
+local function close(self)
+	set_controls(self, false)
+	msg.post(HOST_URL, "hide")
+end
+
+local function step(self, delta)
+	local count = tips.count(self.tip_id)
+	if count < 2 then
+		return
+	end
+	self.tip_page = tips.step(self.tip_id, self.tip_page, delta)
+	audio_client.play("ui_move")
+	refresh(self)
+end
+
+function init(self)
+	local data = popup.setup(self, {
+		name = "learn_popup", screen = hash("learn_popup"),
+		title = "text_title", detail = "text_detail", blocker = "background_dim",
+		refresh = refresh, render_order = 15,
+	})
+	self.tip_id = "first_contact"
+	self.tip_page = 1
+	self.stick = axis.new()
+	self.navigation_input = {}
+	apply_card(self)
+	self.selector = self.druid:new_widget(selector_widget, "tip_selector", nil,
+		function(ctx) step(ctx, 1) end,
+		function(ctx) step(ctx, -1) end,
+		function(ctx) step(ctx, 1) end)
+	self.got_it = self.druid:new_widget(button_widget, "button_got_it", nil, close)
+	self.got_it:set_key_trigger(CANCEL)
+	apply_payload(self, data)
+	popup.watch_focus(self, hash("learn_popup"), { self.got_it, self.selector }, function(_, current)
+		apply_payload(self, current)
+		set_controls(self, true)
+	end)
+	popup.acquire()
+	refresh(self)
+end
+
+final = popup.final
+update = popup.update
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("learn_refresh") then
+		apply_payload(self, message)
+		refresh(self)
+		return
+	end
+	if message_id == hash("layout_changed") then
+		-- Druid keeps the initial scale unless the new layout's scale is captured.
+		self.detail_text.text.start_scale = gui.get_scale(self.detail_text.node)
+	end
+	popup.on_message(self, message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	if not self.druid then
+		return false
+	end
+	if screen_input.handle_common_input(self, action_id, action, { blocked = self.motion:is_input_blocked() }) then
+		return true
+	end
+	local button_input = screen_input.route(self, action_id, action, {
+		stick = self.stick,
+		on_mode = function()
+			self.got_it:set_input_prompt("cancel", self.input_mode)
+		end,
+	})
+	if action_id == LEARN and action and action.pressed then
+		close(self)
+		return true
+	end
+	if self.druid:on_input(action_id, button_input) then
+		return true
+	end
+	return true
+end

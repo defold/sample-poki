@@ -1,0 +1,145 @@
+-- Poki Guide button and card share one persistent input owner.
+local monarch = require("monarch.monarch")
+local druid = require("druid.druid")
+local screen_input = require("ui.screen_input")
+local actions = require("common.input.actions")
+local learn = require("learn.overlay")
+
+local APP_URL = "main:/learn/guide#learn_host"
+local ACTION_LEARN = hash("learn_tips")
+local ACTION_TOUCH = actions.touch
+local ACTION_TOUCH_MULTI = actions.touch_multi
+
+local function node(id)
+	return gui.get_node(id)
+end
+
+local function restore(self)
+	learn.refresh(self)
+end
+
+local function claim_input()
+	msg.post(".", "acquire_input_focus")
+end
+
+local function pointer_hits_logo(action)
+	if not action then
+		return nil
+	end
+	local logo = node("poki_learn")
+	local prompt = node("poki_learn_prompt")
+	local label = node("poki_learn_badge")
+	if not gui.is_enabled(logo) then return nil end
+	local function hits(x, y)
+		return gui.pick_node(logo, x, y) or gui.pick_node(label, x, y)
+			or (gui.is_enabled(prompt) and gui.pick_node(prompt, x, y))
+	end
+	if action.touch then
+		for index = 1, #action.touch do
+			local touch = action.touch[index]
+			if hits(touch.x, touch.y) then
+				return touch
+			end
+		end
+		return nil
+	end
+	if hits(action.x, action.y) then
+		return action
+	end
+	return nil
+end
+
+local function consume_logo_pointer(self, action_id, action)
+	if action_id ~= ACTION_TOUCH and action_id ~= ACTION_TOUCH_MULTI then
+		return false
+	end
+	local hit = pointer_hits_logo(action)
+	if hit and hit.pressed then
+		if self.learn_pointer_id == nil and not self.is_blocked then
+			msg.post(APP_URL, "toggle")
+		end
+		self.learn_pointer_id = hit.id or true
+		return true
+	end
+	if self.learn_pointer_id == nil then
+		return false
+	end
+	if action.released or (hit and hit.released) then
+		self.learn_pointer_id = nil
+	end
+	return true
+end
+
+function init(self)
+	-- Keep the guide above game screens; its button and card share screen_input.
+	gui.set_render_order(15)
+	self.druid = druid.new(self)
+	self.is_blocked = false
+	screen_input.init(self)
+	learn.bind(self, self.druid)
+	restore(self)
+	monarch.add_listener(msg.url())
+	claim_input()
+end
+
+function final(self)
+	monarch.remove_listener(msg.url())
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	if message_id == monarch.SCREEN_TRANSITION_IN_FINISHED
+		or message_id == monarch.SCREEN_TRANSITION_OUT_FINISHED then
+		claim_input()
+	elseif message_id == hash("tips_chrome") then
+		self.is_blocked = message.blocked == true
+		learn.set_context(self, message.tip_id)
+		if message.category then
+			learn.set_device(self, message.category)
+		end
+		if message.mode then
+			learn.set_input_mode(self, message.mode)
+		else
+			learn.refresh(self)
+		end
+
+	elseif message_id == hash("layout_changed")
+		or message_id == hash("viewport_resized") then
+		restore(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	if screen_input.is_ad_busy() then return true end
+	screen_input.report_audio_gesture(action)
+	if action_id == ACTION_LEARN then
+		if screen_input.observe(self, action_id, action) then
+			learn.set_input_mode(self, self.input_mode)
+		end
+		if monarch.is_top(hash("learn_popup")) then
+			return false
+		end
+		if action.pressed and not self.is_blocked then
+			msg.post(APP_URL, "toggle")
+		end
+		return true
+	end
+	if consume_logo_pointer(self, action_id, action) then
+		return true
+	end
+	if monarch.is_top(hash("learn_popup")) then
+		return false
+	end
+	if self.druid:on_input(action_id, action) then
+		if screen_input.observe(self, action_id, action) then
+			learn.set_input_mode(self, self.input_mode)
+		end
+		return true
+	end
+	return false
+end

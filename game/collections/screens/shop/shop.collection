@@ -1,0 +1,13 @@
+name: "mothership"
+scale_along_z: 1
+instances {
+  id: "sky"
+  prototype: "/game/objects/world/sky.go"
+}
+instances {
+  id: "preview"
+  prototype: "/game/objects/player/player.go"
+}
+instances { id: "camera" prototype: "/game/objects/shop/camera.go" }
+instances { id: "ui" prototype: "/game/objects/shop/ui.go" }
+instances { id: "controller" prototype: "/game/objects/shop/controller.go" }

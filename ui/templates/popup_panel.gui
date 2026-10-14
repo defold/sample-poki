@@ -1,0 +1,30 @@
+script: ""
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 3360.0
+    y: 2400.0
+  }
+  color {
+    x: 0.035
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "fill"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+}

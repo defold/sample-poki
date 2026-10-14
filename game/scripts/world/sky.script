@@ -1,0 +1,12 @@
+-- Camera-relative background quad behind the game scene.
+
+function init(self)
+	-- The dedicated background pass does not use depth, so keep the quad close to the camera instead of creating huge bounds near the far plane.
+	local depth = 1
+
+	go.set_parent(".", "/camera", false)
+	go.set_position(vmath.vector3(0, 0, -depth))
+
+	-- Covers the widest supported aspect ratio at this camera-relative depth.
+	go.set_scale(vmath.vector3(depth * 8, depth * 8, 1))
+end

@@ -1,0 +1,6 @@
+name: "lang_cyrillic"
+scale_along_z: 1
+instances {
+  id: "go"
+  prototype: "/game/objects/fonts/lang_cyrillic.go"
+}

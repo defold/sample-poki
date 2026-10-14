@@ -1,0 +1,30 @@
+local feedback_events = require("game.modules.mission.presentation.feedback_events")
+local ship_visual = require("game.modules.player.ship_visual")
+local view_config = require("game.modules.mission.presentation.view_config")
+
+local function on_ship_hit(self, data)
+	go.cancel_animations(self.model_url, "damage_flash")
+	go.set(self.model_url, "damage_flash",
+		vmath.vector4(1, 0.05, 0.02, view_config.DAMAGE_FLASH_STRENGTH))
+	go.animate(self.model_url, "damage_flash", go.PLAYBACK_ONCE_FORWARD,
+		vmath.vector4(1, 0.05, 0.02, 0), go.EASING_OUTQUAD,
+		view_config.DAMAGE_FLASH_DURATION)
+end
+
+local function on_run_reset(self, data)
+	self.model_url = ship_visual.component_url("/player", data.ship_id)
+	ship_visual.reset_damage("/player")
+end
+
+local HANDLERS = {
+	[feedback_events.ship_hit] = on_ship_hit,
+	[feedback_events.run_reset] = on_run_reset,
+}
+
+function init(self)
+	for event, handler in pairs(HANDLERS) do event:subscribe(handler, self) end
+end
+
+function final(self)
+	for event, handler in pairs(HANDLERS) do event:unsubscribe(handler, self) end
+end

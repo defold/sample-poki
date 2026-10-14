@@ -1,0 +1,2126 @@
+script: "/game/scripts/shop/mothership.gui_script"
+fonts {
+  name: "title"
+  font: "/assets/fonts/title.font"
+}
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "C_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 320.0
+    y: 62.0
+  }
+  type: TYPE_BOX
+  id: "preview_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "C_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: -240.0
+    y: -220.0
+  }
+  size {
+    x: 320.0
+    y: 62.0
+  }
+  color {
+    x: 0.04
+    y: 0.11
+    z: 0.24
+  }
+  type: TYPE_BOX
+  id: "preview_label_panel"
+  parent: "preview_motion"
+  layer: "button_bg"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 3200.0
+    y: 496.0
+  }
+  color {
+    x: 0.04
+    y: 0.11
+    z: 0.24
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "preview_label_panel_background"
+  parent: "preview_label_panel"
+  layer: "button_bg"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+}
+nodes {
+  size {
+    x: 284.0
+    y: 34.0
+  }
+  color {
+    x: 0.96
+    y: 0.98
+  }
+  type: TYPE_TEXT
+  text: "SCOUT // ACTIVE"
+  font: "body"
+  id: "preview_label"
+  parent: "preview_label_panel"
+  layer: "text_body"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 460.0
+    y: 380.0
+  }
+  type: TYPE_BOX
+  id: "list_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "E_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: -250.0
+    y: 150.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "list_root"
+  parent: "list_motion"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "ship_selector"
+  parent: "list_root"
+  inherit_alpha: true
+  template: "/ui/templates/selector.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/row"
+  parent: "ship_selector"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "ship_selector/prev"
+  parent: "ship_selector/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/prev/button"
+  parent: "ship_selector/prev"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/prev/background"
+  parent: "ship_selector/prev/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/prev/content"
+  parent: "ship_selector/prev/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/prev/icon_left"
+  parent: "ship_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/prev/icon_right"
+  parent: "ship_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "ship_selector/prev/text"
+  parent: "ship_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "ship_selector/action"
+  parent: "ship_selector/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/action/button"
+  parent: "ship_selector/action"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/action/background"
+  parent: "ship_selector/action/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/action/content"
+  parent: "ship_selector/action/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/action/icon_left"
+  parent: "ship_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/action/icon_right"
+  parent: "ship_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "ship_selector/action/text"
+  parent: "ship_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "ship_selector/next"
+  parent: "ship_selector/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/next/button"
+  parent: "ship_selector/next"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/next/background"
+  parent: "ship_selector/next/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/next/content"
+  parent: "ship_selector/next/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/next/icon_left"
+  parent: "ship_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "ship_selector/next/icon_right"
+  parent: "ship_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "ship_selector/next/text"
+  parent: "ship_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -60.0
+  }
+  type: TYPE_TEMPLATE
+  id: "skin_selector"
+  parent: "list_root"
+  inherit_alpha: true
+  template: "/ui/templates/selector.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/row"
+  parent: "skin_selector"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "skin_selector/prev"
+  parent: "skin_selector/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/prev/button"
+  parent: "skin_selector/prev"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/prev/background"
+  parent: "skin_selector/prev/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/prev/content"
+  parent: "skin_selector/prev/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/prev/icon_left"
+  parent: "skin_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/prev/icon_right"
+  parent: "skin_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "skin_selector/prev/text"
+  parent: "skin_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "skin_selector/action"
+  parent: "skin_selector/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/action/button"
+  parent: "skin_selector/action"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/action/background"
+  parent: "skin_selector/action/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/action/content"
+  parent: "skin_selector/action/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/action/icon_left"
+  parent: "skin_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/action/icon_right"
+  parent: "skin_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "skin_selector/action/text"
+  parent: "skin_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "skin_selector/next"
+  parent: "skin_selector/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/next/button"
+  parent: "skin_selector/next"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/next/background"
+  parent: "skin_selector/next/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/next/content"
+  parent: "skin_selector/next/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/next/icon_left"
+  parent: "skin_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "skin_selector/next/icon_right"
+  parent: "skin_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "skin_selector/next/text"
+  parent: "skin_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -120.0
+  }
+  type: TYPE_TEMPLATE
+  id: "row_damage"
+  parent: "list_root"
+  inherit_alpha: true
+  template: "/ui/templates/upgrade.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/row"
+  parent: "row_damage"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/panel"
+  parent: "row_damage/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/background"
+  parent: "row_damage/panel"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "DAMAGE"
+  id: "row_damage/name"
+  parent: "row_damage/row"
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_damage/level"
+  parent: "row_damage/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_damage/price"
+  parent: "row_damage/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "row_damage/plus"
+  parent: "row_damage/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/plus/button"
+  parent: "row_damage/plus"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/plus/background"
+  parent: "row_damage/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/plus/content"
+  parent: "row_damage/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/plus/icon_left"
+  parent: "row_damage/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_damage/plus/icon_right"
+  parent: "row_damage/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_damage/plus/text"
+  parent: "row_damage/plus/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -180.0
+  }
+  type: TYPE_TEMPLATE
+  id: "row_ammo"
+  parent: "list_root"
+  inherit_alpha: true
+  template: "/ui/templates/upgrade.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/row"
+  parent: "row_ammo"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/panel"
+  parent: "row_ammo/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/background"
+  parent: "row_ammo/panel"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "AMMO"
+  id: "row_ammo/name"
+  parent: "row_ammo/row"
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_ammo/level"
+  parent: "row_ammo/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_ammo/price"
+  parent: "row_ammo/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "row_ammo/plus"
+  parent: "row_ammo/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/plus/button"
+  parent: "row_ammo/plus"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/plus/background"
+  parent: "row_ammo/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/plus/content"
+  parent: "row_ammo/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/plus/icon_left"
+  parent: "row_ammo/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_ammo/plus/icon_right"
+  parent: "row_ammo/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_ammo/plus/text"
+  parent: "row_ammo/plus/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -240.0
+  }
+  type: TYPE_TEMPLATE
+  id: "row_hull"
+  parent: "list_root"
+  inherit_alpha: true
+  template: "/ui/templates/upgrade.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/row"
+  parent: "row_hull"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/panel"
+  parent: "row_hull/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/background"
+  parent: "row_hull/panel"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "HULL"
+  id: "row_hull/name"
+  parent: "row_hull/row"
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_hull/level"
+  parent: "row_hull/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_hull/price"
+  parent: "row_hull/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "row_hull/plus"
+  parent: "row_hull/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/plus/button"
+  parent: "row_hull/plus"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/plus/background"
+  parent: "row_hull/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/plus/content"
+  parent: "row_hull/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/plus/icon_left"
+  parent: "row_hull/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_hull/plus/icon_right"
+  parent: "row_hull/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_hull/plus/text"
+  parent: "row_hull/plus/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -300.0
+  }
+  type: TYPE_TEMPLATE
+  id: "row_firerate"
+  parent: "list_root"
+  inherit_alpha: true
+  template: "/ui/templates/upgrade.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/row"
+  parent: "row_firerate"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/panel"
+  parent: "row_firerate/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/background"
+  parent: "row_firerate/panel"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "FIRE RATE"
+  id: "row_firerate/name"
+  parent: "row_firerate/row"
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_firerate/level"
+  parent: "row_firerate/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_firerate/price"
+  parent: "row_firerate/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "row_firerate/plus"
+  parent: "row_firerate/row"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/plus/button"
+  parent: "row_firerate/plus"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/plus/background"
+  parent: "row_firerate/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/plus/content"
+  parent: "row_firerate/plus/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/plus/icon_left"
+  parent: "row_firerate/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "row_firerate/plus/icon_right"
+  parent: "row_firerate/plus/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "row_firerate/plus/text"
+  parent: "row_firerate/plus/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: -48.0
+    y: -45.0
+  }
+  type: TYPE_TEMPLATE
+  id: "pause_hit"
+  parent: "NE_Anchor"
+  layer: "text_body"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 64.0
+    y: 64.0
+  }
+  type: TYPE_BOX
+  id: "pause_hit/button"
+  parent: "pause_hit"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 448.0
+    y: 448.0
+  }
+  type: TYPE_BOX
+  id: "pause_hit/background"
+  parent: "pause_hit/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "pause_hit/content"
+  parent: "pause_hit/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  type: TYPE_BOX
+  texture: "ui/pause"
+  id: "pause_hit/icon_left"
+  parent: "pause_hit/content"
+  overridden_fields: 1
+  overridden_fields: 9
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -42.0
+    y: 4.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_escape"
+  id: "pause_hit/icon_right"
+  parent: "pause_hit/content"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_TEXT
+  id: "pause_hit/text"
+  parent: "pause_hit/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+nodes {
+  position {
+    x: -480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    y: 270.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 960.0
+    y: 80.0
+  }
+  type: TYPE_BOX
+  id: "header_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "N_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: -40.0
+  }
+  size {
+    x: 960.0
+    y: 80.0
+  }
+  color {
+    x: 0.025
+    y: 0.075
+    z: 0.18
+  }
+  type: TYPE_BOX
+  id: "top_band"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "header_motion"
+  layer: "button_bg"
+  inherit_alpha: true
+  alpha: 0.88
+}
+nodes {
+  position {
+    x: -452.0
+    y: -40.0
+  }
+  size {
+    x: 420.0
+    y: 42.0
+  }
+  color {
+    x: 0.15
+    y: 0.85
+    z: 0.96
+  }
+  type: TYPE_TEXT
+  text: "MOTHERSHIP"
+  font: "title"
+  id: "title"
+  pivot: PIVOT_W
+  parent: "header_motion"
+  layer: "text_title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 220.0
+    y: -40.0
+  }
+  size {
+    x: 300.0
+    y: 56.0
+  }
+  color {
+    x: 0.04
+    y: 0.12
+    z: 0.26
+  }
+  type: TYPE_BOX
+  id: "credits_panel"
+  parent: "header_motion"
+  layer: "button_bg"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2400.0
+    y: 448.0
+  }
+  color {
+    x: 0.04
+    y: 0.12
+    z: 0.26
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "credits_panel_background"
+  parent: "credits_panel"
+  layer: "button_bg"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+}
+nodes {
+  position {
+    x: -134.0
+  }
+  size {
+    x: 42.0
+    y: 42.0
+  }
+  type: TYPE_BOX
+  texture: "ui/star_medium"
+  id: "credits_icon"
+  pivot: PIVOT_W
+  parent: "credits_panel"
+  layer: "button_icons"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -86.0
+  }
+  size {
+    x: 96.0
+    y: 26.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "CREDITS"
+  font: "body"
+  id: "credits_label"
+  pivot: PIVOT_W
+  parent: "credits_panel"
+  layer: "text_body"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    x: 134.0
+  }
+  size {
+    x: 140.0
+    y: 34.0
+  }
+  color {
+    y: 0.88
+    z: 0.34
+  }
+  type: TYPE_TEXT
+  text: "000"
+  font: "title"
+  id: "credits_value"
+  pivot: PIVOT_E
+  parent: "credits_panel"
+  layer: "text_title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -270.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 440.0
+    y: 96.0
+  }
+  type: TYPE_BOX
+  id: "mission_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "S_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 232.0
+    y: 55.0
+  }
+  type: TYPE_TEMPLATE
+  id: "continue_button"
+  parent: "mission_motion"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 350.0
+    y: 72.0
+  }
+  type: TYPE_BOX
+  id: "continue_button/button"
+  parent: "continue_button"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2500.0
+    y: 550.0
+  }
+  color {
+    x: 0.18
+    y: 0.86
+    z: 0.34
+  }
+  type: TYPE_BOX
+  id: "continue_button/background"
+  parent: "continue_button/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  overridden_fields: 5
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "continue_button/content"
+  parent: "continue_button/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -132.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "continue_button/icon_left"
+  parent: "continue_button/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 132.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "continue_button/icon_right"
+  parent: "continue_button/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -12.0
+  }
+  size {
+    x: 248.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "MISSION 02"
+  font: "title"
+  id: "continue_button/text"
+  parent: "continue_button/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 10
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+layers {
+  name: "button_bg"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "button_text"
+}
+layers {
+  name: "text_body"
+}
+layers {
+  name: "text_title"
+}
+material: "/builtins/materials/gui.material"
+layouts {
+  name: "Landscape"
+  nodes {
+    type: TYPE_BOX
+    id: "preview_motion"
+    parent: "C_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "list_motion"
+    parent: "E_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "pause_hit/content"
+    parent: "pause_hit/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "header_motion"
+    parent: "N_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "mission_motion"
+    parent: "S_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "continue_button/content"
+    parent: "continue_button/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+}
+layouts {
+  name: "Portrait"
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "C_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "preview_motion"
+    parent: "C_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: 350.0
+    }
+    size {
+      x: 286.0
+      y: 54.0
+    }
+    type: TYPE_BOX
+    id: "preview_label_panel"
+    parent: "preview_motion"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 2288.0
+      y: 432.0
+    }
+    type: TYPE_BOX
+    id: "preview_label_panel_background"
+    parent: "preview_label_panel"
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 262.0
+      y: 34.0
+    }
+    type: TYPE_TEXT
+    id: "preview_label"
+    parent: "preview_label_panel"
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -270.0
+    }
+    type: TYPE_BOX
+    id: "W_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+    }
+    type: TYPE_BOX
+    id: "E_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "list_motion"
+    parent: "E_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: 10.0
+    }
+    type: TYPE_BOX
+    id: "list_root"
+    adjust_mode: ADJUST_MODE_STRETCH
+    parent: "list_motion"
+    overridden_fields: 1
+    overridden_fields: 17
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 56.0
+    }
+    type: TYPE_BOX
+    id: "ship_selector/row"
+    parent: "ship_selector"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+    }
+    type: TYPE_TEMPLATE
+    id: "ship_selector/prev"
+    parent: "ship_selector/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 200.0
+    }
+    type: TYPE_TEMPLATE
+    id: "ship_selector/next"
+    parent: "ship_selector/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: -60.0
+    }
+    type: TYPE_TEMPLATE
+    id: "skin_selector"
+    parent: "list_root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 56.0
+    }
+    type: TYPE_BOX
+    id: "skin_selector/row"
+    parent: "skin_selector"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+    }
+    type: TYPE_TEMPLATE
+    id: "skin_selector/prev"
+    parent: "skin_selector/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 200.0
+    }
+    type: TYPE_TEMPLATE
+    id: "skin_selector/next"
+    parent: "skin_selector/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: -130.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_damage"
+    parent: "list_root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_damage/row"
+    parent: "row_damage"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 450.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_damage/panel"
+    parent: "row_damage/row"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: 14.0
+    }
+    size {
+      x: 200.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_damage/name"
+    parent: "row_damage/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: -16.0
+    }
+    size {
+      x: 210.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "row_damage/level"
+    parent: "row_damage/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 118.0
+    }
+    size {
+      x: 110.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_damage/price"
+    parent: "row_damage/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 174.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_damage/plus"
+    parent: "row_damage/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: -200.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_ammo"
+    parent: "list_root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_ammo/row"
+    parent: "row_ammo"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_ammo/panel"
+    parent: "row_ammo/row"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: 14.0
+    }
+    size {
+      x: 200.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_ammo/name"
+    parent: "row_ammo/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: -16.0
+    }
+    size {
+      x: 210.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "row_ammo/level"
+    parent: "row_ammo/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 118.0
+    }
+    size {
+      x: 110.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_ammo/price"
+    parent: "row_ammo/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 174.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_ammo/plus"
+    parent: "row_ammo/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: -270.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_hull"
+    parent: "list_root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_hull/row"
+    parent: "row_hull"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_hull/panel"
+    parent: "row_hull/row"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: 14.0
+    }
+    size {
+      x: 200.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_hull/name"
+    parent: "row_hull/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: -16.0
+    }
+    size {
+      x: 210.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "row_hull/level"
+    parent: "row_hull/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 118.0
+    }
+    size {
+      x: 110.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_hull/price"
+    parent: "row_hull/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 174.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_hull/plus"
+    parent: "row_hull/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: -340.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_firerate"
+    parent: "list_root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_firerate/row"
+    parent: "row_firerate"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 456.0
+      y: 72.0
+    }
+    type: TYPE_BOX
+    id: "row_firerate/panel"
+    parent: "row_firerate/row"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: 14.0
+    }
+    size {
+      x: 200.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_firerate/name"
+    parent: "row_firerate/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -200.0
+      y: -16.0
+    }
+    size {
+      x: 210.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "row_firerate/level"
+    parent: "row_firerate/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 118.0
+    }
+    size {
+      x: 110.0
+      y: 30.0
+    }
+    type: TYPE_TEXT
+    id: "row_firerate/price"
+    parent: "row_firerate/row"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 174.0
+    }
+    type: TYPE_TEMPLATE
+    id: "row_firerate/plus"
+    parent: "row_firerate/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -48.0
+      y: -48.0
+    }
+    type: TYPE_TEMPLATE
+    id: "pause_hit"
+    parent: "NE_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 96.0
+      y: 96.0
+    }
+    type: TYPE_BOX
+    id: "pause_hit/button"
+    parent: "pause_hit"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    scale {
+      x: 0.125
+      y: 0.125
+    }
+    size {
+      x: 512.0
+      y: 512.0
+    }
+    type: TYPE_BOX
+    id: "pause_hit/background"
+    parent: "pause_hit/button"
+    overridden_fields: 3
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "pause_hit/content"
+    parent: "pause_hit/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 56.0
+      y: 56.0
+    }
+    type: TYPE_TEXT
+    id: "pause_hit/text"
+    parent: "pause_hit/content"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: 480.0
+    }
+    size {
+      x: 540.0
+      y: 140.0
+    }
+    type: TYPE_BOX
+    id: "N_Anchor"
+    parent: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "header_motion"
+    parent: "N_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -50.0
+    }
+    size {
+      x: 540.0
+      y: 100.0
+    }
+    type: TYPE_BOX
+    id: "top_band"
+    parent: "header_motion"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      y: -25.0
+    }
+    size {
+      x: 508.0
+      y: 42.0
+    }
+    type: TYPE_TEXT
+    id: "title"
+    parent: "header_motion"
+    overridden_fields: 1
+    overridden_fields: 4
+    overridden_fields: 14
+  }
+  nodes {
+    position {
+      y: -65.0
+    }
+    size {
+      x: 280.0
+      y: 52.0
+    }
+    type: TYPE_BOX
+    id: "credits_panel"
+    parent: "header_motion"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -124.0
+    }
+    type: TYPE_BOX
+    id: "credits_icon"
+    parent: "credits_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -76.0
+    }
+    type: TYPE_TEXT
+    id: "credits_label"
+    parent: "credits_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 124.0
+    }
+    type: TYPE_TEXT
+    id: "credits_value"
+    parent: "credits_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -480.0
+    }
+    size {
+      x: 540.0
+      y: 1.0
+    }
+    type: TYPE_BOX
+    id: "S_Anchor"
+    parent: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "mission_motion"
+    parent: "S_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: 55.0
+    }
+    type: TYPE_TEMPLATE
+    id: "continue_button"
+    parent: "mission_motion"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 450.0
+      y: 96.0
+    }
+    type: TYPE_BOX
+    id: "continue_button/button"
+    parent: "continue_button"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    scale {
+      x: 0.125
+      y: 0.125
+    }
+    size {
+      x: 3600.0
+      y: 680.0
+    }
+    type: TYPE_BOX
+    id: "continue_button/background"
+    parent: "continue_button/button"
+    overridden_fields: 3
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "continue_button/content"
+    parent: "continue_button/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -190.0
+      y: 4.0
+    }
+    type: TYPE_BOX
+    id: "continue_button/icon_left"
+    parent: "continue_button/content"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 190.0
+      y: 4.0
+    }
+    type: TYPE_BOX
+    id: "continue_button/icon_right"
+    parent: "continue_button/content"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 368.0
+      y: 84.0
+    }
+    type: TYPE_TEXT
+    id: "continue_button/text"
+    parent: "continue_button/content"
+    overridden_fields: 4
+    template_node_child: true
+  }
+}
+adjust_reference: ADJUST_REFERENCE_PARENT
+max_nodes: 142

@@ -1,0 +1,212 @@
+local addresses = require("common.addresses")
+local math_utils = require("common.math_utils")
+local button = require("ui.templates.button")
+local selector = require("ui.templates.selector")
+local actions = require("common.input.actions")
+local colors = require("ui.colors")
+local popup = require("ui.popup")
+local screen_input = require("ui.screen_input")
+local axis = require("common.input.axis")
+local client = require("common.audio.client")
+local focus = require("ui.focus")
+local languages = require("game.modules.content.languages")
+
+local APP_URL = addresses.APP_CONTROLLER
+local SCREEN = addresses.SCREEN_PAUSE_POPUP
+local ICON_ON, ICON_OFF = hash("audioOn"), hash("audioOff")
+local LANGUAGE, MUTE, CREDITS, RESUME = 1, 2, 3, 4
+local COUNT = 4
+
+local function apply_muted(self, is_muted)
+	self.is_muted = is_muted == true
+	if self.mute then
+		self.mute:set_left_icon(self.is_muted and ICON_OFF or ICON_ON)
+			:set_lang(self.is_muted and "sound_off" or "sound_on")
+	end
+end
+
+local function language_label(self)
+	local label = languages.label(self.preview_language)
+	if self.is_language_busy then
+		return label .. "…"
+	end
+	return label
+end
+
+local function apply_language_row(self)
+	if self.language_button then
+		self.language_button:set_text(language_label(self))
+	end
+end
+
+local function apply_focus(self)
+	if not self.buttons then
+		return
+	end
+	for index, button_instance in ipairs(self.buttons) do
+		local is_focused = index == self.focus
+		if index == RESUME then
+			button_instance:set_color(colors.primary)
+				:set_highlighted(is_focused, is_focused and colors.primary_focus or nil)
+		else
+			button_instance:set_highlighted(is_focused)
+		end
+		local is_actionable = is_focused and index ~= LANGUAGE
+		button_instance:set_key_trigger(is_actionable and actions.primary or nil)
+			:set_input_prompt(is_actionable and "primary" or nil, self.input_mode)
+	end
+	local is_language_focused = self.focus == LANGUAGE
+	self.language_selector.prev:set_key_trigger(is_language_focused and actions.menu_left or nil)
+	self.language_selector.next:set_key_trigger(is_language_focused and actions.menu_right or nil)
+end
+
+local function set_focus(self, index, should_play_move)
+	index = math_utils.wrap(index, COUNT)
+	if self.focus == index then
+		apply_focus(self)
+		return
+	end
+	self.focus = index
+	if should_play_move then
+		client.play("ui_move")
+	end
+	apply_focus(self)
+end
+
+local function set_controls_enabled(self, is_enabled)
+	self.language_button:set_enabled(false)
+	for index = 2, #self.buttons do
+		self.buttons[index]:set_enabled(is_enabled)
+	end
+	self.language_selector.prev:set_enabled(is_enabled)
+	self.language_selector.next:set_enabled(is_enabled)
+end
+
+local function refresh_language_controls(self)
+	apply_language_row(self)
+	set_controls_enabled(self, true)
+	apply_focus(self)
+end
+
+local function refresh(self)
+	self.resume:set_lang("resume")
+	self.credits:set_lang("credits_title")
+	apply_language_row(self)
+	apply_muted(self, self.is_muted)
+	apply_focus(self)
+end
+
+local function close(self)
+	set_controls_enabled(self, false)
+	msg.post(APP_URL, "pause_requested", { source = "pause_popup" })
+end
+
+local function toggle_mute()
+	msg.post(APP_URL, "mute_toggle")
+end
+
+local function browse_language(self, delta)
+	self.preview_language = languages.step_player(self.preview_language, delta or 1)
+	apply_language_row(self)
+	client.play("ui_move")
+	msg.post(APP_URL, "set_language", {
+		language = self.preview_language,
+	})
+end
+
+local function open_credits(self)
+	set_controls_enabled(self, false)
+	msg.post(APP_URL, "credits_open")
+end
+
+function init(self)
+	local data = popup.setup(self, {
+		screen = SCREEN, name = "pause_popup",
+		title = "text_title", title_key = "pause_title", blocker = "background_dim/fill",
+		refresh = refresh,
+	})
+	self.is_muted = data.muted == true
+	self.language = data.language or "en"
+	self.preview_language = self.language
+	self.is_language_busy = false
+	self.focus = RESUME
+	self.stick = axis.new()
+	self.fire_hint = self.druid:new_lang_text("hint_fire_label", "hint_fire")
+	self.move_hint = self.druid:new_lang_text("hint_steer_label", "hint_move")
+	self.resume = self.druid:new_widget(button, "button_resume", nil, close)
+	self.credits = self.druid:new_widget(button, "button_credits", nil, open_credits)
+	self.mute = self.druid:new_widget(button, "button_mute", nil, toggle_mute)
+	self.language_selector = self.druid:new_widget(selector, "language_selector", nil,
+		nil,
+		function(ctx) browse_language(ctx, -1) end,
+		function(ctx) browse_language(ctx, 1) end,
+		focus.create_hover_callback(LANGUAGE, function() return self.focus end,
+			function(index) set_focus(self, index, true) end))
+	self.language_button = self.language_selector.action
+	self.buttons = { self.language_button, self.mute, self.credits, self.resume }
+	focus.bind_hover(self.buttons,
+		function() return self.focus end,
+		function(index) set_focus(self, index, true) end)
+	set_controls_enabled(self, true)
+	popup.watch_focus(self, SCREEN, {
+		self.language_selector, self.mute, self.credits, self.resume,
+	}, function(self)
+		self.focus = RESUME
+		set_controls_enabled(self, true)
+	end)
+	refresh(self)
+	popup.acquire()
+end
+
+final = popup.final
+update = popup.update
+function on_message(self, id, message, sender)
+	if id == hash("audio_state") then
+		apply_muted(self, message and message.muted)
+		return
+	end
+	if id == hash("language_changed") and message and message.language then
+		self.language = message.language
+		self.preview_language = message.language
+		self.is_language_busy = false
+		refresh_language_controls(self)
+	elseif id == hash("language_download") then
+		local status = message and message.status
+		if status == "pending" then
+			self.is_language_busy = true
+			if message.language then
+				self.preview_language = message.language
+			end
+			refresh_language_controls(self)
+		elseif status == "failed" then
+			self.is_language_busy = false
+			self.preview_language = self.language
+			refresh_language_controls(self)
+		elseif status == "ready" then
+			self.is_language_busy = false
+		end
+	end
+	popup.on_message(self, id, message, sender)
+end
+function on_input(self, action_id, action)
+	if screen_input.is_ad_busy() then return true end
+	if action_id == actions.cancel and self.focus ~= RESUME then
+		if action.pressed then
+			close(self)
+		end
+		return true
+	end
+	if actions.is_menu_vertical(action_id) then
+		if axis.update_axis_edges(self.stick, action_id, action) == "pressed" then
+			button.lock_pointer_hover()
+		set_focus(self, self.focus + (action_id == actions.menu_up and -1 or 1), true)
+		end
+		popup.consume_input(self, action_id, action)
+		return true
+	end
+	-- Escape/Menu activate Resume only if it is focused, using its pressed appearance.
+	return popup.consume_input(self, action_id, action, function(action_id)
+		return action_id == actions.cancel
+			and actions.primary or action_id
+	end)
+end

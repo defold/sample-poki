@@ -1,0 +1,145 @@
+-- Starts platform services and loads the game module.
+
+local druid = require("druid.druid")
+local monarch = require("monarch.monarch")
+local poki_service = require("app.modules.platform.poki_service")
+local service = require("common.audio.service")
+local client = require("common.audio.client")
+local messages = require("common.audio.messages")
+local audio_events = require("app.modules.audio.audio_events")
+local mode = require("common.input.mode")
+
+local function create_audio(self)
+	local events = {}
+	for id, spec in pairs(audio_events) do
+		events[id] = { url = msg.url(spec.url), gain = spec.gain }
+	end
+	local audio = service.new({
+		events = events,
+	})
+	self.audio = audio
+end
+
+local function attach_game(self, module)
+	if self.game then return end
+	local game = require(module)
+	self.game = game
+	game.attach(self)
+	game.start(self)
+end
+
+local function handle_audio_event(self, message)
+	if message.stop then
+		self.audio:stop_event(message.id)
+	else
+		self.audio:play_event(message.id, {
+			speed = message.speed,
+			gain = message.gain,
+			pan = message.pan,
+		})
+	end
+end
+
+function init(self)
+	client.configure(msg.url())
+	self.app = {
+		screen = "app", phase = "BOOT",
+		is_awaiting_resume = false,
+		device_category = "desktop", input_mode = "keyboard",
+		language = "en", is_muted = false, world_time_factor = 1,
+	}
+	-- Detect the input device here and send the selected mode to the screens.
+	self.input_tracker = mode.new({
+		device_category = self.app.device_category,
+		clock = socket.gettime,
+		on_change = function(current_mode)
+			msg.post(".", "input_mode", { mode = current_mode })
+		end,
+	})
+	self.ui = {
+		popup = "none", is_blocked = true,
+	}
+	self.is_window_focused = false
+	monarch.add_listener(msg.url())
+	msg.post(".", "acquire_input_focus")
+
+	create_audio(self)
+	-- HTML5 autoplay unlocks after a real key, click or touch.
+	self.audio:set_focused(false)
+	poki_service.init({
+		fallback_device_category = "desktop",
+		on_event = function(event_name, data)
+			if self.game then self.game.on_platform_event(self, event_name, data) end
+		end,
+	})
+
+	window.set_listener(function(_, event, data)
+		druid.on_window_callback(event)
+		if event == window.WINDOW_EVENT_FOCUS_LOST then
+			self.is_window_focused = false
+			self.audio:set_focused(false)
+			if self.game then self.game.on_focus_lost(self) end
+		elseif event == window.WINDOW_EVENT_FOCUS_GAINED then
+			local is_already_focused = self.is_window_focused
+			self.is_window_focused = true
+			if not self.app.is_muted and self.audio:wanted_music() then
+				self.audio:set_focused(true)
+			end
+			if self.game then self.game.on_focus_gained(self, is_already_focused) end
+		elseif event == window.WINDOW_EVENT_RESIZED then
+			if self.game then self.game.on_resize(self, data) end
+		end
+	end)
+end
+
+function final(self)
+	if self.game then self.game.final(self) end
+	monarch.remove_listener(msg.url())
+	window.set_listener(nil)
+	self.audio:stop_all()
+end
+
+function update(self, dt)
+	self.audio:update(dt)
+	if self.game then self.game.update(self, dt) end
+end
+
+function on_message(self, message_id, message)
+	if message_id == hash("refresh_input_focus") then
+		-- The app observes input events and returns false to pass them to gameplay/UI.
+		-- A blocked app consumes the events instead.
+		msg.post(".", "acquire_input_focus")
+	elseif message_id == monarch.SCREEN_TRANSITION_IN_FINISHED
+		or message_id == monarch.SCREEN_TRANSITION_OUT_FINISHED then
+		if self.ui.is_blocked then msg.post(".", "acquire_input_focus") end
+	elseif message_id == messages.GESTURE then
+		self.audio:set_focused(true)
+	elseif message_id == messages.PLAY then
+		handle_audio_event(self, message)
+	elseif message_id == messages.STOP then
+		self.audio:stop_event(message.id)
+	elseif message_id == messages.SET_MUTED then
+		self.audio:set_user_muted(message.muted)
+	elseif message_id == messages.SET_FOCUSED then
+		self.audio:set_focused(message.focused)
+	elseif message_id == messages.SET_AD_ACTIVE then
+		self.audio:set_ad_active(message.active)
+	elseif message_id == messages.SET_MUSIC then
+		self.audio:set_music(message.id)
+	elseif message_id == hash("attach_game") then
+		attach_game(self, message.module)
+	elseif self.game then
+		self.game.on_message(self, message_id, message)
+	end
+end
+
+function on_input(self, action_id, action)
+	if poki_service.get_state().is_ad_busy then return true end
+	self.input_tracker:observe(action_id, action)
+	if not self.ui.is_blocked then return false end
+	if action and action.pressed then client.gesture() end
+	if action_id == hash("reset_save") and action and action.pressed then
+		msg.post("#", "reset_save_requested", { source = "app_controller" })
+	end
+	return true
+end

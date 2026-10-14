@@ -1,0 +1,10 @@
+name: "app"
+scale_along_z: 1
+instances {
+  id: "controller"
+  prototype: "/app/objects/core/controller.go"
+}
+instances {
+  id: "sounds"
+  prototype: "/app/objects/audio/sounds.go"
+}

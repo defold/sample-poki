@@ -1,0 +1,2270 @@
+script: "/game/scripts/mission/hud.gui_script"
+fonts {
+  name: "title"
+  font: "/assets/fonts/title.font"
+}
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  id: "C_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  color {
+    x: 0.01
+    y: 0.015
+    z: 0.04
+  }
+  type: TYPE_BOX
+  id: "pause_dim"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "C_Anchor"
+  layer: "back_img"
+  inherit_alpha: true
+  alpha: 0.82
+  visible: false
+}
+nodes {
+  size {
+    x: 34.0
+    y: 34.0
+  }
+  color {
+    x: 0.145
+    y: 0.851
+    z: 0.957
+  }
+  type: TYPE_BOX
+  texture: "ui/crosshair088"
+  id: "target"
+  parent: "C_Anchor"
+  layer: "front_img"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 220.0
+    y: 36.0
+  }
+  color {
+    y: 0.78
+    z: 0.12
+  }
+  type: TYPE_TEXT
+  text: "+1 CREDITS"
+  font: "body"
+  id: "credit_bonus_1"
+  parent: "C_Anchor"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  size {
+    x: 220.0
+    y: 36.0
+  }
+  color {
+    y: 0.78
+    z: 0.12
+  }
+  type: TYPE_TEXT
+  text: "+1 CREDITS"
+  font: "body"
+  id: "credit_bonus_2"
+  parent: "C_Anchor"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  size {
+    x: 220.0
+    y: 36.0
+  }
+  color {
+    y: 0.78
+    z: 0.12
+  }
+  type: TYPE_TEXT
+  text: "+1 CREDITS"
+  font: "body"
+  id: "credit_bonus_3"
+  parent: "C_Anchor"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  size {
+    x: 220.0
+    y: 36.0
+  }
+  color {
+    y: 0.78
+    z: 0.12
+  }
+  type: TYPE_TEXT
+  text: "+1 CREDITS"
+  font: "body"
+  id: "credit_bonus_4"
+  parent: "C_Anchor"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    y: 20.0
+  }
+  size {
+    x: 560.0
+    y: 54.0
+  }
+  color {
+    x: 0.25
+    z: 0.68
+  }
+  type: TYPE_TEXT
+  text: "RESCUE ONLINE"
+  font: "title"
+  id: "rescue_feedback"
+  parent: "C_Anchor"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  color {
+    y: 0.05
+    z: 0.02
+  }
+  type: TYPE_BOX
+  id: "damage_flash"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "C_Anchor"
+  layer: "front_img"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  size {
+    x: 390.0
+    y: 132.0
+  }
+  type: TYPE_BOX
+  id: "tutorial_root"
+  parent: "C_Anchor"
+  layer: "front_img"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 390.0
+    y: 132.0
+  }
+  color {
+    x: 0.025
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "tutorial_panel"
+  parent: "tutorial_root"
+  layer: "front_img"
+  inherit_alpha: true
+  alpha: 0.96
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 3120.0
+    y: 1056.0
+  }
+  color {
+    x: 0.025
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "tutorial_panel_background"
+  parent: "tutorial_panel"
+  layer: "front_img"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+  alpha: 0.96
+}
+nodes {
+  position {
+    x: -142.0
+  }
+  size {
+    x: 72.0
+    y: 72.0
+  }
+  color {
+    y: 0.72
+    z: 0.08
+  }
+  type: TYPE_BOX
+  texture: "ui/crosshair088"
+  id: "tutorial_glow"
+  parent: "tutorial_root"
+  layer: "front_img"
+  inherit_alpha: true
+  alpha: 0.86
+}
+nodes {
+  position {
+    x: -92.0
+    y: 30.0
+  }
+  size {
+    x: 250.0
+    y: 34.0
+  }
+  color {
+    x: 0.96
+    y: 0.98
+  }
+  type: TYPE_TEXT
+  text: "HULL"
+  font: "title"
+  id: "tutorial_title"
+  pivot: PIVOT_W
+  parent: "tutorial_root"
+  layer: "front_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -92.0
+    y: -20.0
+  }
+  size {
+    x: 250.0
+    y: 56.0
+  }
+  color {
+    x: 0.56
+    y: 0.82
+    z: 0.96
+  }
+  type: TYPE_TEXT
+  text: "DODGE COLLISIONS TO AVOID DAMAGE"
+  font: "body"
+  id: "tutorial_body"
+  pivot: PIVOT_W
+  line_break: true
+  parent: "tutorial_root"
+  layer: "front_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 270.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  id: "header_group"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "N_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: -50.0
+  }
+  scale {
+    x: 2.0
+  }
+  size {
+    x: 960.0
+    y: 100.0
+  }
+  color {
+    x: 0.025
+    y: 0.075
+    z: 0.18
+  }
+  type: TYPE_BOX
+  id: "top_band"
+  parent: "header_group"
+  layer: "back_img"
+  inherit_alpha: true
+  alpha: 0.6
+}
+nodes {
+  type: TYPE_BOX
+  id: "objective_group"
+  parent: "header_group"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: -64.0
+  }
+  size {
+    x: 250.0
+    y: 64.0
+  }
+  color {
+    x: 0.055
+    y: 0.12
+    z: 0.28
+  }
+  type: TYPE_BOX
+  id: "objective_panel"
+  parent: "objective_group"
+  layer: "back_img"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2000.0
+    y: 512.0
+  }
+  color {
+    x: 0.055
+    y: 0.12
+    z: 0.28
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "objective_panel_background"
+  parent: "objective_panel"
+  layer: "back_img"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+}
+nodes {
+  position {
+    y: -2.0
+  }
+  size {
+    x: 220.0
+    y: 30.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "BREAK  0 OF 4"
+  font: "body"
+  id: "objective"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "objective_panel"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    y: 20.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 360.0
+    y: 22.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "TARGET:"
+  font: "body"
+  id: "objective_target_label"
+  parent: "objective_panel"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -109.0
+    y: -6.0
+  }
+  type: TYPE_TEMPLATE
+  id: "objective_rock"
+  parent: "objective_panel"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/stat.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "objective_rock/stat"
+  parent: "objective_rock"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/meteor_detailedLarge"
+  id: "objective_rock/icon"
+  parent: "objective_rock/stat"
+  overridden_fields: 1
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "objective_rock/label"
+  parent: "objective_rock/stat"
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+nodes {
+  position {
+    x: 29.0
+  }
+  size {
+    x: 72.0
+    y: 28.0
+  }
+  type: TYPE_TEXT
+  text: "0/4"
+  id: "objective_rock/value"
+  pivot: PIVOT_W
+  parent: "objective_rock/stat"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 14
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 1.0
+    y: -6.0
+  }
+  type: TYPE_TEMPLATE
+  id: "objective_enemy"
+  parent: "objective_panel"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/stat.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "objective_enemy/stat"
+  parent: "objective_enemy"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/enemy_A"
+  id: "objective_enemy/icon"
+  parent: "objective_enemy/stat"
+  overridden_fields: 1
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "objective_enemy/label"
+  parent: "objective_enemy/stat"
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+nodes {
+  position {
+    x: 29.0
+  }
+  size {
+    x: 72.0
+    y: 28.0
+  }
+  type: TYPE_TEXT
+  text: "0/3"
+  id: "objective_enemy/value"
+  pivot: PIVOT_W
+  parent: "objective_enemy/stat"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 14
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -104.0
+    y: -6.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  texture: "ui/station_C"
+  id: "boss_health_icon"
+  parent: "objective_panel"
+  layer: "front_img"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    x: -76.0
+    y: -6.0
+  }
+  type: TYPE_TEMPLATE
+  id: "boss_health_bar"
+  parent: "objective_panel"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/bar.gui"
+}
+nodes {
+  size {
+    x: 180.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  id: "boss_health_bar/bar"
+  parent: "boss_health_bar"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 180.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  id: "boss_health_bar/back"
+  parent: "boss_health_bar/bar"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 180.0
+    y: 32.0
+  }
+  type: TYPE_BOX
+  id: "boss_health_bar/fill"
+  parent: "boss_health_bar/back"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -140.0
+    y: -20.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 270.0
+    y: 34.0
+  }
+  color {
+    x: 0.145
+    y: 0.851
+    z: 0.957
+  }
+  type: TYPE_TEXT
+  text: "STARBREAKER"
+  font: "title"
+  id: "brand"
+  pivot: PIVOT_W
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "header_group"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 10.0
+    y: -20.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 170.0
+    y: 26.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "// MISSION 01"
+  font: "body"
+  id: "mission"
+  pivot: PIVOT_W
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "header_group"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -270.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: 172.0
+  }
+  size {
+    x: 640.0
+    y: 308.0
+  }
+  color {
+    x: 0.035
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "hint_panel"
+  parent: "S_Anchor"
+  layer: "back_img"
+  inherit_alpha: true
+  alpha: 0.92
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 5120.0
+    y: 2464.0
+  }
+  color {
+    x: 0.035
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pressed"
+  id: "hint_panel_background"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+  slice9 {
+    x: 128.0
+    y: 128.0
+    z: 128.0
+    w: 128.0
+  }
+  alpha: 0.92
+}
+nodes {
+  position {
+    x: 130.0
+    y: 20.0
+  }
+  size {
+    x: 80.0
+    y: 80.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_arrows_horizontal"
+  id: "hint_steer_a"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 130.0
+    y: 78.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/mouse_horizontal"
+  id: "hint_steer_mouse"
+  parent: "hint_panel"
+  layer: "front_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 130.0
+    y: -100.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/xbox_stick_l_horizontal"
+  id: "hint_steer_pad"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -130.0
+    y: 20.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_space"
+  id: "hint_fire"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -130.0
+    y: -40.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_enter"
+  id: "hint_fire_enter"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -130.0
+    y: 78.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/mouse_left"
+  id: "hint_fire_mouse"
+  parent: "hint_panel"
+  layer: "front_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -130.0
+    y: -100.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/xbox_button_color_a"
+  id: "hint_fire_pad"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 102.0
+    y: -40.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_a"
+  id: "hint_steer_key_a"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 158.0
+    y: -40.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_d"
+  id: "hint_steer_key_d"
+  parent: "hint_panel"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 130.0
+    y: 124.0
+  }
+  size {
+    x: 220.0
+    y: 28.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "MOVE"
+  font: "body"
+  id: "hint_steer_label"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "hint_panel"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -130.0
+    y: 124.0
+  }
+  size {
+    x: 180.0
+    y: 28.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "FIRE"
+  font: "body"
+  id: "hint_fire_label"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "hint_panel"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -480.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: 270.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  id: "health_header"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "NW_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 100.0
+    y: -70.0
+  }
+  size {
+    x: 216.0
+    y: 62.0
+  }
+  type: TYPE_BOX
+  id: "health_group"
+  pivot: PIVOT_SW
+  parent: "health_header"
+  layer: "back_img"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 107.0
+    y: 40.0
+  }
+  type: TYPE_TEMPLATE
+  id: "health_stat"
+  parent: "health_group"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/stat.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "health_stat/stat"
+  parent: "health_stat"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/ship_E"
+  id: "health_stat/icon"
+  parent: "health_stat/stat"
+  overridden_fields: 1
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -30.0
+  }
+  size {
+    x: 110.0
+    y: 25.0
+  }
+  type: TYPE_TEXT
+  id: "health_stat/label"
+  parent: "health_stat/stat"
+  overridden_fields: 1
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 100.0
+  }
+  type: TYPE_TEXT
+  id: "health_stat/value"
+  parent: "health_stat/stat"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "health_bar"
+  parent: "health_group"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/bar.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "health_bar/bar"
+  parent: "health_bar"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "health_bar/back"
+  parent: "health_bar/bar"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "health_bar/fill"
+  parent: "health_bar/back"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  id: "ammo_header"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "NE_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: -320.0
+    y: -70.0
+  }
+  size {
+    x: 216.0
+    y: 62.0
+  }
+  type: TYPE_BOX
+  id: "ammo_group"
+  pivot: PIVOT_SW
+  parent: "ammo_header"
+  layer: "back_img"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 107.0
+    y: 40.0
+  }
+  type: TYPE_TEMPLATE
+  id: "ammo_stat"
+  parent: "ammo_group"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/stat.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "ammo_stat/stat"
+  parent: "ammo_stat"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/barsVertical"
+  id: "ammo_stat/icon"
+  parent: "ammo_stat/stat"
+  overridden_fields: 1
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -30.0
+  }
+  size {
+    x: 110.0
+    y: 25.0
+  }
+  type: TYPE_TEXT
+  text: "AMMO"
+  id: "ammo_stat/label"
+  parent: "ammo_stat/stat"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 100.0
+  }
+  type: TYPE_TEXT
+  id: "ammo_stat/value"
+  parent: "ammo_stat/stat"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "ammo_bar"
+  parent: "ammo_group"
+  layer: "back_img"
+  inherit_alpha: true
+  template: "/ui/templates/bar.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "ammo_bar/bar"
+  parent: "ammo_bar"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/bar_blue"
+  id: "ammo_bar/back"
+  parent: "ammo_bar/bar"
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/bar_blue"
+  id: "ammo_bar/fill"
+  parent: "ammo_bar/back"
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -48.0
+    y: -45.0
+  }
+  type: TYPE_TEMPLATE
+  id: "pause_hit"
+  parent: "ammo_header"
+  layer: "front_img"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 64.0
+    y: 64.0
+  }
+  type: TYPE_BOX
+  id: "pause_hit/button"
+  parent: "pause_hit"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 448.0
+    y: 448.0
+  }
+  type: TYPE_BOX
+  id: "pause_hit/background"
+  parent: "pause_hit/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "pause_hit/content"
+  parent: "pause_hit/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  type: TYPE_BOX
+  texture: "ui/pause"
+  id: "pause_hit/icon_left"
+  parent: "pause_hit/content"
+  overridden_fields: 1
+  overridden_fields: 9
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -42.0
+    y: 4.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_escape"
+  id: "pause_hit/icon_right"
+  parent: "pause_hit/content"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_TEXT
+  id: "pause_hit/text"
+  parent: "pause_hit/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+nodes {
+  position {
+    x: -480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 120.0
+    y: 120.0
+  }
+  size {
+    x: 80.0
+    y: 80.0
+  }
+  type: TYPE_BOX
+  texture: "ui/transparentLight47"
+  id: "fire_touch"
+  parent: "SW_Anchor"
+  layer: "back_img"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    y: 58.0
+  }
+  size {
+    x: 120.0
+    y: 24.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "FIRE"
+  font: "body"
+  id: "fire_hint"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "fire_touch"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    x: 480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: -120.0
+    y: 120.0
+  }
+  size {
+    x: 80.0
+    y: 80.0
+  }
+  type: TYPE_BOX
+  texture: "ui/transparentLight09"
+  id: "stick_base"
+  parent: "SE_Anchor"
+  layer: "back_img"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  size {
+    x: 80.0
+    y: 80.0
+  }
+  type: TYPE_BOX
+  texture: "ui/transparentLight49"
+  id: "stick_nub"
+  parent: "stick_base"
+  layer: "back_img"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 58.0
+  }
+  size {
+    x: 120.0
+    y: 24.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "MOVE"
+  font: "body"
+  id: "stick_hint"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "stick_base"
+  layer: "text"
+  inherit_alpha: true
+  enabled: false
+}
+layers {
+  name: "back_img"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "front_img"
+}
+material: "/builtins/materials/gui.material"
+layouts {
+  name: "Landscape"
+  nodes {
+    type: TYPE_BOX
+    id: "header_group"
+    parent: "N_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "health_header"
+    parent: "NW_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "ammo_header"
+    parent: "NE_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "pause_hit/content"
+    parent: "pause_hit/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+}
+layouts {
+  name: "Portrait"
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "C_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -8.0
+    }
+    type: TYPE_BOX
+    id: "target"
+    parent: "C_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "damage_flash"
+    parent: "C_Anchor"
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 450.0
+      y: 148.0
+    }
+    type: TYPE_BOX
+    id: "tutorial_root"
+    parent: "C_Anchor"
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 450.0
+      y: 148.0
+    }
+    type: TYPE_BOX
+    id: "tutorial_panel"
+    parent: "tutorial_root"
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -165.0
+    }
+    size {
+      x: 80.0
+      y: 80.0
+    }
+    type: TYPE_BOX
+    id: "tutorial_glow"
+    parent: "tutorial_root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -110.0
+      y: 30.0
+    }
+    size {
+      x: 290.0
+      y: 38.0
+    }
+    type: TYPE_TEXT
+    id: "tutorial_title"
+    parent: "tutorial_root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -110.0
+      y: -25.0
+    }
+    size {
+      x: 290.0
+      y: 60.0
+    }
+    type: TYPE_TEXT
+    id: "tutorial_body"
+    parent: "tutorial_root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "N_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "header_group"
+    parent: "N_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -90.0
+    }
+    size {
+      x: 540.0
+      y: 180.0
+    }
+    type: TYPE_BOX
+    id: "top_band"
+    parent: "header_group"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "objective_group"
+    parent: "header_group"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -60.0
+    }
+    size {
+      x: 432.0
+      y: 48.0
+    }
+    type: TYPE_BOX
+    id: "objective_panel"
+    parent: "objective_group"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 3000.0
+      y: 384.0
+    }
+    type: TYPE_BOX
+    id: "objective_panel_background"
+    parent: "objective_panel"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 480.0
+      y: 35.0
+    }
+    type: TYPE_TEXT
+    id: "objective"
+    parent: "objective_panel"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      y: 16.0
+    }
+    scale {
+      x: 0.5
+      y: 0.5
+    }
+    size {
+      x: 760.0
+      y: 20.0
+    }
+    type: TYPE_TEXT
+    id: "objective_target_label"
+    parent: "objective_panel"
+    overridden_fields: 1
+    overridden_fields: 3
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -164.0
+      y: -6.0
+    }
+    type: TYPE_TEMPLATE
+    id: "objective_rock"
+    parent: "objective_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 62.0
+    }
+    type: TYPE_TEXT
+    id: "objective_rock/value"
+    parent: "objective_rock/stat"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 26.0
+      y: -6.0
+    }
+    type: TYPE_TEMPLATE
+    id: "objective_enemy"
+    parent: "objective_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 62.0
+    }
+    type: TYPE_TEXT
+    id: "objective_enemy/value"
+    parent: "objective_enemy/stat"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -194.0
+      y: -6.0
+    }
+    type: TYPE_BOX
+    id: "boss_health_icon"
+    parent: "objective_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -130.0
+      y: -6.0
+    }
+    type: TYPE_TEMPLATE
+    id: "boss_health_bar"
+    parent: "objective_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 300.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "boss_health_bar/bar"
+    parent: "boss_health_bar"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 300.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "boss_health_bar/back"
+    parent: "boss_health_bar/bar"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 300.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "boss_health_bar/fill"
+    parent: "boss_health_bar/back"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -70.0
+      y: -15.0
+    }
+    size {
+      x: 300.0
+      y: 34.0
+    }
+    type: TYPE_TEXT
+    id: "brand"
+    parent: "header_group"
+    overridden_fields: 1
+    overridden_fields: 4
+    overridden_fields: 14
+  }
+  nodes {
+    position {
+      x: 70.0
+      y: -15.0
+    }
+    scale {
+      x: 0.8
+      y: 0.8
+    }
+    size {
+      x: 170.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "mission"
+    parent: "header_group"
+    overridden_fields: 1
+    overridden_fields: 3
+    overridden_fields: 4
+    overridden_fields: 14
+  }
+  nodes {
+    position {
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "S_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: 174.0
+    }
+    size {
+      x: 420.0
+      y: 308.0
+    }
+    type: TYPE_BOX
+    id: "hint_panel"
+    parent: "S_Anchor"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 3360.0
+      y: 2464.0
+    }
+    type: TYPE_BOX
+    id: "hint_panel_background"
+    parent: "hint_panel"
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: 130.0
+      y: 20.0
+    }
+    type: TYPE_BOX
+    id: "hint_steer_a"
+    parent: "hint_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 130.0
+      y: 78.0
+    }
+    type: TYPE_BOX
+    id: "hint_steer_mouse"
+    parent: "hint_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 130.0
+      y: -100.0
+    }
+    type: TYPE_BOX
+    id: "hint_steer_pad"
+    parent: "hint_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -130.0
+      y: 20.0
+    }
+    type: TYPE_BOX
+    id: "hint_fire"
+    parent: "hint_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -130.0
+      y: 78.0
+    }
+    type: TYPE_BOX
+    id: "hint_fire_mouse"
+    parent: "hint_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -130.0
+      y: -100.0
+    }
+    type: TYPE_BOX
+    id: "hint_fire_pad"
+    parent: "hint_panel"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 130.0
+      y: 124.0
+    }
+    size {
+      x: 220.0
+      y: 28.0
+    }
+    type: TYPE_TEXT
+    id: "hint_steer_label"
+    parent: "hint_panel"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -130.0
+      y: 124.0
+    }
+    size {
+      x: 180.0
+      y: 28.0
+    }
+    type: TYPE_TEXT
+    id: "hint_fire_label"
+    parent: "hint_panel"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -270.0
+    }
+    type: TYPE_BOX
+    id: "W_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+    }
+    type: TYPE_BOX
+    id: "E_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "health_header"
+    parent: "NW_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 35.0
+      y: -150.0
+    }
+    size {
+      x: 234.0
+      y: 62.0
+    }
+    type: TYPE_BOX
+    id: "health_group"
+    parent: "health_header"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      y: 32.0
+    }
+    type: TYPE_TEMPLATE
+    id: "health_stat"
+    parent: "health_group"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "health_stat/icon"
+    parent: "health_stat/stat"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 76.0
+    }
+    scale {
+      x: 0.68
+      y: 0.68
+    }
+    size {
+      x: 100.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "health_stat/label"
+    parent: "health_stat/stat"
+    overridden_fields: 1
+    overridden_fields: 3
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 234.0
+    }
+    size {
+      x: 112.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "health_stat/value"
+    parent: "health_stat/stat"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 234.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "health_bar/bar"
+    parent: "health_bar"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 234.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "health_bar/back"
+    parent: "health_bar/bar"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 234.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "health_bar/fill"
+    parent: "health_bar/back"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "ammo_header"
+    parent: "NE_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -255.0
+      y: -150.0
+    }
+    size {
+      x: 234.0
+      y: 62.0
+    }
+    type: TYPE_BOX
+    id: "ammo_group"
+    parent: "ammo_header"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      y: 32.0
+    }
+    type: TYPE_TEMPLATE
+    id: "ammo_stat"
+    parent: "ammo_group"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "ammo_stat/icon"
+    parent: "ammo_stat/stat"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 76.0
+    }
+    scale {
+      x: 0.68
+      y: 0.68
+    }
+    size {
+      x: 100.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "ammo_stat/label"
+    parent: "ammo_stat/stat"
+    overridden_fields: 1
+    overridden_fields: 3
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 234.0
+    }
+    size {
+      x: 112.0
+      y: 25.0
+    }
+    type: TYPE_TEXT
+    id: "ammo_stat/value"
+    parent: "ammo_stat/stat"
+    overridden_fields: 1
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 234.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "ammo_bar/bar"
+    parent: "ammo_bar"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 234.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "ammo_bar/back"
+    parent: "ammo_bar/bar"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 234.0
+      y: 32.0
+    }
+    type: TYPE_BOX
+    id: "ammo_bar/fill"
+    parent: "ammo_bar/back"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -40.0
+      y: -50.0
+    }
+    scale {
+      x: 0.8
+      y: 0.8
+    }
+    type: TYPE_TEMPLATE
+    id: "pause_hit"
+    parent: "ammo_header"
+    overridden_fields: 1
+    overridden_fields: 3
+  }
+  nodes {
+    size {
+      x: 96.0
+      y: 96.0
+    }
+    type: TYPE_BOX
+    id: "pause_hit/button"
+    parent: "pause_hit"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    scale {
+      x: 0.125
+      y: 0.125
+    }
+    size {
+      x: 512.0
+      y: 512.0
+    }
+    type: TYPE_BOX
+    id: "pause_hit/background"
+    parent: "pause_hit/button"
+    overridden_fields: 3
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "pause_hit/content"
+    parent: "pause_hit/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    size {
+      x: 56.0
+      y: 56.0
+    }
+    type: TYPE_TEXT
+    id: "pause_hit/text"
+    parent: "pause_hit/content"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 104.0
+      y: 168.0
+    }
+    type: TYPE_BOX
+    id: "fire_touch"
+    parent: "SW_Anchor"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -104.0
+      y: 168.0
+    }
+    type: TYPE_BOX
+    id: "stick_base"
+    parent: "SE_Anchor"
+    overridden_fields: 1
+  }
+}
+adjust_reference: ADJUST_REFERENCE_PARENT
+max_nodes: 96

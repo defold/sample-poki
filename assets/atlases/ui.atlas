@@ -1,0 +1,129 @@
+images {
+  image: "/assets/ui/bar_blue.png"
+}
+images {
+  image: "/assets/ui/bar_red.png"
+}
+images {
+  image: "/assets/ui/arrowLeft.png"
+}
+images {
+  image: "/assets/ui/arrowRight.png"
+}
+images {
+  image: "/assets/ui/pause.png"
+}
+images {
+  image: "/assets/ui/audioOn.png"
+}
+images {
+  image: "/assets/ui/audioOff.png"
+}
+images {
+  image: "/assets/ui/video.png"
+}
+images {
+  image: "/learn/poki_logo.png"
+}
+images {
+  image: "/assets/ui/crosshair088.png"
+}
+images {
+  image: "/assets/ui/transparentLight09.png"
+}
+images {
+  image: "/assets/ui/transparentLight49.png"
+}
+images {
+  image: "/assets/ui/transparentLight47.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_escape.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_r.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_p.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_space.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_enter.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_a.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_d.png"
+}
+images {
+  image: "/assets/ui/input_prompts/keyboard_arrows_horizontal.png"
+}
+images {
+  image: "/assets/ui/input_prompts/xbox_button_color_a.png"
+}
+images {
+  image: "/assets/ui/input_prompts/xbox_button_color_b.png"
+}
+images {
+  image: "/assets/ui/input_prompts/xbox_button_color_x.png"
+}
+images {
+  image: "/assets/ui/input_prompts/xbox_button_color_y.png"
+}
+images {
+  image: "/assets/ui/input_prompts/xbox_button_menu.png"
+}
+images {
+  image: "/assets/ui/input_prompts/mouse_horizontal.png"
+}
+images {
+  image: "/assets/ui/input_prompts/mouse_left.png"
+}
+images {
+  image: "/assets/ui/input_prompts/xbox_stick_l_horizontal.png"
+}
+images {
+  image: "/assets/ui/barsVertical.png"
+}
+images {
+  image: "/assets/ui/ship_E.png"
+}
+images {
+  image: "/assets/ui/enemy_A.png"
+}
+images {
+  image: "/assets/ui/meteor_detailedLarge.png"
+}
+images {
+  image: "/assets/ui/station_C.png"
+}
+images {
+  image: "/assets/ui/star_medium.png"
+}
+animations {
+  id: "button_pressed"
+  images {
+    image: "/assets/ui/button_pressed.png"
+  }
+  playback: PLAYBACK_NONE
+}
+animations {
+  id: "button_released"
+  images {
+    image: "/assets/ui/button_released.png"
+  }
+  playback: PLAYBACK_NONE
+}
+animations {
+  id: "panel"
+  images {
+    image: "/assets/ui/panel.png"
+  }
+  playback: PLAYBACK_NONE
+}
+margin: 2
+extrude_borders: 2
+inner_padding: 1

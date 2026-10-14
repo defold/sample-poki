@@ -1,0 +1,43 @@
+local addresses = require("common.addresses")
+local button = require("ui.templates.button")
+local actions = require("common.input.actions")
+local colors = require("ui.colors")
+local popup = require("ui.popup")
+
+local APP_URL = addresses.APP_CONTROLLER
+local SCREEN = addresses.SCREEN_CREDITS_POPUP
+
+local function refresh(self)
+	self.close:set_lang("close"):set_input_prompt("primary", self.input_mode)
+		:set_color(colors.primary)
+end
+
+local function close(self)
+	self.close:set_enabled(false)
+	msg.post(APP_URL, "credits_close")
+end
+
+function init(self)
+	popup.setup(self, {
+		screen = SCREEN, name = "credits_popup",
+		title = "text_title", title_key = "credits_title",
+		detail = "text_detail", detail_key = "credits_body",
+		blocker = "background_dim/fill", refresh = refresh, render_order = 12,
+	})
+	self.close = self.druid:new_widget(button, "button_close", nil, close)
+	self.close:set_key_trigger(actions.primary)
+	popup.watch_focus(self, SCREEN, { self.close }, function(self)
+		self.close:set_enabled(true)
+	end)
+	refresh(self)
+	popup.acquire()
+end
+
+final = popup.final
+update = popup.update
+on_message = popup.on_message
+function on_input(self, action_id, action)
+	return popup.consume_input(self, action_id, action, function(id)
+		return id == actions.cancel and actions.primary or id
+	end)
+end

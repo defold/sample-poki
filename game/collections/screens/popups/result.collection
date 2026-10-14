@@ -1,0 +1,6 @@
+name: "result_popup"
+scale_along_z: 1
+instances {
+  id: "ui"
+  prototype: "/game/objects/screens/popups/result.go"
+}

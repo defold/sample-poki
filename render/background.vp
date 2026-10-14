@@ -1,0 +1,18 @@
+#version 140
+
+in highp vec4 position;
+
+uniform background_vp
+{
+    highp mat4 mtx_worldview;
+    highp mat4 mtx_proj;
+};
+
+out mediump vec2 var_screen_position;
+
+void main()
+{
+    highp vec4 clip_position = mtx_proj * (mtx_worldview * position);
+    var_screen_position = clip_position.xy / clip_position.w;
+    gl_Position = clip_position;
+}

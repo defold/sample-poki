@@ -1,0 +1,1163 @@
+script: "/game/scripts/screens/popups/pause.gui_script"
+fonts {
+  name: "title"
+  font: "/assets/fonts/title.font"
+}
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "C_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "background_dim"
+  parent: "C_Anchor"
+  inherit_alpha: true
+  template: "/ui/templates/popup_dim.gui"
+}
+nodes {
+  color {
+    x: 0.01
+    y: 0.015
+    z: 0.04
+  }
+  type: TYPE_BOX
+  id: "background_dim/fill"
+  parent: "background_dim"
+  layer: "popup_back"
+  overridden_fields: 5
+  overridden_fields: 20
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "popup_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "C_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 420.0
+    y: 440.0
+  }
+  color {
+    x: 0.025
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "panel_pause"
+  parent: "popup_motion"
+  layer: "popup_back"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "panel_pause_background"
+  parent: "panel_pause"
+  inherit_alpha: true
+  template: "/ui/templates/popup_panel.gui"
+}
+nodes {
+  position {
+    y: -20.0
+  }
+  size {
+    x: 3360.0
+    y: 3520.0
+  }
+  color {
+    x: 0.025
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "panel_pause_background/fill"
+  parent: "panel_pause_background"
+  layer: "popup_back"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 5
+  overridden_fields: 20
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 150.0
+  }
+  size {
+    x: 320.0
+    y: 50.0
+  }
+  color {
+    x: 0.145
+    y: 0.851
+    z: 0.957
+  }
+  type: TYPE_TEXT
+  text: "PAUSED"
+  font: "title"
+  id: "text_title"
+  parent: "panel_pause"
+  layer: "popup_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 86.0
+  }
+  size {
+    x: 360.0
+    y: 30.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "FLIGHT SYSTEMS ON HOLD"
+  font: "body"
+  id: "text_detail"
+  parent: "panel_pause"
+  layer: "popup_text"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position {
+    y: 56.0
+  }
+  type: TYPE_TEMPLATE
+  id: "language_selector"
+  parent: "panel_pause"
+  inherit_alpha: true
+  template: "/ui/templates/selector.gui"
+}
+nodes {
+  size {
+    x: 300.0
+    y: 56.0
+  }
+  type: TYPE_BOX
+  id: "language_selector/row"
+  parent: "language_selector"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -125.0
+  }
+  type: TYPE_TEMPLATE
+  id: "language_selector/prev"
+  parent: "language_selector/row"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/prev/button"
+  parent: "language_selector/prev"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/prev/background"
+  parent: "language_selector/prev/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/prev/content"
+  parent: "language_selector/prev/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/prev/icon_left"
+  parent: "language_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/prev/icon_right"
+  parent: "language_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "language_selector/prev/text"
+  parent: "language_selector/prev/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "language_selector/action"
+  parent: "language_selector/row"
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 180.0
+    y: 50.0
+  }
+  type: TYPE_BOX
+  id: "language_selector/action/button"
+  parent: "language_selector/action"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 1400.0
+    y: 400.0
+  }
+  type: TYPE_BOX
+  id: "language_selector/action/background"
+  parent: "language_selector/action/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/action/content"
+  parent: "language_selector/action/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/action/icon_left"
+  parent: "language_selector/action/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 65.0
+    y: 2.0
+  }
+  type: TYPE_BOX
+  id: "language_selector/action/icon_right"
+  parent: "language_selector/action/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  size {
+    x: 160.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "EN"
+  id: "language_selector/action/text"
+  parent: "language_selector/action/content"
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 125.0
+  }
+  type: TYPE_TEMPLATE
+  id: "language_selector/next"
+  parent: "language_selector/row"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/next/button"
+  parent: "language_selector/next"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/next/background"
+  parent: "language_selector/next/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/next/content"
+  parent: "language_selector/next/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/next/icon_left"
+  parent: "language_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "language_selector/next/icon_right"
+  parent: "language_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "language_selector/next/text"
+  parent: "language_selector/next/content"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -16.0
+  }
+  type: TYPE_TEMPLATE
+  id: "button_mute"
+  parent: "panel_pause"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 300.0
+    y: 60.0
+  }
+  type: TYPE_BOX
+  id: "button_mute/button"
+  parent: "button_mute"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 2400.0
+    y: 500.0
+  }
+  type: TYPE_BOX
+  id: "button_mute/background"
+  parent: "button_mute/button"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "button_mute/content"
+  parent: "button_mute/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -122.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  texture: "ui/audioOn"
+  id: "button_mute/icon_left"
+  parent: "button_mute/content"
+  overridden_fields: 1
+  overridden_fields: 9
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 120.0
+    y: 2.0
+  }
+  type: TYPE_BOX
+  id: "button_mute/icon_right"
+  parent: "button_mute/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "SOUND ON"
+  id: "button_mute/text"
+  parent: "button_mute/content"
+  outline_alpha: 0.0
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -96.0
+  }
+  type: TYPE_TEMPLATE
+  id: "button_credits"
+  parent: "panel_pause"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 300.0
+    y: 60.0
+  }
+  type: TYPE_BOX
+  id: "button_credits/button"
+  parent: "button_credits"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 2400.0
+    y: 500.0
+  }
+  type: TYPE_BOX
+  id: "button_credits/background"
+  parent: "button_credits/button"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "button_credits/content"
+  parent: "button_credits/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -122.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "button_credits/icon_left"
+  parent: "button_credits/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 120.0
+    y: 2.0
+  }
+  type: TYPE_BOX
+  id: "button_credits/icon_right"
+  parent: "button_credits/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 260.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "CREDITS"
+  id: "button_credits/text"
+  parent: "button_credits/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -178.0
+  }
+  type: TYPE_TEMPLATE
+  id: "button_resume"
+  parent: "panel_pause"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 300.0
+    y: 60.0
+  }
+  type: TYPE_BOX
+  id: "button_resume/button"
+  parent: "button_resume"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 2400.0
+    y: 500.0
+  }
+  color {
+    x: 0.18
+    y: 0.86
+    z: 0.34
+  }
+  type: TYPE_BOX
+  id: "button_resume/background"
+  parent: "button_resume/button"
+  overridden_fields: 4
+  overridden_fields: 5
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "button_resume/content"
+  parent: "button_resume/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -122.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "button_resume/icon_left"
+  parent: "button_resume/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 120.0
+    y: 2.0
+  }
+  type: TYPE_BOX
+  id: "button_resume/icon_right"
+  parent: "button_resume/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 260.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "RESUME"
+  id: "button_resume/text"
+  parent: "button_resume/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -330.0
+  }
+  type: TYPE_BOX
+  id: "fire_hints"
+  parent: "popup_motion"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: 124.0
+  }
+  size {
+    x: 180.0
+    y: 28.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "FIRE"
+  font: "body"
+  id: "hint_fire_label"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "fire_hints"
+  layer: "popup_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 78.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/mouse_left"
+  id: "hint_fire_mouse"
+  parent: "fire_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 20.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_space"
+  id: "hint_fire"
+  parent: "fire_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -40.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_enter"
+  id: "hint_fire_enter"
+  parent: "fire_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -100.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/xbox_button_color_a"
+  id: "hint_fire_pad"
+  parent: "fire_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 330.0
+  }
+  type: TYPE_BOX
+  id: "move_hints"
+  parent: "popup_motion"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: 124.0
+  }
+  size {
+    x: 220.0
+    y: 28.0
+  }
+  color {
+    x: 0.957
+    y: 0.969
+  }
+  type: TYPE_TEXT
+  text: "MOVE"
+  font: "body"
+  id: "hint_steer_label"
+  outline {
+    x: 0.01
+    y: 0.02
+    z: 0.07
+  }
+  parent: "move_hints"
+  layer: "popup_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 78.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/mouse_horizontal"
+  id: "hint_steer_mouse"
+  parent: "move_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 20.0
+  }
+  size {
+    x: 80.0
+    y: 80.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_arrows_horizontal"
+  id: "hint_steer_a"
+  parent: "move_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -28.0
+    y: -40.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_a"
+  id: "hint_steer_key_a"
+  parent: "move_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 28.0
+    y: -40.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/keyboard_d"
+  id: "hint_steer_key_d"
+  parent: "move_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -100.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_BOX
+  texture: "ui/xbox_stick_l_horizontal"
+  id: "hint_steer_pad"
+  parent: "move_hints"
+  layer: "popup_front"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+layers {
+  name: "popup_back"
+}
+layers {
+  name: "popup_text"
+}
+layers {
+  name: "popup_front"
+}
+material: "/builtins/materials/gui.material"
+layouts {
+  name: "Landscape"
+  nodes {
+    type: TYPE_BOX
+    id: "popup_motion"
+    parent: "C_Anchor"
+    overridden_fields: 3
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "language_selector/prev/content"
+    parent: "language_selector/prev/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "language_selector/action/content"
+    parent: "language_selector/action/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "language_selector/next/content"
+    parent: "language_selector/next/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_mute/content"
+    parent: "button_mute/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_credits/content"
+    parent: "button_credits/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_resume/content"
+    parent: "button_resume/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+}
+layouts {
+  name: "Portrait"
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "C_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "background_dim/fill"
+    parent: "background_dim"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "popup_motion"
+    parent: "C_Anchor"
+    overridden_fields: 3
+  }
+  nodes {
+    position {
+      y: 155.0
+    }
+    type: TYPE_BOX
+    id: "panel_pause"
+    parent: "popup_motion"
+    overridden_fields: 1
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "language_selector/prev/content"
+    parent: "language_selector/prev/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "language_selector/action/content"
+    parent: "language_selector/action/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "language_selector/next/content"
+    parent: "language_selector/next/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_mute/content"
+    parent: "button_mute/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_credits/content"
+    parent: "button_credits/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_resume/content"
+    parent: "button_resume/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -130.0
+      y: -280.0
+    }
+    type: TYPE_BOX
+    id: "fire_hints"
+    parent: "popup_motion"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 130.0
+      y: -280.0
+    }
+    type: TYPE_BOX
+    id: "move_hints"
+    parent: "popup_motion"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "N_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "S_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+    }
+    type: TYPE_BOX
+    id: "W_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+    }
+    type: TYPE_BOX
+    id: "E_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+}
+adjust_reference: ADJUST_REFERENCE_PARENT
+max_nodes: 128

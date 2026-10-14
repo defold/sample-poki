@@ -1,0 +1,512 @@
+script: "/game/scripts/screens/popups/credits.gui_script"
+fonts {
+  name: "title"
+  font: "/assets/fonts/title.font"
+}
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "C_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "background_dim"
+  parent: "C_Anchor"
+  inherit_alpha: true
+  template: "/ui/templates/popup_dim.gui"
+}
+nodes {
+  color {
+    x: 0.01
+    y: 0.015
+    z: 0.04
+  }
+  type: TYPE_BOX
+  id: "background_dim/fill"
+  parent: "background_dim"
+  layer: "button_bg"
+  overridden_fields: 5
+  overridden_fields: 20
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "popup_motion"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "C_Anchor"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  size {
+    x: 460.0
+    y: 420.0
+  }
+  color {
+    x: 0.025
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "panel_credits"
+  parent: "popup_motion"
+  layer: "button_bg"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "panel_credits_background"
+  parent: "panel_credits"
+  inherit_alpha: true
+  template: "/ui/templates/popup_panel.gui"
+}
+nodes {
+  size {
+    x: 3680.0
+    y: 3360.0
+  }
+  color {
+    x: 0.025
+    y: 0.09
+    z: 0.22
+  }
+  type: TYPE_BOX
+  id: "panel_credits_background/fill"
+  parent: "panel_credits_background"
+  layer: "button_bg"
+  overridden_fields: 4
+  overridden_fields: 5
+  overridden_fields: 20
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 158.0
+  }
+  size {
+    x: 400.0
+    y: 44.0
+  }
+  color {
+    x: 0.145
+    y: 0.851
+    z: 0.957
+  }
+  type: TYPE_TEXT
+  text: "CREDITS"
+  font: "title"
+  id: "text_title"
+  parent: "panel_credits"
+  layer: "text_title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 18.0
+  }
+  size {
+    x: 400.0
+    y: 220.0
+  }
+  color {
+    x: 0.62
+    y: 0.72
+    z: 0.86
+  }
+  type: TYPE_TEXT
+  text: "A sample game for Poki."
+  font: "body"
+  id: "text_detail"
+  line_break: true
+  parent: "panel_credits"
+  layer: "text_body"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -158.0
+  }
+  type: TYPE_TEMPLATE
+  id: "button_close"
+  parent: "panel_credits"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "button_close/button"
+  parent: "button_close"
+  template_node_child: true
+}
+nodes {
+  color {
+    x: 0.18
+    y: 0.86
+    z: 0.34
+  }
+  type: TYPE_BOX
+  id: "button_close/background"
+  parent: "button_close/button"
+  overridden_fields: 5
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "button_close/content"
+  parent: "button_close/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -122.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "button_close/icon_left"
+  parent: "button_close/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 122.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "button_close/icon_right"
+  parent: "button_close/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -12.0
+  }
+  size {
+    x: 228.0
+    y: 63.0
+  }
+  type: TYPE_TEXT
+  text: "CLOSE"
+  id: "button_close/text"
+  parent: "button_close/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: 270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: -480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 480.0
+    y: -270.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  alpha: 0.0
+}
+layers {
+  name: "button_bg"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "button_text"
+}
+layers {
+  name: "text_body"
+}
+layers {
+  name: "text_title"
+}
+material: "/builtins/materials/gui.material"
+layouts {
+  name: "Landscape"
+  nodes {
+    type: TYPE_BOX
+    id: "popup_motion"
+    parent: "C_Anchor"
+    overridden_fields: 3
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_close/content"
+    parent: "button_close/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+}
+layouts {
+  name: "Portrait"
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "root"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "C_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 540.0
+      y: 960.0
+    }
+    type: TYPE_BOX
+    id: "background_dim/fill"
+    parent: "background_dim"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "popup_motion"
+    parent: "C_Anchor"
+    overridden_fields: 3
+  }
+  nodes {
+    type: TYPE_BOX
+    id: "button_close/content"
+    parent: "button_close/button"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "N_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "S_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+    }
+    type: TYPE_BOX
+    id: "W_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+    }
+    type: TYPE_BOX
+    id: "E_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: 480.0
+    }
+    type: TYPE_BOX
+    id: "NE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: -270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SW_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 270.0
+      y: -480.0
+    }
+    type: TYPE_BOX
+    id: "SE_Anchor"
+    parent: "root"
+    overridden_fields: 1
+  }
+}
+adjust_reference: ADJUST_REFERENCE_PARENT
+max_nodes: 64

@@ -1,0 +1,17 @@
+script: ""
+nodes {
+  size {
+    x: 960.0
+    y: 540.0
+  }
+  color {
+    x: 0.005
+    y: 0.008
+    z: 0.035
+  }
+  type: TYPE_BOX
+  id: "fill"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  alpha: 0.82
+}

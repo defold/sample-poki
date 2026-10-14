@@ -1,0 +1,6 @@
+mesh: "/assets/models/asteroid_1.gltf"
+name: "{{NAME}}"
+materials {
+  name: "rock"
+  material: "/render/asteroid.material"
+}

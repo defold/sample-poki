@@ -1,0 +1,34 @@
+path_settings {
+  path: "/assets/atlases/vfx.atlas"
+  profile: "VFX"
+}
+path_settings {
+  path: "/assets/atlases/ui.atlas"
+  profile: "UI"
+}
+profiles {
+  name: "VFX"
+  platforms {
+    os: OS_ID_GENERIC
+    formats {
+      format: TEXTURE_FORMAT_RGBA
+      compressor: "Uncompressed"
+      compressor_preset: "UNCOMPRESSED"
+    }
+    mipmaps: false
+    max_texture_size: 256
+  }
+}
+profiles {
+  name: "UI"
+  platforms {
+    os: OS_ID_GENERIC
+    formats {
+      format: TEXTURE_FORMAT_RGBA
+      compressor: "BasisU"
+      compressor_preset: "BASISU_MEDIUM"
+    }
+    mipmaps: false
+    max_texture_size: 1024
+  }
+}

@@ -1,0 +1,3 @@
+name: "reward_confirm_popup"
+scale_along_z: 1
+instances { id: "ui" prototype: "/game/objects/screens/popups/reward_confirm.go" }

@@ -1,0 +1,374 @@
+local addresses = require("common.addresses")
+local druid = require("druid.druid")
+local monarch = require("monarch.monarch")
+local screen_transitions = require("ui.screen_transitions")
+local lang = require("lang.lang")
+local button = require("ui.templates.button")
+local selector = require("ui.templates.selector")
+local upgrade = require("ui.templates.upgrade")
+local colors = require("ui.colors")
+local actions = require("common.input.actions")
+local screen_input = require("ui.screen_input")
+local axis = require("common.input.axis")
+local client = require("common.audio.client")
+local focus = require("ui.focus")
+local shop_offer = require("game.modules.shop.shop_offer")
+local shop_focus = require("game.modules.shop.shop_focus")
+local shop_navigation = require("game.modules.shop.shop_navigation")
+
+local APP_URL = addresses.APP_CONTROLLER
+local CONTROLLER_URL = "/controller#mothership"
+local SCREEN = addresses.SCREEN_MOTHERSHIP
+
+local UPGRADE_IDS = shop_focus.UPGRADE_IDS
+
+local function selected_action(self, kind)
+	return shop_offer.get(self.state, kind, self.nav["selected_" .. kind .. "_id"])
+end
+
+local function notify_preview(self)
+	msg.post(CONTROLLER_URL, "preview_selection", {
+		ship_id = self.nav.selected_ship_id or "scout",
+		skin_id = self.nav.selected_skin_id or "standard",
+	})
+end
+
+local function refresh_shop_text(self)
+	if not self.state then return end
+	local names = {}
+	for _, kind in ipairs({ "ship", "skin" }) do
+		local action = selected_action(self, kind)
+		local name = lang.txt(action.name)
+		names[#names + 1] = name
+		local label = (action.label == "shop_buy" or action.label == "shop_unlock_after")
+			and lang.txp(action.label, action.value) or lang.txt(action.label)
+		self[kind .. "_action_button"]:set_text(name .. "\n" .. label)
+		self[kind .. "_action_button"]:set_left_icon(action.icon and hash(action.icon))
+	end
+	self.preview_text:set_text(self.state.is_save_pending and lang.txt("save_failed")
+		or table.concat(names, " // "))
+end
+
+local function refresh_pause_prompt(self)
+	if not self.pause_button then return end
+	local is_available = not self.is_transitioning and not self.is_external_paused
+	self.pause_button:set_enabled(is_available):set_visible(true)
+		:set_input_prompt("cancel", self.input_mode, true)
+end
+
+local function update_focus(self)
+	if not self.focus_buttons then return end
+	local available = not self.is_transitioning and not self.is_external_paused
+	for index, button_instance in ipairs(self.focus_buttons) do
+		local upgrade_id = shop_focus.upgrade_id(index)
+		local action
+		if index == shop_focus.SHIP then action = selected_action(self, "ship")
+		elseif index == shop_focus.SKIN then action = selected_action(self, "skin")
+		else action = shop_offer.get(self.state, upgrade_id and "upgrade" or "continue", upgrade_id) end
+		local is_enabled = available and action.enabled
+		local is_focused = index == self.nav.focus
+		local is_rewarded = action.rewarded
+		local color = is_enabled and (index == shop_focus.CONTINUE and colors.primary or colors.shop) or colors.disabled
+		if action.equipped then color = colors.shop_equipped
+		elseif is_rewarded and is_enabled then color = colors.rewarded end
+		button_instance:set_enabled(is_enabled == true):set_color(color)
+			:set_highlighted(is_focused, index == shop_focus.CONTINUE and colors.primary_focus or nil)
+		button_instance:set_key_trigger(is_focused and is_enabled and (is_rewarded and actions.rewarded or actions.primary) or nil)
+		if upgrade_id then
+			self.upgrade_rows[upgrade_id]:set_highlighted(is_focused)
+				:set_row_enabled(is_enabled == true)
+		end
+		button_instance:set_input_prompt(is_focused and (is_rewarded and self.input_mode ~= "keyboard" and "rewarded" or "primary") or nil, self.input_mode)
+	end
+	refresh_pause_prompt(self)
+	for index, selector_instance in ipairs(self.selectors) do
+		selector_instance.prev:set_enabled(available)
+			:set_key_trigger(self.nav.focus == index and actions.menu_left or nil)
+		selector_instance.next:set_enabled(available)
+			:set_key_trigger(self.nav.focus == index and actions.menu_right or nil)
+	end
+end
+
+local function set_focus(self, index, has_selection_changed)
+	local has_preview_changed = shop_focus.set_focus(self.nav, index, self.state)
+	if has_preview_changed or has_selection_changed then
+		refresh_shop_text(self)
+		notify_preview(self)
+	end
+	update_focus(self)
+end
+
+local function apply_pointer_focus(self)
+	if self.ship_selector:is_pointer_hovered() then
+		set_focus(self, shop_focus.SHIP)
+	elseif self.skin_selector:is_pointer_hovered() then
+		set_focus(self, shop_focus.SKIN)
+	else
+		for index, id in ipairs(UPGRADE_IDS) do
+			if self.upgrade_rows[id]:is_pointer_hovered() then
+				set_focus(self, shop_focus.FIRST_UPGRADE + index - 1)
+				return
+			end
+		end
+		if self.continue_button:is_pointer_hovered() then
+			set_focus(self, shop_focus.CONTINUE)
+		end
+	end
+end
+
+local function cycle_offer(self, which, delta)
+	if self.is_transitioning or self.is_external_paused or not self.state then return end
+	local field = "selected_" .. which .. "_id"
+	self.nav[field] = shop_focus.cycle(self.state[which .. "_order"], self.nav[field], delta)
+	set_focus(self, which == "ship" and shop_focus.SHIP or shop_focus.SKIN, true)
+	client.play("ui_move")
+end
+
+local function request_action(self, kind, id, index)
+	if self.is_transitioning or self.is_external_paused then return end
+	local action = shop_offer.get(self.state, kind, id)
+	if not action.enabled then return end
+	if kind == "continue" then self.is_transitioning = true end
+	set_focus(self, index)
+	msg.post(APP_URL, action.message, { id = id })
+end
+
+local function request_pause(self)
+	if self.is_transitioning or self.is_external_paused then
+		return
+	end
+	msg.post(APP_URL, "pause_requested", { source = "mothership" })
+end
+
+local function refresh_text(self)
+	self.title_text:translate("mothership_title")
+	for _, id in ipairs(UPGRADE_IDS) do
+		self.upgrade_rows[id]:set_offer(self.state and self.state.upgrade_offers[id])
+	end
+	if not self.state then return end
+	local cta = self.state.is_retry and "retry_cta" or "mission_cta"
+	self.continue_button:set_lang(cta, self.state.next_level)
+	refresh_shop_text(self)
+end
+
+local function restore_state(self)
+	if not self.state then return end
+	self.credits_text:set_text(tostring(self.state.credits or 0))
+	refresh_text(self)
+	update_focus(self)
+	notify_preview(self)
+end
+
+local function apply_state(self, message)
+	local is_first_state = self.state == nil
+	screen_input.restore(self, message)
+	self.state = message.profile or self.state or {}
+	self.state.next_level = message.next_level or self.state.mission or 1
+	self.state.is_retry = message.retry == true
+	self.is_transitioning = message.transitioning == true
+	if is_first_state or self.nav.focus ~= shop_focus.SHIP or not self.nav.selected_ship_id then
+		self.nav.selected_ship_id = self.state.equipped_ship or "scout"
+	end
+	if is_first_state or self.nav.focus ~= shop_focus.SKIN or not self.nav.selected_skin_id then
+		self.nav.selected_skin_id = self.state.equipped_skin or "standard"
+	end
+	restore_state(self)
+end
+
+local function shake_insufficient(self, id)
+	local target = gui.get_node(id)
+	local original = gui.get_position(target)
+	gui.cancel_animations(target, gui.PROP_POSITION)
+	gui.animate(target, gui.PROP_POSITION, original + vmath.vector3(12, 0, 0),
+		gui.EASING_INOUTSINE, 0.06, 0, function()
+			gui.animate(target, gui.PROP_POSITION, original, gui.EASING_OUTBACK, 0.12)
+		end)
+end
+
+local function flash_credits(self)
+	gui.cancel_animations(gui.get_node("credits_value"), gui.PROP_COLOR)
+	gui.set_color(gui.get_node("credits_value"), colors.error)
+	gui.animate(gui.get_node("credits_value"), gui.PROP_COLOR, colors.gold, gui.EASING_OUTQUAD, 0.32)
+end
+
+local function celebrate(self, id)
+	local target = gui.get_node(id .. "_background")
+	gui.cancel_animations(target, gui.PROP_COLOR)
+	gui.set_color(target, colors.purchase_flash)
+	gui.animate(target, gui.PROP_COLOR, colors.shop, gui.EASING_OUTQUAD, 0.42)
+end
+
+local function cancel_interactions(self)
+	self.pause_button:cancel_press()
+	self.continue_button:cancel_press()
+	for _, selector_instance in ipairs(self.selectors) do selector_instance:cancel_press() end
+	for _, row in pairs(self.upgrade_rows) do row:cancel_press() end
+end
+
+local function apply_shop_feedback(self, message, upgrade_id)
+	apply_state(self, message)
+	if message.success then
+		if upgrade_id then self.upgrade_rows[message.id]:celebrate()
+		else celebrate(self, "preview_label_panel") end
+	elseif message.reason == "not_enough_credits" then
+		if upgrade_id then self.upgrade_rows[message.id]:shake()
+		else shake_insufficient(self, "preview_label_panel") end
+		flash_credits(self)
+	end
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.motion = screen_transitions.new(SCREEN, function(is_visible, is_finished)
+		local root = gui.get_node("root")
+		if is_visible and not is_finished then
+			gui.set_enabled(root, true)
+			msg.post(".", "acquire_input_focus")
+		elseif not is_visible then
+			if is_finished then
+				gui.set_enabled(root, false)
+			else
+				msg.post(".", "release_input_focus")
+			end
+		end
+	end)
+	self.title_text = self.druid:new_lang_text("title", "mothership_title")
+	self.preview_text = self.druid:new_text("preview_label")
+	self.credits_text = self.druid:new_text("credits_value")
+	self.nav = shop_focus.new()
+	self.stick = axis.new()
+	self.is_transitioning = false
+	self.is_external_paused = false
+
+	self.state = nil
+	screen_input.init(self)
+	self.navigation_input = {}
+	self.upgrade_rows = {}
+	self.upgrade_buttons = {}
+	local function create_hover_callback(index)
+		return focus.create_hover_callback(index, function() return self.nav.focus end,
+			function(focus_index)
+				client.play("ui_move")
+				set_focus(self, focus_index)
+			end)
+	end
+	for index, id in ipairs(UPGRADE_IDS) do
+		local upgrade_id, focus = id, shop_focus.FIRST_UPGRADE + index - 1
+		local row = self.druid:new_widget(upgrade, "row_" .. id, nil, id,
+			function() request_action(self, "upgrade", upgrade_id, focus) end,
+			create_hover_callback(focus))
+		self.upgrade_rows[id] = row
+		self.upgrade_buttons[index] = row.button
+	end
+	local selector_configs = {
+		{ key = "ship", focus = shop_focus.SHIP },
+		{ key = "skin", focus = shop_focus.SKIN },
+	}
+	for _, config in ipairs(selector_configs) do
+		local selector_config = config
+		local selector_instance = self.druid:new_widget(selector, selector_config.key .. "_selector", nil,
+			function() request_action(self, selector_config.key,
+				self.nav["selected_" .. selector_config.key .. "_id"], selector_config.focus) end,
+			function() cycle_offer(self, selector_config.key, -1) end,
+			function() cycle_offer(self, selector_config.key, 1) end,
+			create_hover_callback(selector_config.focus))
+		self[selector_config.key .. "_selector"] = selector_instance
+		self[selector_config.key .. "_action_button"] = selector_instance.action
+	end
+	self.selectors = { [shop_focus.SHIP] = self.ship_selector, [shop_focus.SKIN] = self.skin_selector }
+	self.continue_button = self.druid:new_widget(button, "continue_button", nil,
+		function() request_action(self, "continue", nil, shop_focus.CONTINUE) end)
+	self.pause_button = self.druid:new_widget(button, "pause_hit", nil, request_pause)
+	self.pause_button:set_key_trigger(actions.cancel)
+	gui.set_enabled(gui.get_node("root"), false)
+	self.focus_buttons = { self.ship_action_button, self.skin_action_button }
+	for _, button_instance in ipairs(self.upgrade_buttons) do
+		self.focus_buttons[#self.focus_buttons + 1] = button_instance
+	end
+	self.focus_buttons[shop_focus.CONTINUE] = self.continue_button
+	monarch.on_focus_changed(SCREEN, function(id)
+		cancel_interactions(self)
+		if id == monarch.FOCUS_GAINED then self.motion:restore_focus() end
+	end)
+	focus.bind_hover(self.focus_buttons,
+		function() return self.nav.focus end,
+		function(index)
+			client.play("ui_move")
+			set_focus(self, index)
+		end)
+	refresh_text(self)
+	update_focus(self)
+end
+
+function final(self)
+	if self.motion then
+		self.motion:final()
+	end
+	if self.druid then self.druid:final(); self.druid = nil end
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	if not self.druid then return end
+	monarch.on_message(message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	if message_id == hash("cancel_ui_input") then
+		cancel_interactions(self)
+	elseif message_id == hash("mothership_state") then
+		apply_state(self, message)
+	elseif message_id == hash("mothership_transition") then
+		self.is_transitioning = message.transitioning == true
+		update_focus(self)
+	elseif message_id == hash("purchase_feedback") then
+		apply_shop_feedback(self, message, true)
+	elseif message_id == hash("shop_feedback") then
+		apply_shop_feedback(self, message, false)
+	elseif message_id == hash("language_changed") then
+		refresh_text(self)
+		update_focus(self)
+	elseif message_id == hash("pause_visibility") then
+		self.is_external_paused = message.paused == true
+		if self.is_external_paused then
+			cancel_interactions(self)
+		end
+		update_focus(self)
+	elseif message_id == hash("layout_changed") then
+		self.motion:resize()
+		restore_state(self)
+	elseif message_id == hash("viewport_resized") then
+		self.motion:resize()
+	end
+end
+
+function on_input(self, action_id, action)
+	if screen_input.handle_common_input(self, action_id, action, {
+		blocked = self.motion:is_input_blocked()
+			or self.is_external_paused,
+		on_reset = function() msg.post(addresses.APP_CONTROLLER, "reset_save_requested") end,
+	}) then return true end
+	local id = action_id
+	local button_input = screen_input.route(self, action_id, action, {
+		stick = self.stick,
+		on_mode = update_focus,
+		on_hover = apply_pointer_focus,
+	})
+	-- Space/Enter opens the focused skin offer in a modal confirmation.
+	if id == actions.primary and action.gamepad == nil and self.nav.focus == shop_focus.SKIN then
+		if selected_action(self, "skin").rewarded then id = actions.rewarded end
+	end
+
+	-- Druid needs mouse movement (nil id) to update hover before it is consumed.
+	if self.druid:on_input(id, button_input) then return true end
+	if not id or self.is_transitioning or self.is_external_paused then return true end
+	local step = shop_navigation.vertical_step(self.stick, id, action, socket.gettime())
+	if step ~= 0 then
+		client.play("ui_move")
+		set_focus(self, shop_focus.step(self.nav.focus, step))
+	end
+	return id == actions.primary or id == actions.rewarded
+		or actions.is_menu_vertical(id) or actions.is_menu_horizontal(id)
+		or id == actions.cancel
+end

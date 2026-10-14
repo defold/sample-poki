@@ -1,0 +1,291 @@
+fonts {
+  name: "body"
+  font: "/assets/fonts/body.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/atlases/ui.atlas"
+}
+nodes {
+  size {
+    x: 436.0
+    y: 56.0
+  }
+  type: TYPE_BOX
+  id: "row"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: -190.0
+  }
+  type: TYPE_TEMPLATE
+  id: "prev"
+  parent: "row"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 56.0
+    y: 56.0
+  }
+  type: TYPE_BOX
+  id: "prev/button"
+  parent: "prev"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 448.0
+    y: 448.0
+  }
+  type: TYPE_BOX
+  id: "prev/background"
+  parent: "prev/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "prev/content"
+  parent: "prev/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  type: TYPE_BOX
+  texture: "ui/arrowLeft"
+  id: "prev/icon_left"
+  parent: "prev/content"
+  overridden_fields: 1
+  overridden_fields: 9
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 42.0
+    y: 4.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  id: "prev/icon_right"
+  parent: "prev/content"
+  overridden_fields: 1
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_TEXT
+  id: "prev/text"
+  parent: "prev/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "action"
+  parent: "row"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 300.0
+    y: 50.0
+  }
+  type: TYPE_BOX
+  id: "action/button"
+  parent: "action"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 2400.0
+    y: 420.0
+  }
+  type: TYPE_BOX
+  id: "action/background"
+  parent: "action/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 1.0
+  }
+  type: TYPE_BOX
+  id: "action/content"
+  parent: "action/button"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -132.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "action/icon_left"
+  parent: "action/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 132.0
+    y: 4.0
+  }
+  type: TYPE_BOX
+  id: "action/icon_right"
+  parent: "action/content"
+  overridden_fields: 1
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -12.0
+  }
+  size {
+    x: 256.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "ACTIVE"
+  id: "action/text"
+  parent: "action/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 8
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 190.0
+  }
+  type: TYPE_TEMPLATE
+  id: "next"
+  parent: "row"
+  inherit_alpha: true
+  template: "/ui/templates/button.gui"
+}
+nodes {
+  size {
+    x: 56.0
+    y: 56.0
+  }
+  type: TYPE_BOX
+  id: "next/button"
+  parent: "next"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  scale {
+    x: 0.125
+    y: 0.125
+  }
+  size {
+    x: 448.0
+    y: 448.0
+  }
+  type: TYPE_BOX
+  id: "next/background"
+  parent: "next/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "next/content"
+  parent: "next/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  type: TYPE_BOX
+  texture: "ui/arrowRight"
+  id: "next/icon_left"
+  parent: "next/content"
+  overridden_fields: 1
+  overridden_fields: 9
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 42.0
+    y: 4.0
+  }
+  size {
+    x: 28.0
+    y: 28.0
+  }
+  type: TYPE_BOX
+  id: "next/icon_right"
+  parent: "next/content"
+  overridden_fields: 1
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 48.0
+    y: 48.0
+  }
+  type: TYPE_TEXT
+  id: "next/text"
+  parent: "next/content"
+  outline_alpha: 0.0
+  overridden_fields: 1
+  overridden_fields: 4
+  overridden_fields: 31
+  overridden_fields: 45
+  template_node_child: true
+  enabled: false
+}
+layers {
+  name: "button_bg"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "button_text"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
