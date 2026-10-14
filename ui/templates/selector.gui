@@ -285,7 +285,7 @@ layers {
   name: "button_icons"
 }
 layers {
-  name: "button_text"
+  name: "text_body"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

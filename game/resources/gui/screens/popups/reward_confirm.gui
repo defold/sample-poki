@@ -49,7 +49,7 @@ nodes {
   type: TYPE_BOX
   id: "blocker/fill"
   parent: "blocker"
-  layer: "button_bg"
+  layer: "background"
   overridden_fields: 20
   template_node_child: true
 }
@@ -442,13 +442,13 @@ nodes {
   alpha: 0.0
 }
 layers {
+  name: "background"
+}
+layers {
   name: "button_bg"
 }
 layers {
   name: "button_icons"
-}
-layers {
-  name: "button_text"
 }
 layers {
   name: "text_body"

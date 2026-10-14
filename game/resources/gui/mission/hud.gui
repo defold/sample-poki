@@ -48,7 +48,7 @@ nodes {
   id: "pause_dim"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "C_Anchor"
-  layer: "back_img"
+  layer: "background"
   inherit_alpha: true
   alpha: 0.82
   visible: false
@@ -84,7 +84,7 @@ nodes {
   font: "body"
   id: "credit_bonus_1"
   parent: "C_Anchor"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -102,7 +102,7 @@ nodes {
   font: "body"
   id: "credit_bonus_2"
   parent: "C_Anchor"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -120,7 +120,7 @@ nodes {
   font: "body"
   id: "credit_bonus_3"
   parent: "C_Anchor"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -138,7 +138,7 @@ nodes {
   font: "body"
   id: "credit_bonus_4"
   parent: "C_Anchor"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -159,7 +159,7 @@ nodes {
   font: "title"
   id: "rescue_feedback"
   parent: "C_Anchor"
-  layer: "text"
+  layer: "text_title"
   inherit_alpha: true
   enabled: false
 }
@@ -277,7 +277,7 @@ nodes {
   id: "tutorial_title"
   pivot: PIVOT_W
   parent: "tutorial_root"
-  layer: "front_img"
+  layer: "front_text_title"
   inherit_alpha: true
 }
 nodes {
@@ -301,7 +301,7 @@ nodes {
   pivot: PIVOT_W
   line_break: true
   parent: "tutorial_root"
-  layer: "front_img"
+  layer: "front_text_body"
   inherit_alpha: true
 }
 nodes {
@@ -346,7 +346,7 @@ nodes {
   type: TYPE_BOX
   id: "top_band"
   parent: "header_group"
-  layer: "back_img"
+  layer: "background"
   inherit_alpha: true
   alpha: 0.6
 }
@@ -426,7 +426,7 @@ nodes {
     z: 0.07
   }
   parent: "objective_panel"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -452,7 +452,7 @@ nodes {
   font: "body"
   id: "objective_target_label"
   parent: "objective_panel"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -654,7 +654,7 @@ nodes {
     z: 0.07
   }
   parent: "header_group"
-  layer: "text"
+  layer: "text_title"
   inherit_alpha: true
 }
 nodes {
@@ -686,7 +686,7 @@ nodes {
     z: 0.07
   }
   parent: "header_group"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -916,7 +916,7 @@ nodes {
     z: 0.07
   }
   parent: "hint_panel"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -942,7 +942,7 @@ nodes {
     z: 0.07
   }
   parent: "hint_panel"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -1356,7 +1356,7 @@ nodes {
     z: 0.07
   }
   parent: "fire_touch"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -1427,18 +1427,36 @@ nodes {
     z: 0.07
   }
   parent: "stick_base"
-  layer: "text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
+}
+layers {
+  name: "background"
 }
 layers {
   name: "back_img"
 }
 layers {
-  name: "text"
+  name: "button_bg"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "text_body"
+}
+layers {
+  name: "text_title"
 }
 layers {
   name: "front_img"
+}
+layers {
+  name: "front_text_body"
+}
+layers {
+  name: "front_text_title"
 }
 material: "/builtins/materials/gui.material"
 layouts {

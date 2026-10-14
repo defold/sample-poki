@@ -30,6 +30,7 @@ nodes {
   pivot: PIVOT_W
   parent: "stat"
   inherit_alpha: true
+  layer: "button_icons"
 }
 nodes {
   position {
@@ -54,6 +55,7 @@ nodes {
   id: "label"
   parent: "stat"
   inherit_alpha: true
+  layer: "text_body"
 }
 nodes {
   position {
@@ -78,6 +80,13 @@ nodes {
   pivot: PIVOT_E
   parent: "stat"
   inherit_alpha: true
+  layer: "text_body"
+}
+layers {
+  name: "button_icons"
+}
+layers {
+  name: "text_body"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

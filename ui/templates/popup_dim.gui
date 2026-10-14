@@ -14,4 +14,8 @@ nodes {
   adjust_mode: ADJUST_MODE_STRETCH
   inherit_alpha: true
   alpha: 0.82
+  layer: "background"
+}
+layers {
+  name: "background"
 }

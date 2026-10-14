@@ -854,7 +854,7 @@ nodes {
   type: TYPE_TEMPLATE
   id: "pause_hit"
   parent: "NE_Anchor"
-  layer: "text_body"
+  layer: "button_bg"
   inherit_alpha: true
   template: "/ui/templates/button.gui"
 }
@@ -1010,7 +1010,7 @@ nodes {
   id: "top_band"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "header_motion"
-  layer: "button_bg"
+  layer: "background"
   inherit_alpha: true
   alpha: 0.88
 }
@@ -1260,16 +1260,18 @@ nodes {
   overridden_fields: 10
   overridden_fields: 31
   overridden_fields: 45
+  overridden_fields: 20
   template_node_child: true
+  layer: "text_title"
+}
+layers {
+  name: "background"
 }
 layers {
   name: "button_bg"
 }
 layers {
   name: "button_icons"
-}
-layers {
-  name: "button_text"
 }
 layers {
   name: "text_body"

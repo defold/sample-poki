@@ -54,7 +54,7 @@ nodes {
   type: TYPE_BOX
   id: "background_dim/fill"
   parent: "background_dim"
-  layer: "popup_back"
+  layer: "background"
   overridden_fields: 5
   overridden_fields: 20
   template_node_child: true
@@ -80,7 +80,7 @@ nodes {
   type: TYPE_BOX
   id: "panel_pause"
   parent: "popup_motion"
-  layer: "popup_back"
+  layer: "button_bg"
   inherit_alpha: true
   visible: false
 }
@@ -107,7 +107,7 @@ nodes {
   type: TYPE_BOX
   id: "panel_pause_background/fill"
   parent: "panel_pause_background"
-  layer: "popup_back"
+  layer: "button_bg"
   overridden_fields: 1
   overridden_fields: 4
   overridden_fields: 5
@@ -132,7 +132,7 @@ nodes {
   font: "title"
   id: "text_title"
   parent: "panel_pause"
-  layer: "popup_text"
+  layer: "text_title"
   inherit_alpha: true
 }
 nodes {
@@ -153,7 +153,7 @@ nodes {
   font: "body"
   id: "text_detail"
   parent: "panel_pause"
-  layer: "popup_text"
+  layer: "text_body"
   inherit_alpha: true
   enabled: false
 }
@@ -612,7 +612,7 @@ nodes {
     z: 0.07
   }
   parent: "fire_hints"
-  layer: "popup_text"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -627,7 +627,7 @@ nodes {
   texture: "ui/mouse_left"
   id: "hint_fire_mouse"
   parent: "fire_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -642,7 +642,7 @@ nodes {
   texture: "ui/keyboard_space"
   id: "hint_fire"
   parent: "fire_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -657,7 +657,7 @@ nodes {
   texture: "ui/keyboard_enter"
   id: "hint_fire_enter"
   parent: "fire_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -672,7 +672,7 @@ nodes {
   texture: "ui/xbox_button_color_a"
   id: "hint_fire_pad"
   parent: "fire_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -707,7 +707,7 @@ nodes {
     z: 0.07
   }
   parent: "move_hints"
-  layer: "popup_text"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -722,7 +722,7 @@ nodes {
   texture: "ui/mouse_horizontal"
   id: "hint_steer_mouse"
   parent: "move_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -737,7 +737,7 @@ nodes {
   texture: "ui/keyboard_arrows_horizontal"
   id: "hint_steer_a"
   parent: "move_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -753,7 +753,7 @@ nodes {
   texture: "ui/keyboard_a"
   id: "hint_steer_key_a"
   parent: "move_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -769,7 +769,7 @@ nodes {
   texture: "ui/keyboard_d"
   id: "hint_steer_key_d"
   parent: "move_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -784,7 +784,7 @@ nodes {
   texture: "ui/xbox_stick_l_horizontal"
   id: "hint_steer_pad"
   parent: "move_hints"
-  layer: "popup_front"
+  layer: "button_icons"
   inherit_alpha: true
 }
 nodes {
@@ -912,13 +912,19 @@ nodes {
   alpha: 0.0
 }
 layers {
-  name: "popup_back"
+  name: "background"
 }
 layers {
-  name: "popup_text"
+  name: "button_bg"
 }
 layers {
-  name: "popup_front"
+  name: "button_icons"
+}
+layers {
+  name: "text_body"
+}
+layers {
+  name: "text_title"
 }
 material: "/builtins/materials/gui.material"
 layouts {

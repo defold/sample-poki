@@ -36,6 +36,7 @@ nodes {
   }
   alpha: 0.92
   inherit_alpha: true
+  layer: "button_bg"
 }
 nodes {
   size {
@@ -47,6 +48,7 @@ nodes {
   id: "fill"
   pivot: PIVOT_W
   parent: "back"
+  layer: "button_bg"
   slice9 {
     x: 16.0
     y: 16.0
@@ -54,6 +56,9 @@ nodes {
     w: 16.0
   }
   inherit_alpha: true
+}
+layers {
+  name: "button_bg"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

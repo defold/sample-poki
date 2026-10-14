@@ -23,7 +23,7 @@ nodes {
   type: TYPE_BOX
   id: "root"
   adjust_mode: ADJUST_MODE_STRETCH
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   visible: false
 }
@@ -36,7 +36,7 @@ nodes {
   id: "C_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   visible: false
 }
@@ -62,7 +62,7 @@ nodes {
   id: "popup_motion"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "C_Anchor"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   visible: false
 }
@@ -79,7 +79,7 @@ nodes {
   type: TYPE_BOX
   id: "panel"
   parent: "popup_motion"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   visible: false
 }
@@ -98,7 +98,7 @@ nodes {
   type: TYPE_BOX
   id: "panel_background/fill"
   parent: "panel_background"
-  layer: "panel"
+  layer: "button_bg"
   overridden_fields: 4
   overridden_fields: 20
   template_node_child: true
@@ -125,7 +125,7 @@ nodes {
     z: 0.07
   }
   parent: "panel"
-  layer: "panel"
+  layer: "text_title"
   inherit_alpha: true
 }
 nodes {
@@ -146,7 +146,7 @@ nodes {
   font: "body"
   id: "detail"
   parent: "panel"
-  layer: "panel"
+  layer: "text_body"
   inherit_alpha: true
 }
 nodes {
@@ -156,7 +156,7 @@ nodes {
   type: TYPE_TEMPLATE
   id: "continue_button"
   parent: "panel"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   template: "/ui/templates/button.gui"
 }
@@ -248,7 +248,7 @@ nodes {
   type: TYPE_TEMPLATE
   id: "reward_button"
   parent: "panel"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   template: "/ui/templates/button.gui"
 }
@@ -357,7 +357,7 @@ nodes {
   id: "N_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -373,7 +373,7 @@ nodes {
   id: "S_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -389,7 +389,7 @@ nodes {
   id: "W_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -405,7 +405,7 @@ nodes {
   id: "E_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -422,7 +422,7 @@ nodes {
   id: "NW_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -439,7 +439,7 @@ nodes {
   id: "NE_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -456,7 +456,7 @@ nodes {
   id: "SW_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -473,7 +473,7 @@ nodes {
   id: "SE_Anchor"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "root"
-  layer: "panel"
+  layer: "button_bg"
   inherit_alpha: true
   alpha: 0.0
 }
@@ -484,16 +484,16 @@ layers {
   name: "confetti"
 }
 layers {
-  name: "panel"
-}
-layers {
   name: "button_bg"
 }
 layers {
   name: "button_icons"
 }
 layers {
-  name: "button_text"
+  name: "text_body"
+}
+layers {
+  name: "text_title"
 }
 material: "/builtins/materials/gui.material"
 layouts {

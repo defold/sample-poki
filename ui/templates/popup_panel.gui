@@ -27,4 +27,8 @@ nodes {
     z: 128.0
     w: 128.0
   }
+  layer: "button_bg"
+}
+layers {
+  name: "button_bg"
 }

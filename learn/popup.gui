@@ -52,7 +52,7 @@ nodes {
   id: "background_dim"
   adjust_mode: ADJUST_MODE_STRETCH
   parent: "C_Anchor"
-  layer: "button_bg"
+  layer: "background"
   inherit_alpha: true
   alpha: 0.82
 }
@@ -575,13 +575,13 @@ nodes {
   alpha: 0.0
 }
 layers {
+  name: "background"
+}
+layers {
   name: "button_bg"
 }
 layers {
   name: "button_icons"
-}
-layers {
-  name: "button_text"
 }
 layers {
   name: "text_body"
