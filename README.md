@@ -90,7 +90,6 @@ The reusable platform layer in `app/` owns application-wide services. The Starbr
 | [learn/](learn/) | Special separated section with Poki developer tips pop-ups. It can be removed by deleting `learn/` and its one collection instance from `app/collections/bootstrap/main.collection`. |
 | [render/](render/) | Rendering pipeline, materials and shaders. |
 | [resources/](resources/) | Translations, display profiles, and texture profiles. |
-| [tests/](tests/) | Tests for some parts of the code. |
 | [ui/](ui/) | Reusable GUI templates (Druid widgets), popup behavior, screen input, focus and shared colors. Game-specific layouts and screen collections live in `game/`. |
 
 ### Libraries
@@ -149,22 +148,6 @@ From there, you can experiment with new actors such as enemy ships and projectil
 - Keep [main.collection](app/collections/bootstrap/main.collection) as the composition point between the reusable application layer and your game.
 - Remove `learn/` and its collection instance from `main.collection` if you do not want the embedded Poki guide.
 - Test platform behavior in Poki Inspector after replacing the game, especially first input, focus changes, pause/resume and ad callbacks.
-
-## Tests
-
-The regression checks in [tests/](tests/) use standalone Lua 5.1 and stub the required Defold APIs, so they run without launching the engine. From the project root, run:
-
-```sh
-lua tests/progress.lua
-lua tests/session_flow.lua
-lua tests/input_mode.lua
-lua tests/player_input_start.lua
-lua tests/ad_input.lua
-lua tests/resume_lifecycle.lua
-lua tests/planet_variants.lua
-```
-
-These checks cover profile persistence, session and rewarded-ad handoffs, input-mode routing and the first-input/resume gate. They complement, rather than replace, desktop and HTML5 playtesting.
 
 ## Optimizations for Web
 

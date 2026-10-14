@@ -290,9 +290,6 @@ nodes {
   template_node_child: true
 }
 nodes {
-  position {
-    x: 0.0
-  }
   size {
     x: 160.0
     y: 48.0
@@ -694,26 +691,6 @@ layouts {
   }
   nodes {
     position {
-      x: -226.0
-      y: 51.0
-    }
-    scale {
-      x: 0.55
-      y: 0.55
-    }
-    size {
-      x: 820.0
-      y: 980.0
-    }
-    type: TYPE_TEXT
-    id: "text_detail"
-    parent: "panel_learn"
-    overridden_fields: 1
-    overridden_fields: 3
-    overridden_fields: 4
-  }
-  nodes {
-    position {
       y: -260.0
     }
     type: TYPE_TEMPLATE
@@ -751,6 +728,26 @@ layouts {
     parent: "tip_selector/row"
     overridden_fields: 1
     template_node_child: true
+  }
+  nodes {
+    position {
+      x: -226.0
+      y: 51.0
+    }
+    scale {
+      x: 0.55
+      y: 0.55
+    }
+    size {
+      x: 820.0
+      y: 980.0
+    }
+    type: TYPE_TEXT
+    id: "text_detail"
+    parent: "panel_learn"
+    overridden_fields: 1
+    overridden_fields: 3
+    overridden_fields: 4
   }
   nodes {
     position {
