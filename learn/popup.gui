@@ -65,8 +65,8 @@ nodes {
 }
 nodes {
   size {
-    x: 420.0
-    y: 400.0
+    x: 900.0
+    y: 500.0
   }
   color {
     x: 0.025
@@ -86,8 +86,8 @@ nodes {
     y: 0.125
   }
   size {
-    x: 3600.0
-    y: 3200.0
+    x: 7200.0
+    y: 4000.0
   }
   color {
     x: 0.99215686
@@ -109,8 +109,8 @@ nodes {
 }
 nodes {
   position {
-    x: -205.0
-    y: 170.0
+    x: -414.0
+    y: 210.0
   }
   size {
     x: 70.0
@@ -131,15 +131,15 @@ nodes {
 }
 nodes {
   position {
-    x: 205.0
-    y: 170.0
+    x: 414.0
+    y: 210.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.8
+    y: 0.8
   }
   size {
-    x: 400.0
+    x: 600.0
     y: 40.0
   }
   color {
@@ -158,7 +158,8 @@ nodes {
 }
 nodes {
   position {
-    y: -95.0
+    x: -210.0
+    y: -190.0
   }
   type: TYPE_TEMPLATE
   id: "tip_selector"
@@ -167,27 +168,46 @@ nodes {
   template: "/ui/templates/selector.gui"
 }
 nodes {
+  size {
+    x: 400.0
+    y: 84.0
+  }
   type: TYPE_BOX
   id: "tip_selector/row"
   parent: "tip_selector"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
+  position {
+    x: -158.0
+  }
   type: TYPE_TEMPLATE
   id: "tip_selector/prev"
   parent: "tip_selector/row"
+  overridden_fields: 1
   template_node_child: true
 }
 nodes {
+  size {
+    x: 84.0
+    y: 84.0
+  }
   type: TYPE_BOX
   id: "tip_selector/prev/button"
   parent: "tip_selector/prev"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
+  size {
+    x: 672.0
+    y: 672.0
+  }
   type: TYPE_BOX
   id: "tip_selector/prev/background"
   parent: "tip_selector/prev/button"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
@@ -197,9 +217,14 @@ nodes {
   template_node_child: true
 }
 nodes {
+  size {
+    x: 40.0
+    y: 40.0
+  }
   type: TYPE_BOX
   id: "tip_selector/prev/icon_left"
   parent: "tip_selector/prev/content"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
@@ -221,15 +246,25 @@ nodes {
   template_node_child: true
 }
 nodes {
+  size {
+    x: 168.0
+    y: 84.0
+  }
   type: TYPE_BOX
   id: "tip_selector/action/button"
   parent: "tip_selector/action"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
+  size {
+    x: 1344.0
+    y: 672.0
+  }
   type: TYPE_BOX
   id: "tip_selector/action/background"
   parent: "tip_selector/action/button"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
@@ -251,27 +286,50 @@ nodes {
   template_node_child: true
 }
 nodes {
+  position {
+    x: 0.0
+  }
+  size {
+    x: 160.0
+    y: 48.0
+  }
   type: TYPE_TEXT
   id: "tip_selector/action/text"
   parent: "tip_selector/action/content"
+  overridden_fields: 1
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
+  position {
+    x: 158.0
+  }
   type: TYPE_TEMPLATE
   id: "tip_selector/next"
   parent: "tip_selector/row"
+  overridden_fields: 1
   template_node_child: true
 }
 nodes {
+  size {
+    x: 84.0
+    y: 84.0
+  }
   type: TYPE_BOX
   id: "tip_selector/next/button"
   parent: "tip_selector/next"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
+  size {
+    x: 672.0
+    y: 672.0
+  }
   type: TYPE_BOX
   id: "tip_selector/next/background"
   parent: "tip_selector/next/button"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
@@ -281,9 +339,14 @@ nodes {
   template_node_child: true
 }
 nodes {
+  size {
+    x: 40.0
+    y: 40.0
+  }
   type: TYPE_BOX
   id: "tip_selector/next/icon_left"
   parent: "tip_selector/next/content"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
@@ -300,15 +363,15 @@ nodes {
 }
 nodes {
   position {
-    x: -210.0
-    y: 45.0
+    x: -414.0
+    y: 35.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 1.0
+    y: 1.0
   }
   size {
-    x: 600.0
+    x: 828.0
     y: 300.0
   }
   type: TYPE_TEXT
@@ -323,7 +386,8 @@ nodes {
 }
 nodes {
   position {
-    y: -158.0
+    x: 266.0
+    y: -190.0
   }
   type: TYPE_TEMPLATE
   id: "button_got_it"
@@ -332,20 +396,31 @@ nodes {
   template: "/ui/templates/button.gui"
 }
 nodes {
+  size {
+    x: 296.0
+    y: 84.0
+  }
   type: TYPE_BOX
   id: "button_got_it/button"
   parent: "button_got_it"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
   size {
-    x: 2400.0
-    y: 440.0
+    x: 2368.0
+    y: 672.0
+  }
+  color {
+    x: 0.18
+    y: 0.86
+    z: 0.34
   }
   type: TYPE_BOX
   id: "button_got_it/background"
   parent: "button_got_it/button"
   overridden_fields: 4
+  overridden_fields: 5
   template_node_child: true
 }
 nodes {
@@ -567,6 +642,120 @@ layouts {
     id: "popup_motion"
     parent: "C_Anchor"
     overridden_fields: 3
+  }
+  nodes {
+    size {
+      x: 508.0
+      y: 840.0
+    }
+    type: TYPE_BOX
+    id: "panel_learn"
+    parent: "popup_motion"
+    overridden_fields: 4
+  }
+  nodes {
+    size {
+      x: 4064.0
+      y: 6720.0
+    }
+    type: TYPE_BOX
+    id: "panel_learn_background"
+    parent: "panel_learn"
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -226.0
+      y: 382.0
+    }
+    type: TYPE_TEXT
+    id: "learn_badge"
+    parent: "panel_learn"
+    overridden_fields: 1
+  }
+  nodes {
+    position {
+      x: 226.0
+      y: 342.0
+    }
+    size {
+      x: 565.0
+      y: 40.0
+    }
+    type: TYPE_TEXT
+    id: "text_title"
+    parent: "panel_learn"
+    overridden_fields: 1
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      x: -226.0
+      y: 51.0
+    }
+    scale {
+      x: 1.1
+      y: 1.1
+    }
+    size {
+      x: 410.0
+      y: 490.0
+    }
+    type: TYPE_TEXT
+    id: "text_detail"
+    parent: "panel_learn"
+    overridden_fields: 1
+    overridden_fields: 3
+    overridden_fields: 4
+  }
+  nodes {
+    position {
+      y: -260.0
+    }
+    type: TYPE_TEMPLATE
+    id: "tip_selector"
+    parent: "panel_learn"
+    overridden_fields: 1
+  }
+  nodes {
+    size {
+      x: 452.0
+      y: 84.0
+    }
+    type: TYPE_BOX
+    id: "tip_selector/row"
+    parent: "tip_selector"
+    overridden_fields: 4
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: -184.0
+    }
+    type: TYPE_TEMPLATE
+    id: "tip_selector/prev"
+    parent: "tip_selector/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      x: 184.0
+    }
+    type: TYPE_TEMPLATE
+    id: "tip_selector/next"
+    parent: "tip_selector/row"
+    overridden_fields: 1
+    template_node_child: true
+  }
+  nodes {
+    position {
+      y: -366.0
+    }
+    type: TYPE_TEMPLATE
+    id: "button_got_it"
+    parent: "panel_learn"
+    overridden_fields: 1
   }
   nodes {
     type: TYPE_BOX

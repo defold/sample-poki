@@ -38,6 +38,7 @@ local function refresh(self)
 	end
 	if self.got_it then
 		self.got_it:set_text(data.got_it or "CLOSE IT")
+		self.got_it:set_color(colors.primary)
 		self.got_it:set_input_prompt("cancel", self.input_mode)
 	end
 end
@@ -117,6 +118,10 @@ function on_message(self, message_id, message, sender)
 		apply_payload(self, message)
 		refresh(self)
 		return
+	end
+	if message_id == hash("layout_changed") then
+		-- Druid keeps the initial scale unless the new layout's scale is captured.
+		self.detail_text.text.start_scale = gui.get_scale(self.detail_text.node)
 	end
 	popup.on_message(self, message_id, message, sender)
 end

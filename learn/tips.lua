@@ -65,7 +65,7 @@ M.TIPS = {
 		},
 		{
 			title = "Touch control",
-			body = "Players with touch devices need controls that are easy to reach and hard to trigger by accident.\n\nKeep touch targets large, sometimes larger than actual visuals of the buttons. Avoid placing an important action under a browser edge or another overlay.\n\nUse gestures like a drag, swipes, or on-screen control only when it matches the game.",
+			body = "Test menus and popups on a small phone. Use the available width, keep text readable, and leave room for the controls.\n\nMake touch targets large and clearly spaced so a finger cannot easily hit two actions. Keep them away from browser edges and other overlays. Give Close a clear label and a distinct color, separated from navigation buttons, to avoid accidental dismissal.\n\nUse drags, swipes, or on-screen controls only when they match the game.",
 		},
 		{
 			title = "Virtual joystick",
