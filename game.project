@@ -22,7 +22,7 @@ samples = 4
 
 [project]
 title = Starbreaker - Defold sample game for Poki
-version = 0.1
+version = 1.0
 developer = Defold Foundation
 publisher = Defold Foundation
 dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.3.0.zip
